@@ -3283,67 +3283,6 @@
     .bl-form-grid { grid-template-columns: 1fr; }
   }
 
-  /* ========== Wallet Page ========== */
-
-  /* Wallet table — uses data-table for typography/padding/hover,
-     but overrides sticky cols + min-width so no horizontal scroll */
-  table.data-table.wallet-table {
-    min-width: 0;
-    width: 100%;
-    table-layout: auto;
-  }
-  /* Reset sticky positioning on wallet's first 6 columns */
-  table.data-table.wallet-table thead th:nth-child(1),
-  table.data-table.wallet-table thead th:nth-child(2),
-  table.data-table.wallet-table thead th:nth-child(3),
-  table.data-table.wallet-table thead th:nth-child(4),
-  table.data-table.wallet-table thead th:nth-child(5),
-  table.data-table.wallet-table thead th:nth-child(6),
-  table.data-table.wallet-table tbody td:nth-child(1),
-  table.data-table.wallet-table tbody td:nth-child(2),
-  table.data-table.wallet-table tbody td:nth-child(3),
-  table.data-table.wallet-table tbody td:nth-child(4),
-  table.data-table.wallet-table tbody td:nth-child(5),
-  table.data-table.wallet-table tbody td:nth-child(6) {
-    position: static;
-    left: auto;
-    min-width: 0;
-    width: auto;
-    box-shadow: none;
-    background: transparent;
-  }
-  table.data-table.wallet-table tbody tr:hover td:nth-child(n) { background: transparent; }
-  table.data-table.wallet-table tbody tr:hover td { background: rgba(0,113,227,0.03); }
-
-  /* Receipt thumbnail (Bank Receipt + Confirmation Receipt cells) */
-  .receipt-thumb {
-    width: 92px;
-    height: 56px;
-    border-radius: 4px;
-    display: block;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-  }
-
-  /* Status pills — pending / confirmed / rejected */
-  .wal-pill {
-    display: inline-flex;
-    align-items: center;
-    padding: 4px 14px;
-    border-radius: var(--radius-pill);
-    font-family: var(--font-display);
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: -0.005em;
-    border: 1px solid transparent;
-    background: #fff;
-    white-space: nowrap;
-  }
-  .wal-pill--pending   { color: #b88600; border-color: rgba(245,180,0,0.55); }
-  .wal-pill--confirmed { color: #047857; border-color: rgba(48,196,109,0.55); }
-  .wal-pill--rejected  { color: #c52a26; border-color: rgba(255,59,48,0.55); }
-
-  .wal-empty { color: var(--text-tertiary); font-weight: 600; font-size: 14px; }
-  .wal-note  { color: var(--text-primary);  font-size: 13px; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -3352,11 +3291,11 @@
 <nav class="navbar">
   <div class="nav-inner">
     <div class="brand">
-      <img class="brand-logo" src="otoz-logo.png" alt="otozFlow" />
+      <img class="brand-logo" src="oto-flow Logo.png" alt="otozFlow" />
     </div>
 
     <div class="nav-center">
-      <a class="nav-link active" href="#" onclick="navTo('dashboard'); return false;">
+      <a class="nav-link active" href="#">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Dashboard
       </a>
@@ -3386,7 +3325,7 @@
 </nav>
 
 <!-- ============== Page ============== -->
-<main class="page" id="page-dashboard">
+<main class="page">
 
   <!-- Header -->
   <div class="header-row">
@@ -3486,67 +3425,6 @@
   </div>
 </main>
 
-<!-- ============== Wallet Page ============== -->
-<main class="page" id="page-wallet" style="display:none;">
-
-  <!-- Header -->
-  <div class="header-row">
-    <div class="greeting">
-      <h1>Welcome back, <span class="name">Fahad</span></h1>
-      <p>Track your vehicles and manage shipments — all in one place.</p>
-    </div>
-    <div class="stat-card">
-      <div class="stat-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>
-      </div>
-      <div>
-        <div class="stat-label">Total Confirmed Balance</div>
-        <div class="stat-value">350</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toolbar -->
-  <div class="card toolbar-card">
-    <div class="toolbar-row">
-      <div class="filter-group">
-        <div class="search-wrap">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" placeholder="Search by Transaction ID" />
-        </div>
-      </div>
-      <div class="filter-group">
-        <select><option>20 Rows Displayed</option><option>10</option><option>50</option></select>
-        <select><option>Sort By</option><option>Newest first</option><option>Amount: high → low</option><option>Status</option></select>
-      </div>
-    </div>
-  </div>
-
-  <!-- Wallet Table -->
-  <div class="card">
-    <div class="table-wrap">
-      <table class="data-table wallet-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Bank Receipt</th>
-            <th>Transaction ID</th>
-            <th>Created Date</th>
-            <th>Currency</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Confirmation Receipt</th>
-          </tr>
-        </thead>
-        <tbody id="wallet-tbody"></tbody>
-      </table>
-    </div>
-    <div class="pagination-bar">
-      <div class="page-info">Showing <b>1–10</b> of <b>350</b> transactions</div>
-      <div class="pager" id="wallet-pager"></div>
-    </div>
-  </div>
-</main>
 
 
   <!-- Sale Price View Panel -->
@@ -5454,126 +5332,20 @@
 
 
 
-  /* ========== Page Navigation (Dashboard ⇄ Wallet) ========== */
-  function navTo(page) {
-    const dash = document.getElementById('page-dashboard');
-    const wall = document.getElementById('page-wallet');
-    const links = document.querySelectorAll('.nav-link');
-    if (page === 'wallet') {
-      dash.style.display = 'none';
-      wall.style.display = '';
-      links.forEach((l, i) => l.classList.toggle('active', i === 1));
-      renderWallet();
-    } else {
-      dash.style.display = '';
-      wall.style.display = 'none';
-      links.forEach((l, i) => l.classList.toggle('active', i === 0));
-    }
-    window.scrollTo(0, 0);
-  }
-
-  /* ========== Wallet Table ========== */
-  // Inline mini-receipt SVG (used as bank-receipt + confirmation thumbnail)
-  const RECEIPT_SVG = `
-    <svg class="receipt-thumb" viewBox="0 0 80 50" xmlns="http://www.w3.org/2000/svg">
-      <rect x="0.5" y="0.5" width="79" height="49" rx="3" fill="#fafafa" stroke="#e5e5ea"/>
-      <text x="6" y="9" font-family="SF Mono, Menlo, monospace" font-size="5" fill="#8a8a8e">10/13/26  POSTING DATE</text>
-      <text x="6" y="16" font-family="SF Mono, Menlo, monospace" font-size="5" fill="#8a8a8e">US BANK · RANCHO CORDOVA</text>
-      <line x1="6" y1="20" x2="74" y2="20" stroke="#ececef"/>
-      <text x="6" y="27" font-family="SF Mono, Menlo, monospace" font-size="5" fill="#1d1d1f">CARD ··········0537</text>
-      <text x="6" y="33" font-family="SF Mono, Menlo, monospace" font-size="5" fill="#1d1d1f">RECORD NO.   9979</text>
-      <text x="6" y="39" font-family="SF Mono, Menlo, monospace" font-size="5" fill="#1d1d1f">WITHDRAWAL  $60.00</text>
-      <text x="6" y="45" font-family="SF Mono, Menlo, monospace" font-size="5" fill="#1d1d1f">BAL.        $7,115.12</text>
-    </svg>`;
-
-  const walletRows = [
-    { id: 1,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '$ 32,640', status: 'pending'   },
-    { id: 2,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '$ 32,640', status: 'confirmed' },
-    { id: 3,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '$ 32,640', status: 'rejected', note: 'Bank Receipt is fake' },
-    { id: 4,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '$ 32,640', status: 'confirmed' },
-    { id: 5,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '$ 32,640', status: 'confirmed' },
-    { id: 6,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '$ 32,640', status: 'confirmed' },
-    { id: 7,  txn: 'KENMORE TRADING CO',   date: '11 / 2 / 2026',  curr: 'USD', amt: '$ 18,200', status: 'pending'   },
-    { id: 8,  txn: 'AL SUWAIDI MOTORS',    date: '11 / 2 / 2026',  curr: 'USD', amt: '$ 24,800', status: 'confirmed' },
-    { id: 9,  txn: 'PACIFIC AUTO IMPORTS', date: '12 / 2 / 2026',  curr: 'USD', amt: '$ 41,150', status: 'rejected',  note: 'Receipt amount mismatch' },
-    { id: 10, txn: 'ZIM TRANSPORT LTD',    date: '12 / 2 / 2026',  curr: 'USD', amt: '$ 28,975', status: 'confirmed' },
-  ];
-
-  function statusPill(s) {
-    if (s === 'pending')   return '<span class="wal-pill wal-pill--pending">● Pending</span>';
-    if (s === 'rejected')  return '<span class="wal-pill wal-pill--rejected">● Rejected</span>';
-    return '<span class="wal-pill wal-pill--confirmed">● Confirmed</span>';
-  }
-
-  function renderWallet() {
-    const tbody = document.getElementById('wallet-tbody');
-    if (!tbody) return;
-    let html = '';
-    walletRows.forEach(r => {
-      let conf = '<span class="wal-empty">—</span>';
-      if (r.status === 'confirmed') conf = RECEIPT_SVG;
-      else if (r.status === 'rejected') conf = `<span class="wal-note">${r.note || ''}</span>`;
-      html += `
-        <tr>
-          <td>${r.id}</td>
-          <td>${RECEIPT_SVG}</td>
-          <td>${r.txn}</td>
-          <td>${r.date}</td>
-          <td>${r.curr}</td>
-          <td>${r.amt}</td>
-          <td>${statusPill(r.status)}</td>
-          <td>${conf}</td>
-        </tr>`;
-    });
-    tbody.innerHTML = html;
-    renderWalletPager();
-  }
-
-  function renderWalletPager() {
-    const pager = document.getElementById('wallet-pager');
-    if (!pager) return;
-    const totalPages = 35;
-    const currentPage = 1;
-    const pages = [];
-    pages.push(`<button class="pg-btn" ${currentPage === 1 ? "disabled" : ""}>${ico.chevL}</button>`);
-    const add = (n) => pages.push(`<button class="pg-btn ${n === currentPage ? "active" : ""}">${n}</button>`);
-    const ellipsis = () => pages.push(`<span class="pg-ellipsis">…</span>`);
-
-    add(1);
-    if (currentPage > 4) ellipsis();
-    const start = Math.max(2, currentPage - 1);
-    const end = Math.min(totalPages - 1, currentPage + 1);
-    for (let i = start; i <= end; i++) add(i);
-    if (currentPage < totalPages - 3) ellipsis();
-    if (totalPages > 1) add(totalPages);
-
-    pages.push(`<button class="pg-btn" ${currentPage === totalPages ? "disabled" : ""}>${ico.chevR}</button>`);
-    pager.innerHTML = pages.join("");
-  }
 
   /* -------- Init -------- */
   renderRows();
   renderPager();
 </script>
 
-      <div class="lb-counter" id="lb-counter">1 / 13</div>
-      <button class="lb-close" onclick="closeLightbox()" aria-label="Close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div class="lb-stage-wrap">
-      <button class="lb-nav prev" onclick="lightboxNav(-1)" aria-label="Previous">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <div id="lb-stage"></div>
-      <button class="lb-nav next" onclick="lightboxNav(1)" aria-label="Next">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-    </div>
-    <div class="lb-strip-wrap">
-      <div class="lb-strip" id="lb-strip"></div>
-    </div>
-  </div>
+<script>
+  function navTo(page) {
 
+    if (page === 'wallet') {
+      window.location.href = "otoz-wallet.html";
+    }
+
+  }
+</script>
 </body>
 </html>
