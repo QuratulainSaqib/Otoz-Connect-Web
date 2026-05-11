@@ -144,6 +144,24 @@
   .icon-btn:hover { background: rgba(0, 0, 0, 0.05); color: var(--text-primary); }
   .icon-btn svg { width: 16px; height: 16px; }
 
+  .help-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid rgba(0, 113, 227, 0.18);
+    border-radius: var(--radius-pill);
+    background: rgba(0, 113, 227, 0.09);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    font-family: var(--font-body);
+  }
+  .help-btn:hover { background: rgba(0, 113, 227, 0.15); color: var(--accent); transform: translateY(-1px); }
+  .help-btn svg { width: 13px; height: 13px; }
+
   .logout-btn {
     display: inline-flex;
     align-items: center;
@@ -3555,21 +3573,22 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         Dashboard
       </a>
-      <a class="nav-link active" href="#" onclick="return false;">
+      <a class="nav-link active" href="otoz-wallet.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11h20"/></svg>
         Wallet
       </a>
-      <a class="nav-link" href="#">
+      <a class="nav-link" href="otoz-payment.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
         Payment Allocation
       </a>
     </div>
 
     <div class="nav-right">
-      <button class="icon-btn" title="Help">
+      <button class="help-btn" onclick="window.location.href='help.html'">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Help
       </button>
-      <button class="logout-btn" onclick="window.location.href='otoz-login.html'">
+      <button class="logout-btn" onclick="window.location.href='Index.html'">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Logout
       </button>
@@ -3602,7 +3621,16 @@
     <div class="toolbar-left">
       <div class="filter with-search">
         <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" placeholder="Search by Transaction ID" />
+        <input id="wallet-search" type="text" placeholder="Search by Transaction ID" oninput="renderWallet()" />
+      </div>
+      <div class="filter compact">
+        <select id="wallet-status-filter" onchange="renderWallet()">
+          <option value="">All Statuses</option>
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="rejected">Rejected</option>
+        </select>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <button class="btn-add-payment" type="button" onclick="openAddPayment()">+ Add Payment</button>
     </div>
@@ -3627,10 +3655,11 @@
             <th><span class="th-inner">ID</span></th>
             <th><span class="th-inner">Bank Receipt</span></th>
             <th><span class="th-inner">Transaction ID</span></th>
-            <th><span class="th-inner">Upload Date Date</span></th>
+            <th><span class="th-inner">Upload Date</span></th>
             <th><span class="th-inner">Currency</span></th>
             <th><span class="th-inner">Amount</span></th>
             <th><span class="th-inner">Status</span></th>
+            <th><span class="th-inner">Rejection Reason</span></th>
             <th><span class="th-inner">Confirmation Receipt</span></th>
           </tr>
         </thead>
@@ -5681,16 +5710,11 @@
 
   // Confirmation Receipt PDF chip — click downloads/views PDF
   const confirmationPdf = (id) => `
-    <button class="pdf-chip" type="button" onclick="openPdfReceipt(${id})">
+    <button class="pdf-chip" type="button" onclick="openPdfReceipt(${id})" aria-label="Download confirmation receipt">
       <span class="pdf-chip-ico">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      </span>
-      <span class="pdf-chip-meta">
-        <span class="pdf-chip-name">Receipt_${String(id).padStart(4,'0')}.pdf</span>
-      </span>
-      <span class="pdf-chip-action">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
       </span>
+      <span class="pdf-chip-text">Confirmation Receipt</span>
     </button>`;
 
   // Click handlers (placeholder — would integrate with real preview/download)
@@ -5723,12 +5747,20 @@
   function renderWallet() {
     const tbody = document.getElementById('wallet-tbody');
     if (!tbody) return;
+    const search = document.getElementById('wallet-search')?.value.trim().toLowerCase();
+    const statusFilter = document.getElementById('wallet-status-filter')?.value;
     let html = '';
-    walletRows.forEach(r => {
-      let conf = '<span class="wal-empty">—</span>';
-      if (r.status === 'confirmed') conf = confirmationPdf(r.id);
-      else if (r.status === 'rejected') conf = `<span class="wal-note">${r.note || ''}</span>`;
-      html += `
+    walletRows
+      .filter(r => {
+        const matchSearch = !search || String(r.txn).toLowerCase().includes(search) || String(r.id).includes(search);
+        const matchStatus = !statusFilter || r.status === statusFilter;
+        return matchSearch && matchStatus;
+      })
+      .forEach(r => {
+        const rejection = r.status === 'rejected' ? `<span class="wal-note">${r.note || 'No reason provided'}</span>` : '<span class="wal-empty">—</span>';
+        let conf = '<span class="wal-empty">—</span>';
+        if (r.status === 'confirmed') conf = confirmationPdf(r.id);
+        html += `
         <tr>
           <td>${r.id}</td>
           <td>${bankReceiptImg(r.id)}</td>
@@ -5737,9 +5769,10 @@
           <td>${r.curr}</td>
           <td>${r.amt}</td>
           <td>${statusPill(r.status)}</td>
+          <td>${rejection}</td>
           <td>${conf}</td>
         </tr>`;
-    });
+      });
     tbody.innerHTML = html;
     renderWalletPager();
   }
