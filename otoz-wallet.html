@@ -3666,7 +3666,7 @@
             <th><span class="th-inner">Transaction ID</span></th>
             <th><span class="th-inner">Upload Date</span></th>
             <th><span class="th-inner">Currency</span></th>
-            <th><span class="th-inner">Amount</span></th>
+            <th style="text-align:right"><span class="th-inner">Amount</span></th>
             <th><span class="th-inner">Status</span></th>
             <th><span class="th-inner">Rejection Reason</span></th>
             <th><span class="th-inner">Confirmation Receipt</span></th>
@@ -3725,12 +3725,6 @@
                 <button class="fu-replace" type="button" onclick="document.getElementById('ap-file-input').click()">Replace</button>
               </div>
               <input type="file" id="ap-file-input" accept=".png,.jpg,.jpeg,.pdf" style="display:none;" onchange="onPaymentFileSelected(this)">
-            </div>
-
-            <!-- Transaction ID -->
-            <div class="field full">
-              <label>Transaction ID <span class="req">*</span></label>
-              <input type="text" id="ap-txn-id" placeholder="Enter Transaction ID">
             </div>
 
             <!-- Currency -->
@@ -5779,7 +5773,7 @@
           <td>${r.txn}</td>
           <td>${r.date}</td>
           <td>${r.curr}</td>
-          <td>${r.amt}</td>
+          <td style="text-align:right;font-variant-numeric:tabular-nums">${r.amt}</td>
           <td>${statusPill(r.status)}</td>
           <td>${rejection}</td>
           <td>${conf}</td>

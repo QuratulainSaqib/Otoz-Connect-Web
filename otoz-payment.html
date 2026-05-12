@@ -217,9 +217,9 @@
 
   .chassis-cell{font-family:"SF Mono",Menlo,monospace;font-size:12px;color:var(--text-secondary)}
 
-  .amount-cell{font-weight:500;color:var(--text-primary)}
+  .amount-cell{font-weight:700;color:var(--text-primary);text-align:right;font-variant-numeric:tabular-nums}
   .paid-cell{font-weight:600;color:var(--green)}
-  .remaining-cell{font-weight:600;color:var(--danger)}
+  .remaining-cell{font-weight:600;color:var(--danger);text-align:right;font-variant-numeric:tabular-nums}
   .allocated-cell{color:var(--text-secondary)}
 
   /* ── Pagination ── */
@@ -411,28 +411,40 @@
     flex-shrink:0;align-self:center;
   }
 
-  /* ── Allocate field ── */
+  /* ── Allocate field — consistent with system ── */
   .alloc-field-wrap{margin-bottom:20px}
-  .alloc-label{
-    font-size:12px;font-weight:600;color:var(--text-secondary);
-    margin-bottom:8px;display:flex;align-items:center;gap:4px;
+  .form-field-label{
+    font-size:13px;font-weight:500;color:var(--text-secondary);
+    margin-bottom:7px;
   }
-  .alloc-label .req{color:var(--danger)}
-  .alloc-input-wrap{position:relative}
-  .alloc-input-wrap .currency-sym{
+  .form-field-wrap{
+    position:relative;
+  }
+  .form-field-prefix{
     position:absolute;left:14px;top:50%;transform:translateY(-50%);
-    font-size:15px;font-weight:600;color:var(--text-secondary);pointer-events:none;
+    font-size:14px;font-weight:500;color:var(--text-secondary);pointer-events:none;
   }
-  .alloc-input{
-    width:100%;height:48px;padding:0 14px 0 30px;
-    background:#fff;border:1.5px solid var(--border);
-    border-radius:var(--radius-md);font-family:var(--font-display);
-    font-size:18px;font-weight:600;color:var(--text-primary);
+  .form-field-input{
+    width:100%;height:42px;
+    padding:0 14px 0 28px;
+    background:var(--surface);
+    border:1px solid var(--border-strong);
+    border-radius:var(--radius-md);
+    font-family:var(--font-body);
+    font-size:14px;font-weight:500;
+    color:var(--text-primary);
     transition:all .18s ease;
+    -moz-appearance:textfield;
   }
-  .alloc-input:focus{
-    outline:none;border-color:var(--accent);
-    box-shadow:0 0 0 3px rgba(0,113,227,0.15);
+  .form-field-input::-webkit-outer-spin-button,
+  .form-field-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .form-field-input::placeholder{color:var(--text-tertiary);font-weight:400}
+  .form-field-input:hover{border-color:var(--border-strong)}
+  .form-field-input:focus{
+    outline:none;
+    border-color:var(--accent);
+    background:#fff;
+    box-shadow:0 0 0 3px rgba(0,113,227,0.12);
   }
 
   /* ── Submit button ── */
@@ -650,7 +662,7 @@
           <option value="id">ID</option>
           <option value="total">Total Amount</option>
           <option value="paid">Paid</option>
-          <option value="remaining">Remaining</option>
+          <option value="remaining">Remaining Balance (BL)</option>
         </select>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
@@ -667,10 +679,10 @@
             <th><div class="th-inner">Make / Mode / Model Code</div></th>
             <th><div class="th-inner">Chassis No. <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
             <th><div class="th-inner">Year <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
-            <th><div class="th-inner">Purchase Price <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
+            <th style="text-align:right"><div class="th-inner">Purchase Price <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
             <th><div class="th-inner">Paid <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
-            <th><div class="th-inner">Amount Allocated <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
-            <th><div class="th-inner">Remaining <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
+            <th><div class="th-inner">Allocated Amount <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
+            <th style="text-align:right"><div class="th-inner">Remaining Balance (BL) <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
           </tr>
         </thead>
         <tbody id="pay-tbody"></tbody>
@@ -695,10 +707,10 @@
     code:      '5BA-A200A',
     chassis:   'WDC2539052F422655',
     year:      2022,
-    total:     32650,
+    total:     i === 2 ? 20000 : 32650,
     paid:      20000,
-    allocated: 10.0000,
-    remaining: 2650,
+    allocated: i === 2 ? 20.0000 : 10.0000,
+    remaining: i === 2 ? 0 : 2650,
   }));
 
   let filtered  = [...RAW];
@@ -755,7 +767,7 @@
           <td class="amount-cell">$${r.total.toLocaleString()}</td>
           <td class="paid-cell">$ ${r.paid.toLocaleString()}</td>
           <td class="allocated-cell">${r.allocated.toFixed(4)}</td>
-          <td class="remaining-cell">$ ${r.remaining.toLocaleString()}</td>
+          <td class="remaining-cell" style="color:${r.remaining===0?'var(--green)':'var(--danger)'};text-align:right;font-weight:600">${r.remaining===0?'$ 0.00':'$ '+r.remaining.toLocaleString()}</td>
         </tr>`).join('')
       : `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-tertiary)">No results found</td></tr>`;
 
@@ -803,7 +815,11 @@
     { amount: 20000, date: 'Jan 10, 2026', label: 'Allocated' },
   ];
 
+  const WALLET_BALANCE = 350;
+  let currentPanelRow = null;
+
   function openPanel(row) {
+    currentPanelRow = row;
     const purchase  = row.total;
     const paid      = row.paid;
     const remaining = row.remaining;
@@ -812,11 +828,17 @@
     document.getElementById('pa-title').textContent   = `${row.make} ${row.mode}`;
     document.getElementById('pa-sub').textContent     = `${row.year} · Ref – A00116`;
     document.getElementById('pa-chassis').textContent = row.chassis;
+    const img = document.getElementById('pa-veh-img');
+    if (img) { img.src = 'https://cdn.motor1.com/images/mgl/BboJJ/s1/toyota-raize.jpg'; }
 
     // Amount cards
     document.getElementById('pa-purchase').textContent  = `$${purchase.toLocaleString()}`;
     document.getElementById('pa-paid').textContent      = `$${paid.toLocaleString()}`;
     document.getElementById('pa-remaining').textContent = `$${remaining.toLocaleString()}`;
+
+    // Reset wallet balance
+    document.getElementById('pa-amount-input').value = '';
+    updateWalletBalance('');
 
     // History
     const hist = document.getElementById('pa-history');
@@ -833,9 +855,17 @@
         <span class="h-badge">${h.label}</span>
       </div>`).join('');
 
-    document.getElementById('pa-amount-input').value = '';
     document.getElementById('panel-alloc').classList.add('open');
     document.getElementById('panel-overlay').classList.add('open');
+  }
+
+  function updateWalletBalance(val) {
+    const entered = parseFloat(val) || 0;
+    const after   = WALLET_BALANCE - entered;
+    const balEl   = document.getElementById('pa-wallet-after');
+    if (!balEl) return;
+    balEl.textContent = `$${Math.max(0, after).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}`;
+    balEl.style.color = after < 0 ? '#dc2626' : 'var(--danger)';
   }
 
   function closePanel() {
@@ -856,6 +886,7 @@
       return;
     }
     document.getElementById('mc-vehicle').textContent   = document.getElementById('pa-title').textContent;
+    document.getElementById('mc-year').textContent      = currentPanelRow ? currentPanelRow.year : '—';
     document.getElementById('mc-chassis').textContent   = document.getElementById('pa-chassis').textContent;
     document.getElementById('mc-remaining').textContent = document.getElementById('pa-remaining').textContent;
     document.getElementById('mc-amount').textContent    = `$${parseFloat(amt).toLocaleString()}`;
@@ -894,8 +925,8 @@
     <!-- Vehicle Hero Card -->
     <div class="vehicle-card">
       <div class="vc-img-wrap">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/2019_Toyota_RAV4_%28AXAH54R%29_GXL_wagon_%282021-10-29%29_01.jpg/320px-2019_Toyota_RAV4_%28AXAH54R%29_GXL_wagon_%282021-10-29%29_01.jpg"
-          alt="vehicle" onerror="this.parentElement.innerHTML='<svg style=width:72px;height:50px viewBox=0 0 72 50 fill=none><rect width=72 height=50 rx=8 fill=rgba(255,255,255,0.1)/><path d=M14 34l10-12 8 9 6-7 10 10H14z fill=rgba(255,255,255,0.15)/></svg>'" />
+        <img src="https://cdn.motor1.com/images/mgl/BboJJ/s1/toyota-raize.jpg" id="pa-veh-img"
+          alt="vehicle" onerror="this.style.display='none'" />
       </div>
       <div class="vc-info">
         <div class="vc-title" id="pa-title">Toyota Raize</div>
@@ -927,12 +958,36 @@
 
     <!-- Allocate Amount Input -->
     <div class="alloc-field-wrap">
-      <div class="alloc-label">
-        Allocate Amount <span class="req">*</span>
+
+      <!-- Total Wallet Balance mini card -->
+      <div style="background:linear-gradient(135deg,#f0f7ff 0%,#dbeafe 100%);border:1px solid rgba(0,113,227,0.15);border-radius:var(--radius-md);padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,#0071e3,#00a3ff);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg style="width:16px;height:16px;color:#fff" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:rgba(0,86,179,0.7);">Total Wallet Balance</div>
+            <div style="font-size:18px;font-weight:700;color:#173559;letter-spacing:-0.02em;line-height:1.1">$<span id="pa-wallet-total">350.00</span></div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:rgba(0,86,179,0.6);margin-bottom:2px;">After Allocation</div>
+          <div style="font-size:16px;font-weight:700;letter-spacing:-0.02em;color:var(--danger);" id="pa-wallet-after">$350.00</div>
+        </div>
       </div>
-      <div class="alloc-input-wrap">
-        <span class="currency-sym">$</span>
-        <input class="alloc-input" id="pa-amount-input" type="number" min="0" placeholder="Enter amount" />
+
+      <div class="form-field-label">Allocate Amount <span style="color:var(--danger)">*</span></div>
+      <div class="form-field-wrap">
+        <span class="form-field-prefix">$</span>
+        <input
+          class="form-field-input"
+          id="pa-amount-input"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="0.00"
+          oninput="updateWalletBalance(this.value)"
+        />
       </div>
     </div>
 
@@ -970,6 +1025,10 @@
       <div class="modal-row">
         <span class="modal-row-label">Vehicle</span>
         <span class="modal-row-value" id="mc-vehicle">Toyota Raize</span>
+      </div>
+      <div class="modal-row">
+        <span class="modal-row-label">Year</span>
+        <span class="modal-row-value" id="mc-year">2022</span>
       </div>
       <div class="modal-row">
         <span class="modal-row-label">Chassis No.</span>
