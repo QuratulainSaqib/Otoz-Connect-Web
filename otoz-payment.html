@@ -523,6 +523,7 @@
     font-family:var(--font-body);font-size:14px;font-weight:600;
     color:var(--text-primary);cursor:pointer;
     transition:all .18s ease;
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
   }
   .modal-btn-cancel:hover{background:var(--surface-elev);border-color:var(--text-secondary)}
   .modal-btn-confirm{
@@ -985,7 +986,10 @@
     </div>
 
     <div class="modal-actions">
-      <button class="modal-btn-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="modal-btn-cancel" onclick="closeConfirm()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        Cancel
+      </button>
       <button class="modal-btn-confirm" onclick="submitAllocation()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         Confirm
