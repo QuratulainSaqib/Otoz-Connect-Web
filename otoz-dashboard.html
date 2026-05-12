@@ -3626,7 +3626,7 @@
       <div class="filter">
         <select>
           <option>All Stages</option>
-          <option>1 — Purchased Info</option>
+          <option>1 — Purchase Info</option>
           <option>2 — Yard Images</option>
           <option>3 — Export Certificate</option>
           <option>4 — Inspection</option>
@@ -3678,12 +3678,12 @@
             <th><span class="th-inner">Chassis No. <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
             <th>Make / Model / Code</th>
             <th><span class="th-inner">Year <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+            <th>Destination</th>
             <th><span class="th-inner">Purchase Date <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
             <th>Currency</th>
-            <th><span class="th-inner">Purchase Price <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
-            <th><span class="th-inner">Sale Price <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+            <th style="text-align: right;"><span class="th-inner">Purchase Price <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+            <th style="text-align: right;"><span class="th-inner">Sale Price <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
             <th>Consignee / Notify</th>
-            <th>Destination</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -4800,7 +4800,7 @@
 
   /* -------- Sample data -------- */
   const stageMeta = [
-    { n: 1, label: "Purchased Info" },
+    { n: 1, label: "Purchase Info" },
     { n: 2, label: "Yard Images" },
     { n: 3, label: "Export Certificate" },
     { n: 4, label: "Inspection" },
@@ -4889,12 +4889,12 @@
           </div>
         </td>
         <td>${r.year}</td>
+        <td><span class="destination">${ico.pin}${r.dest}</span></td>
         <td>${r.date}</td>
         <td><span class="currency-pill">${r.curr}</span></td>
-        <td><span class="price">${r.purchase}</span></td>
-        <td>${renderSale(r, i)}</td>
+        <td style="text-align: right;"><span class="price">${r.purchase}</span></td>
+        <td style="text-align: right;">${renderSale(r, i)}</td>
         <td>${renderBcn(r, i)}</td>
-        <td><span class="destination">${ico.pin}${r.dest}</span></td>
         <td>
           <div class="actions">
             <button class="action-btn doc" data-tooltip="Invoices" onclick="openInvoices(${i})">${ico.doc}</button>
@@ -5241,8 +5241,8 @@
       sub: '13 yard photos uploaded by otoz sales team',
       doneSub: 'Detailed inspection photos uploaded from the otoz sales team.',
       fields: [
-        ['Received Date', '10 / 08 / 2026'],
-        ['Uploaded Date', '11 / 08 / 2026'],
+        ['Receive Date', '10 / 08 / 2026'],
+        ['Upload Date', '11 / 08 / 2026'],
         ['Total Images', '13 photos'],
       ],
       yardPhotos: [
@@ -5322,7 +5322,7 @@
       sub: 'Copy Bill of Lading uploaded · ready to view',
       doneSub: 'Official Bill of Lading (BL) document available for download.',
       fields: [
-        ['Uploaded Date', '22 / 09 / 2026'],
+        ['Upload Date', '22 / 09 / 2026'],
       ],
       docs: [
         { name: 'Bill_of_Lading_Copy_A00116.pdf', kind: 'bl' }
@@ -5333,8 +5333,8 @@
       sub: 'Final settlement & remaining payment overview',
       doneSub: 'Total cost, paid amount, and remaining balance summary.',
       fields: [
-        ['ETA Date', '05 / 10 / 2026'],
-        ['Total Amount', { kind: 'highlight', value: '$16,120', tone: 'success' }],
+        ['Purchase Price', { kind: 'highlight', value: '$16,120', tone: 'success' }],
+        ['ETD Date', '05 / 10 / 2026'],
       ],
       paymentSummary: [
         { label: 'Allocated Amount', value: '$3,450', tone: 'success' },
@@ -5609,7 +5609,7 @@
       <div class="bl-actions">
         <button class="bl-send-btn" onclick="sendBlMethod()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-          <span id="bl-send-label">${method === 'dispatch' ? 'Send Dispatch Details' : 'Confirm Surrender'}</span>
+          <span id="bl-send-label">${method === 'dispatch' ? 'Confirm Dispatch' : 'Confirm Surrender'}</span>
         </button>
       </div>`;
 
@@ -5628,7 +5628,7 @@
 
     // Update send button label
     const lbl = document.getElementById('bl-send-label');
-    if (lbl) lbl.textContent = method === 'dispatch' ? 'Send Dispatch Details' : 'Confirm Surrender';
+    if (lbl) lbl.textContent = method === 'dispatch' ? 'Confirm Dispatch' : 'Confirm Surrender';
   }
 
   function sendBlMethod() {
