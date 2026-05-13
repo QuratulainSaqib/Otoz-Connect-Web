@@ -3684,14 +3684,14 @@
           <tr>
             <th><span class="th-inner">Stage <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
             <th>Image</th>
-            <th><span class="th-inner">Reference <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
-            <th><span class="th-inner">Chassis No. <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
             <th>Make / Model / Code</th>
             <th><span class="th-inner">Year <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+            <th><span class="th-inner">Chassis No. <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
             <th>Destination</th>
             <th><span class="th-inner">Purchase Date <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
-            <th>Currency</th>
+            <th>Purch. Curr.</th>
             <th style="text-align: right;"><span class="th-inner">Purchase Price <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
+            <th>Sale Curr.</th>
             <th style="text-align: right;"><span class="th-inner">Sale Price <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></th>
             <th>Consignee / Notify</th>
             <th>Actions</th>
@@ -4902,8 +4902,6 @@
       <tr>
         <td>${renderStage(r.stage, i)}</td>
         <td><img class="car-img" src="${carThumb(i)}" alt="car"></td>
-        <td><span class="ref">${r.ref}</span></td>
-        <td><span class="chassis">${r.chassis}</span></td>
         <td>
           <div class="make-cell">
             <div class="model">${r.make} ${r.model}</div>
@@ -4911,10 +4909,12 @@
           </div>
         </td>
         <td>${r.year}</td>
+        <td><span class="chassis">${r.chassis}</span></td>
         <td><span class="destination">${ico.pin}${r.dest}</span></td>
         <td>${r.date}</td>
         <td><span class="currency-pill">${r.curr}</span></td>
         <td style="text-align: right;"><span class="price">${r.purchase}</span></td>
+        <td><span class="currency-pill">${r.curr}</span></td>
         <td style="text-align: right;">${renderSale(r, i)}</td>
         <td>${renderBcn(r, i)}</td>
         <td>
