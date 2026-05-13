@@ -159,6 +159,7 @@
     cursor: pointer;
     transition: all 0.18s ease;
     font-family: var(--font-body);
+    text-decoration: none;
   }
   .help-btn:hover { background: rgba(0, 113, 227, 0.15); color: var(--accent); transform: translateY(-1px); }
   .help-btn svg { width: 13px; height: 13px; }
@@ -3596,10 +3597,10 @@
     </div>
 
     <div class="nav-right">
-      <button class="help-btn" onclick="window.location.href='./help.html'">
+      <a class="help-btn" href="./help.html">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         Help
-      </button>
+      </a>
       <button class="logout-btn" onclick="window.location.href='./Index.html'">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Logout
