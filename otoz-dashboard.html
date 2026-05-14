@@ -4483,7 +4483,8 @@
       letter-spacing: 0.06em;
     }
 
-    .bl-field input {
+    .bl-field input,
+    .bl-field select {
       width: 100%;
       height: 40px;
       padding: 0 14px;
@@ -4496,14 +4497,35 @@
       transition: all 0.18s ease;
     }
 
-    .bl-field input:hover {
+    .bl-field input:hover,
+    .bl-field select:hover {
       border-color: var(--border-strong);
     }
 
-    .bl-field input:focus {
+    .bl-field input:focus,
+    .bl-field select:focus {
       outline: none;
       border-color: var(--accent);
       box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+    }
+
+    /* Select dropdown — chevron icon + native styling reset */
+    .bl-field select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      padding-right: 36px;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236e6e73' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 14px 14px;
+    }
+
+    .bl-field select:disabled {
+      background-color: #f5f5f7;
+      color: var(--text-tertiary);
+      cursor: not-allowed;
     }
 
     /* Send / Confirm button */
@@ -5300,7 +5322,7 @@
               <label>Address <span class="req">*</span></label>
               <input type="text" value="27475 unit O examination chitungwiza">
             </div>
-            <div class="field">
+            <div class="field full">
               <label>Country <span class="req">*</span></label>
               <div class="field-select-wrap">
                 <select onchange="setPhonePrefix(this, 'rcc-consignee')">
@@ -5329,6 +5351,10 @@
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </div>
+            </div>
+            <div class="field">
+              <label>Postal Code <span class="req">*</span></label>
+              <input type="text" value="00263">
             </div>
             <div class="field">
               <label>Email <span class="req">*</span></label>
@@ -5400,7 +5426,7 @@
               <label>Address <span class="req">*</span></label>
               <input type="text" placeholder="Enter notify address">
             </div>
-            <div class="field">
+            <div class="field full">
               <label>Country <span class="req">*</span></label>
               <div class="field-select-wrap">
                 <select onchange="setPhonePrefix(this, 'rcc-notify')">
@@ -5428,6 +5454,10 @@
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </div>
+            </div>
+            <div class="field">
+              <label>Postal Code <span class="req">*</span></label>
+              <input type="text" placeholder="Enter Postal Code">
             </div>
             <div class="field">
               <label>Email <span class="req">*</span></label>
@@ -5486,7 +5516,7 @@
               <label>Address <span class="req">*</span></label>
               <input type="text" placeholder="Enter buyer address">
             </div>
-            <div class="field">
+            <div class="field full">
               <label>Country <span class="req">*</span></label>
               <div class="field-select-wrap">
                 <select onchange="setPhonePrefix(this, 'rcc-buyer')">
@@ -5514,6 +5544,10 @@
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </div>
+            </div>
+            <div class="field">
+              <label>Postal Code <span class="req">*</span></label>
+              <input type="text" placeholder="Enter Postal Code">
             </div>
             <div class="field">
               <label>Email <span class="req">*</span></label>
@@ -5622,6 +5656,10 @@
             <div class="details-val">Kadoma</div>
           </div>
           <div class="details-row">
+            <div class="details-key">Postal Code</div>
+            <div class="details-val">00263</div>
+          </div>
+          <div class="details-row">
             <div class="details-key">Email</div>
             <div class="details-val">Pdupstlyes@gmail.com</div>
           </div>
@@ -5663,6 +5701,10 @@
           <div class="details-row">
             <div class="details-key">City</div>
             <div class="details-val">Kadoma</div>
+          </div>
+          <div class="details-row">
+            <div class="details-key">Postal Code</div>
+            <div class="details-val">00263</div>
           </div>
           <div class="details-row">
             <div class="details-key">Email</div>
@@ -6081,7 +6123,7 @@
               <label>Address <span class="req">*</span></label>
               <input type="text" placeholder="Enter consignee address">
             </div>
-            <div class="field">
+            <div class="field full">
               <label>Country <span class="req">*</span></label>
               <div class="field-select-wrap">
                 <select onchange="setPhonePrefix(this, 'consignee')">
@@ -6119,6 +6161,10 @@
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </div>
+            </div>
+            <div class="field">
+              <label>Postal Code <span class="req">*</span></label>
+              <input type="text" placeholder="Enter Postal Code">
             </div>
             <div class="field">
               <label>Email <span class="req">*</span></label>
@@ -6190,7 +6236,7 @@
               <label>Address <span class="req">*</span></label>
               <input type="text" placeholder="Enter notify address">
             </div>
-            <div class="field">
+            <div class="field full">
               <label>Country <span class="req">*</span></label>
               <div class="field-select-wrap">
                 <select onchange="setPhonePrefix(this, 'notify')">
@@ -6228,6 +6274,10 @@
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </div>
+            </div>
+            <div class="field">
+              <label>Postal Code <span class="req">*</span></label>
+              <input type="text" placeholder="Enter Postal Code">
             </div>
             <div class="field">
               <label>Email <span class="req">*</span></label>
@@ -6286,7 +6336,7 @@
               <label>Address <span class="req">*</span></label>
               <input type="text" placeholder="Enter buyer address">
             </div>
-            <div class="field">
+            <div class="field full">
               <label>Country <span class="req">*</span></label>
               <div class="field-select-wrap">
                 <select onchange="setPhonePrefix(this, 'buyer')">
@@ -6324,6 +6374,10 @@
                   <polyline points="6 9 12 15 18 9" />
                 </svg>
               </div>
+            </div>
+            <div class="field">
+              <label>Postal Code <span class="req">*</span></label>
+              <input type="text" placeholder="Enter Postal Code">
             </div>
             <div class="field">
               <label>Email <span class="req">*</span></label>
@@ -6740,7 +6794,8 @@
       const address = get(1) || '27475 unit O examination chitungwiza';
       const country = get(2) || 'Zimbabwe';
       const city = get(3) || 'Kadoma';
-      const email = get(4) || 'Pdupstlyes@gmail.com';
+      const postal = get(4) || '00263';
+      const email = get(5) || 'Pdupstlyes@gmail.com';
       const phoneNum = (document.getElementById('consignee-phone-input') && document.getElementById('consignee-phone-input').value) || '77 304 6898';
       const phoneCode = (document.getElementById('consignee-phone-code') && document.getElementById('consignee-phone-code').textContent) || '+263';
       const phone = phoneCode + ' ' + phoneNum;
@@ -6749,6 +6804,7 @@
         ['Address', address],
         ['Country', country === 'Select Country' ? 'Zimbabwe' : country],
         ['City', city === 'Select City' ? 'Kadoma' : city],
+        ['Postal Code', postal],
         ['Email', email],
         ['Phone Number', phone],
         ['Passport Copy', '<a href="#">XYZ.JPG</a>'],
@@ -6840,6 +6896,7 @@
         ['Address', '27475 unit O examination chitungwiza'],
         ['Country', 'Zimbabwe'],
         ['City', 'Kadoma'],
+        ['Postal Code', '00263'],
         ['Email', 'Pdupstlyes@gmail.com'],
         ['Phone Number', '+263 77 304 6898'],
         ['Passport Copy', '<a href="#">XYZ.JPG</a>'],
@@ -7332,11 +7389,29 @@
           </div>
           <div class="bl-field">
             <label>Country</label>
-            <input type="text" value="${d.country || ''}" placeholder="Country">
+            <select id="bl-country" onchange="updateBlCities(this.value)">
+              <option value="">Select Country</option>
+              <option value="Pakistan" ${d.country === 'Pakistan' ? 'selected' : ''}>Pakistan</option>
+              <option value="United Arab Emirates" ${d.country === 'United Arab Emirates' ? 'selected' : ''}>United Arab Emirates</option>
+              <option value="Saudi Arabia" ${d.country === 'Saudi Arabia' ? 'selected' : ''}>Saudi Arabia</option>
+              <option value="Japan" ${d.country === 'Japan' ? 'selected' : ''}>Japan</option>
+              <option value="United Kingdom" ${d.country === 'United Kingdom' ? 'selected' : ''}>United Kingdom</option>
+              <option value="United States" ${d.country === 'United States' ? 'selected' : ''}>United States</option>
+              <option value="Canada" ${d.country === 'Canada' ? 'selected' : ''}>Canada</option>
+              <option value="Australia" ${d.country === 'Australia' ? 'selected' : ''}>Australia</option>
+              <option value="Kenya" ${d.country === 'Kenya' ? 'selected' : ''}>Kenya</option>
+              <option value="Tanzania" ${d.country === 'Tanzania' ? 'selected' : ''}>Tanzania</option>
+              <option value="South Africa" ${d.country === 'South Africa' ? 'selected' : ''}>South Africa</option>
+              <option value="Singapore" ${d.country === 'Singapore' ? 'selected' : ''}>Singapore</option>
+              <option value="Malaysia" ${d.country === 'Malaysia' ? 'selected' : ''}>Malaysia</option>
+            </select>
           </div>
           <div class="bl-field">
             <label>City</label>
-            <input type="text" value="${d.city || ''}" placeholder="City">
+            <select id="bl-city" ${!d.country ? 'disabled' : ''}>
+              <option value="">${d.country ? 'Select City' : 'Select country first'}</option>
+              ${d.country && window.BL_CITIES && window.BL_CITIES[d.country] ? window.BL_CITIES[d.country].map(c => `<option value="${c}" ${d.city === c ? 'selected' : ''}>${c}</option>`).join('') : ''}
+            </select>
           </div>
           <div class="bl-field bl-field--full">
             <label>Email</label>
@@ -7355,6 +7430,37 @@
       </div>`;
 
       return html;
+    }
+
+    // Country → cities map for Bill of Lading dispatch dropdowns
+    window.BL_CITIES = {
+      'Pakistan':              ['Karachi', 'Lahore', 'Islamabad', 'Rawalpindi', 'Faisalabad', 'Multan', 'Peshawar', 'Quetta'],
+      'United Arab Emirates':  ['Dubai', 'Abu Dhabi', 'Sharjah', 'Ajman', 'Ras Al Khaimah', 'Fujairah'],
+      'Saudi Arabia':          ['Riyadh', 'Jeddah', 'Mecca', 'Medina', 'Dammam', 'Khobar'],
+      'Japan':                 ['Tokyo', 'Osaka', 'Yokohama', 'Nagoya', 'Sapporo', 'Kobe', 'Fukuoka'],
+      'United Kingdom':        ['London', 'Manchester', 'Birmingham', 'Liverpool', 'Leeds', 'Glasgow', 'Edinburgh'],
+      'United States':         ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Miami', 'Seattle'],
+      'Canada':                ['Toronto', 'Vancouver', 'Montreal', 'Calgary', 'Ottawa', 'Edmonton'],
+      'Australia':             ['Sydney', 'Melbourne', 'Brisbane', 'Perth', 'Adelaide'],
+      'Kenya':                 ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret'],
+      'Tanzania':              ['Dar es Salaam', 'Dodoma', 'Mwanza', 'Arusha', 'Zanzibar'],
+      'South Africa':          ['Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Port Elizabeth'],
+      'Singapore':             ['Singapore'],
+      'Malaysia':              ['Kuala Lumpur', 'Johor Bahru', 'Penang', 'Ipoh', 'Shah Alam']
+    };
+
+    function updateBlCities(country) {
+      const citySel = document.getElementById('bl-city');
+      if (!citySel) return;
+      const cities = (window.BL_CITIES && window.BL_CITIES[country]) || [];
+      if (!country) {
+        citySel.innerHTML = '<option value="">Select country first</option>';
+        citySel.disabled = true;
+      } else {
+        citySel.disabled = false;
+        citySel.innerHTML = '<option value="">Select City</option>' +
+          cities.map(c => `<option value="${c}">${c}</option>`).join('');
+      }
     }
 
     function selectBlMethod(method) {
