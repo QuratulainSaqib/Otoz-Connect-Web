@@ -1018,7 +1018,7 @@
     /* ── Header row: 12-col grid (3 greeting + 9 KPI cards) ── */
     .header-row {
       display: grid;
-      grid-template-columns: 3fr 9fr;
+      grid-template-columns: 4fr 8fr;
       gap: 24px;
       align-items: center;
       margin-bottom: 28px;
@@ -1305,7 +1305,7 @@
           </div>
           <div class="stat-body">
             <div class="stat-label">Total Payment</div>
-            <div class="stat-value"><span class="stat-currency">$</span>653,000</div>
+            <div class="stat-value"><span class="stat-currency">$</span><span id="stat-total-payment">653,000</span></div>
 
           </div>
         </div>
@@ -1322,7 +1322,7 @@
           </div>
           <div class="stat-body">
             <div class="stat-label">Total Allocated</div>
-            <div class="stat-value"><span class="stat-currency">$</span>200,000</div>
+            <div class="stat-value"><span class="stat-currency">$</span><span id="stat-total-allocated">200,000</span></div>
 
           </div>
         </div>
@@ -1339,7 +1339,7 @@
           </div>
           <div class="stat-body">
             <div class="stat-label">Total Unallocated</div>
-            <div class="stat-value"><span class="stat-currency">$</span>453,000</div>
+            <div class="stat-value"><span class="stat-currency">$</span><span id="stat-total-unallocated">453,000</span></div>
 
           </div>
         </div>
@@ -1355,7 +1355,7 @@
           <circle cx="12" cy="12" r="10" />
           <polyline points="12 6 12 12 16 14" />
         </svg>
-        Pending Payments
+        Pending Allocation
         <span class="tab-count" id="count-pending">20</span>
       </button>
       <button class="tab-btn" id="tab-completed" onclick="switchTab('completed')">
@@ -1904,6 +1904,11 @@
       const selectedIds = Array.from(checked).map(cb => parseInt(cb.dataset.id));
       const selectedRows = RAW.filter(r => selectedIds.includes(r.id));
 
+      // Read live stat values from main page so allocation page mirrors them
+      const statTotalPayment     = (document.getElementById('stat-total-payment')     || {}).textContent || '0';
+      const statTotalAllocated   = (document.getElementById('stat-total-allocated')   || {}).textContent || '0';
+      const statTotalUnallocated = (document.getElementById('stat-total-unallocated') || {}).textContent || '0';
+
       const tableRows = selectedRows.map((r, idx) => `
       <tr>
         <td>
@@ -2029,7 +2034,7 @@
   .page{max-width:100%;padding:28px 20px 80px}
 
   /* ── Greeting ── */
-  .greeting{margin-bottom:20px}
+  .greeting{margin-bottom:0}
   .greeting h1{font-family:var(--font-display);font-size:34px;font-weight:700;letter-spacing:-0.025em;color:var(--text-primary);line-height:1.1;}
   .greeting h1 .name{background:linear-gradient(135deg,#1d1d1f 0%,#0071e3 90%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
   .greeting p{margin-top:6px;color:var(--text-secondary);font-size:15px}
@@ -2139,6 +2144,55 @@
     box-shadow:0 0 0 3px rgba(23,53,89,0.12);
   }
   .al-input.error{border-color:var(--danger) !important;box-shadow:0 0 0 3px rgba(255,59,48,0.12) !important}
+
+  /* ── Total Unallocated Bar (right-aligned, ~1/4 width) ── */
+  .balance-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:14px;
+  }
+  .balance-bar{
+    grid-column:4;
+    background:linear-gradient(135deg,#173559 0%,#1d3f68 100%);
+    border-radius:var(--radius-lg);
+    padding:14px 18px;
+    display:flex;align-items:center;justify-content:space-between;
+    box-shadow:0 6px 20px rgba(23,53,89,0.18);
+    color:#fff;
+    gap:12px;
+  }
+  .balance-bar-left{
+    display:flex;align-items:center;gap:10px;min-width:0;
+  }
+  .balance-icon{
+    width:34px;height:34px;border-radius:9px;
+    background:rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .balance-icon svg{width:18px;height:18px;color:#fff;}
+  .balance-text{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .balance-label{
+    font-size:10.5px;font-weight:500;
+    text-transform:uppercase;letter-spacing:0.06em;
+    color:rgba(255,255,255,0.7);
+    white-space:nowrap;
+  }
+  .balance-sub{
+    font-size:11px;color:rgba(255,255,255,0.55);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .balance-bar-right{
+    font-family:var(--font-display);
+    font-size:20px;font-weight:700;
+    letter-spacing:-0.02em;
+    color:#fff;
+    transition:color .18s ease;
+    white-space:nowrap;
+  }
+  .balance-bar-right.warn{ color:#ffb84d; }
+  .balance-bar-right.negative{ color:#ff6b5e; }
 
   /* ── Footer / action bar ── */
   .table-footer{
@@ -2309,6 +2363,70 @@
     font-size:11px;font-weight:600;color:var(--text-secondary);
     letter-spacing:0.02em;
   }
+
+  /* ── Header row: 12-col grid (3 greeting + 9 KPI cards) — mirrored from main page ── */
+  .header-row{
+    display:grid;
+    grid-template-columns:4fr 8fr;
+    gap:24px;
+    align-items:center;
+    margin-bottom:28px;
+  }
+
+  /* ── KPI Stat Cards — mirrored from main page ── */
+  .kpi-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+  }
+  .stat-card{
+    background:linear-gradient(135deg,#ffffff 0%,#f5f9ff 100%);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    padding:16px 20px;
+    display:flex;align-items:center;gap:14px;
+    box-shadow:var(--shadow-md);
+    transition:transform .2s ease,box-shadow .2s ease;
+  }
+  .stat-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(0,0,0,0.10);
+  }
+  .stat-icon{
+    width:44px;height:44px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;flex-shrink:0;
+  }
+  .stat-icon svg{width:22px;height:22px;}
+  .stat-icon.blue{
+    background:linear-gradient(135deg,#0071e3 0%,#00a3ff 100%);
+    box-shadow:0 4px 12px rgba(0,113,227,0.28);
+  }
+  .stat-icon.indigo{
+    background:linear-gradient(135deg,#4f46e5 0%,#818cf8 100%);
+    box-shadow:0 4px 12px rgba(79,70,229,0.28);
+  }
+  .stat-icon.emerald{
+    background:linear-gradient(135deg,#059669 0%,#34d399 100%);
+    box-shadow:0 4px 12px rgba(5,150,105,0.28);
+  }
+  .stat-body{min-width:0;flex:1;}
+  .stat-label{
+    font-size:11.5px;color:var(--text-secondary);
+    text-transform:uppercase;letter-spacing:0.06em;
+    font-weight:500;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;
+  }
+  .stat-value{
+    font-family:var(--font-display);
+    font-size:24px;font-weight:700;
+    color:var(--text-primary);
+    letter-spacing:-0.02em;line-height:1;margin-top:4px;
+  }
+  .stat-currency{
+    font-weight:500;opacity:0.78;margin-right:2px;
+    font-size:0.76em;vertical-align:0.14em;
+  }
 </style>
 </head>
 <body>
@@ -2349,10 +2467,64 @@
 <!-- ── Page ── -->
 <main class="page">
 
-  <!-- Greeting -->
-  <div class="greeting">
-    <h1>Welcome back, <span class="name">Fahad</span></h1>
-    <p>Track your vehicles and manage shipments — all in one place.</p>
+  <!-- Header: 3-col greeting + 9-col KPI cards — mirrored from main page -->
+  <div class="header-row">
+
+    <!-- Left: Greeting -->
+    <div class="greeting">
+      <h1>Welcome back, <span class="name">Fahad</span></h1>
+      <p>Track your vehicles and manage shipments — all in one place.</p>
+    </div>
+
+    <!-- Right: KPI Cards (mirrored from main page) -->
+    <div class="kpi-row">
+
+      <!-- Card 1: Total Payment -->
+      <div class="stat-card">
+        <div class="stat-icon blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/>
+            <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/>
+            <path d="M18 12a2 2 0 0 0 0 4h4v-4z"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <div class="stat-label">Total Payment</div>
+          <div class="stat-value"><span class="stat-currency">$</span>${statTotalPayment}</div>
+        </div>
+      </div>
+
+      <!-- Card 2: Total Allocated -->
+      <div class="stat-card">
+        <div class="stat-icon indigo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <div class="stat-label">Total Allocated</div>
+          <div class="stat-value"><span class="stat-currency">$</span>${statTotalAllocated}</div>
+        </div>
+      </div>
+
+      <!-- Card 3: Total Unallocated -->
+      <div class="stat-card">
+        <div class="stat-icon emerald">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="16"/>
+            <line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <div class="stat-label">Total Unallocated</div>
+          <div class="stat-value"><span class="stat-currency">$</span>${statTotalUnallocated}</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <!-- Toolbar -->
@@ -2381,6 +2553,26 @@
         </select>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
+    </div>
+  </div>
+
+  <!-- Total Unallocated Bar (live updates as user enters amounts) -->
+  <div class="balance-row">
+    <div class="balance-bar">
+      <div class="balance-bar-left">
+        <div class="balance-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <line x1="2" y1="10" x2="22" y2="10"/>
+            <line x1="6" y1="15" x2="10" y2="15"/>
+          </svg>
+        </div>
+        <div class="balance-text">
+          <div class="balance-label">Total Unallocated</div>
+          <div class="balance-sub">Updates as you allocate</div>
+        </div>
+      </div>
+      <div class="balance-bar-right" id="balance-amount" data-initial="${statTotalUnallocated}">$${statTotalUnallocated}</div>
     </div>
   </div>
 
@@ -2555,6 +2747,27 @@
     const newPos = Math.max(0, cursor + (newLen - oldLen));
     input.setSelectionRange(newPos, newPos);
     validateInput(input);
+    updateAllocateTotal();
+  }
+
+  function updateAllocateTotal() {
+    let total = 0;
+    document.querySelectorAll('.al-input').forEach(inp => {
+      const val = parseFloat(inp.value.replace(/,/g, ''));
+      if (!isNaN(val) && val > 0) total += val;
+    });
+
+    // Live Total Unallocated = initial unallocated − sum of all input values
+    const balEl = document.getElementById('balance-amount');
+    if (balEl) {
+      const initial = parseFloat((balEl.dataset.initial || '0').replace(/,/g, '')) || 0;
+      const remaining = initial - total;
+      balEl.textContent = (remaining < 0 ? '-$' : '$') +
+        Math.abs(remaining).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      balEl.classList.remove('warn', 'negative');
+      if (remaining < 0) balEl.classList.add('negative');
+      else if (initial > 0 && remaining < initial * 0.1) balEl.classList.add('warn');
+    }
   }
 
   function submitAllocation() {
