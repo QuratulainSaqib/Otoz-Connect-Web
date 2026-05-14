@@ -585,7 +585,7 @@
         <div class="stat-body">
           <div class="stat-label">Total Payment</div>
           <div class="stat-value"><span class="stat-currency">$</span>653,000</div>
-          <div class="stat-sub">20 vehicles</div>
+
         </div>
       </div>
 
@@ -597,7 +597,7 @@
         <div class="stat-body">
           <div class="stat-label">Total Allocated</div>
           <div class="stat-value"><span class="stat-currency">$</span>200,000</div>
-          <div class="stat-sub">Successfully allocated</div>
+
         </div>
       </div>
 
@@ -609,7 +609,7 @@
         <div class="stat-body">
           <div class="stat-label">Total Unallocated</div>
           <div class="stat-value"><span class="stat-currency">$</span>453,000</div>
-          <div class="stat-sub">Remaining balance</div>
+
         </div>
       </div>
 
@@ -1141,6 +1141,8 @@
     align-items:center;gap:24px;
   }
   .brand{display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--text-primary);letter-spacing:-0.02em;text-decoration:none;}
+  .brand-logo{height:28px;width:auto;display:block;object-fit:contain;transition:transform .25s ease,filter .25s ease}
+  .brand-logo:hover{transform:scale(1.04);filter:drop-shadow(0 2px 6px rgba(0,113,227,.25))}
   .nav-center{
     display:flex;gap:4px;
     background:rgba(0,0,0,0.04);
@@ -1468,7 +1470,9 @@
 <!-- ── Navbar — matching main page ── -->
 <nav class="navbar">
   <div class="nav-inner">
-    <div class="brand">otoz.ai</div>
+    <div class="brand">
+      <img class="brand-logo" src="oto-flow Logo.png" alt="otozFlow" />
+    </div>
     <div class="nav-center">
       <button class="nav-link">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
