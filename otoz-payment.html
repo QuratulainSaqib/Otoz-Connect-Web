@@ -2349,11 +2349,71 @@
 <!-- ── Page ── -->
 <main class="page">
 
-  <!-- Greeting -->
-  <div class="greeting">
-    <h1>Welcome back, <span class="name">Fahad</span></h1>
-    <p>Track your vehicles and manage shipments — all in one place.</p>
-  </div>
+    <!-- Header: 3-col greeting + 9-col KPI cards -->
+    <div class="header-row">
+
+      <!-- Left: Greeting (3-grid) -->
+      <div class="greeting">
+        <h1>Welcome back, <span class="name">Fahad</span></h1>
+        <p>Track your vehicles and manage shipments — all in one place.</p>
+      </div>
+
+      <!-- Right: KPI Cards (9-grid) -->
+      <div class="kpi-row">
+
+        <!-- Card 1: Total Payment -->
+        <div class="stat-card">
+          <div class="stat-icon blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4" />
+              <path d="M4 6v12c0 1.1.9 2 2 2h14v-4" />
+              <path d="M18 12a2 2 0 0 0 0 4h4v-4z" />
+            </svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-label">Total Payment</div>
+            <div class="stat-value"><span class="stat-currency">$</span>653,000</div>
+
+          </div>
+        </div>
+
+        <!-- Card 2: Total Allocated Amount -->
+        <div class="stat-card">
+          <div class="stat-icon indigo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-label">Total Allocated</div>
+            <div class="stat-value"><span class="stat-currency">$</span>200,000</div>
+
+          </div>
+        </div>
+
+        <!-- Card 3: Total Unallocated Amount -->
+        <div class="stat-card">
+          <div class="stat-icon emerald">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="16" />
+              <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-label">Total Unallocated</div>
+            <div class="stat-value"><span class="stat-currency">$</span>453,000</div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
 
   <!-- Toolbar -->
   <div class="alloc-toolbar">
