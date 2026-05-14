@@ -5751,6 +5751,11 @@
     return '<span class="wal-pill wal-pill--confirmed">Confirmed</span>';
   }
 
+  function currencySign(code) {
+    const signs = { USD: '$', JPY: '¥', EUR: '€', GBP: '£', AED: 'د.إ' };
+    return signs[code] || code;
+  }
+
   function renderWallet() {
     const tbody = document.getElementById('wallet-tbody');
     if (!tbody) return;
@@ -5774,7 +5779,7 @@
           <td>${r.txn}</td>
           <td>${r.date}</td>
           <td><span class="currency-pill">${r.curr}</span></td>
-          <td style="text-align:right;font-variant-numeric:tabular-nums">${r.amt}</td>
+          <td style="text-align:right;font-variant-numeric:tabular-nums">${currencySign(r.curr)} ${r.amt}</td>
           <td>${statusPill(r.status)}</td>
           <td>${rejection}</td>
           <td>${conf}</td>
