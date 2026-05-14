@@ -299,6 +299,11 @@
     font-weight: 400;
   }
 
+  .help-row {
+    text-align: center;
+    margin-top: 16px;
+  }
+
   /* views */
   .view { display: none; }
   .view.active { display: block; }
@@ -422,12 +427,11 @@
           Log in
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
-        
 
-        <div class="footer-tag">© 2026 OtozFlow · Secure Agent Portal</div>
-      </div>
+        <div class="help-row">
+          <a class="link-action" href="help.html">Need help?</a>
+        </div>
 
-      <!-- FORGOT PASSWORD VIEW -->
       <div class="view" id="view-forgot">
         <a class="back-link" onclick="showView('login')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
