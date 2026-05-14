@@ -180,17 +180,17 @@
   /* Tooltip for disabled Payment Allocation button */
   .btn-alloc-wrap{position:relative;display:inline-flex;}
   .btn-alloc-wrap .alloc-tooltip{
-    position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(4px);
+    position:absolute;left:calc(100% + 12px);top:50%;transform:translateY(-50%) translateX(-8px);
     padding:7px 14px;background:#1d1d1f;color:#fff;font-size:12px;font-weight:500;
     white-space:nowrap;border-radius:8px;opacity:0;pointer-events:none;
     transition:opacity .2s ease,transform .2s ease;z-index:30;
     box-shadow:0 4px 12px rgba(0,0,0,0.18);letter-spacing:-0.005em;
   }
   .btn-alloc-wrap .alloc-tooltip::after{
-    content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
-    border:5px solid transparent;border-top-color:#1d1d1f;
+    content:"";position:absolute;right:100%;top:50%;transform:translateY(-50%);
+    border:6px solid transparent;border-right-color:#1d1d1f;
   }
-  .btn-alloc-wrap:hover .alloc-tooltip{opacity:1;transform:translateX(-50%) translateY(0);}
+  .btn-alloc-wrap:hover .alloc-tooltip{opacity:1;transform:translateY(-50%) translateX(0);}
   .btn-alloc.active + .alloc-tooltip{display:none;}
 
   /* Currency pill — matching Wallet page style */
