@@ -177,6 +177,30 @@
   }
   .btn-alloc svg{width:14px;height:14px}
 
+  /* Tooltip for disabled Payment Allocation button */
+  .btn-alloc-wrap{position:relative;display:inline-flex;}
+  .btn-alloc-wrap .alloc-tooltip{
+    position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(4px);
+    padding:7px 14px;background:#1d1d1f;color:#fff;font-size:12px;font-weight:500;
+    white-space:nowrap;border-radius:8px;opacity:0;pointer-events:none;
+    transition:opacity .2s ease,transform .2s ease;z-index:30;
+    box-shadow:0 4px 12px rgba(0,0,0,0.18);letter-spacing:-0.005em;
+  }
+  .btn-alloc-wrap .alloc-tooltip::after{
+    content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+    border:5px solid transparent;border-top-color:#1d1d1f;
+  }
+  .btn-alloc-wrap:hover .alloc-tooltip{opacity:1;transform:translateX(-50%) translateY(0);}
+  .btn-alloc.active + .alloc-tooltip{display:none;}
+
+  /* Currency pill — matching Wallet page style */
+  .currency-pill{
+    display:inline-block;padding:2px 8px;
+    background:rgba(0,0,0,0.04);border-radius:6px;
+    font-size:11px;font-weight:600;color:var(--text-secondary);
+    letter-spacing:0.02em;
+  }
+
   /* ── View History Button ── */
   .btn-history{
     display:inline-flex;align-items:center;gap:6px;
@@ -616,10 +640,13 @@
           <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <input type="text" placeholder="Search by Chassis No." oninput="filterTable(this.value)" />
         </div>
-        <button class="btn-alloc" id="btn-alloc" disabled onclick="openAllocationPage()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Payment Allocation
-        </button>
+        <div class="btn-alloc-wrap">
+          <button class="btn-alloc" id="btn-alloc" disabled onclick="openAllocationPage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Payment Allocation
+          </button>
+          <span class="alloc-tooltip">Please select at least one vehicle to allocate payments</span>
+        </div>
       </div>
       <div class="toolbar-right">
         <div class="filter compact">
@@ -655,6 +682,7 @@
               <th><div class="th-inner">Make / Mode / Model Code</div></th>
               <th><div class="th-inner">Year <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
               <th><div class="th-inner">Chassis No. <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
+              <th><div class="th-inner">Purch. Curr.</div></th>
               <th><div class="th-inner">Purchase Price <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
               <th><div class="th-inner">Paid <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
               <th><div class="th-inner">Allocated Amount <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
@@ -712,6 +740,7 @@
               <th><div class="th-inner">Make / Mode / Model Code <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
               <th><div class="th-inner">Chassis No. <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
               <th><div class="th-inner">Year <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
+              <th><div class="th-inner">Purch. Curr.</div></th>
               <th><div class="th-inner">Purchase Price <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
               <th><div class="th-inner">Paid <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
               <th><div class="th-inner">View History</div></th>
@@ -739,6 +768,7 @@
     code:      '5BA-A200A',
     chassis:   'WDC2539052F422655',
     year:      2022,
+    curr:      'USD',
     total:     32650,
     paid:      20000,
     allocated: i === 2 ? 20.0000 : 10.0000,
@@ -845,6 +875,7 @@
           </td>
           <td>${r.year}</td>
           <td class="chassis-cell">${r.chassis}</td>
+          <td><span class="currency-pill">${r.curr}</span></td>
           <td style="text-align:right;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums;">$${r.total.toLocaleString()}</td>
           <td style="text-align:right;font-weight:600;color:var(--green);font-variant-numeric:tabular-nums;">$&nbsp;${r.paid.toLocaleString()}</td>
           <td style="text-align:right;font-weight:600;color:var(--text-secondary);font-variant-numeric:tabular-nums;">$&nbsp;${(10000).toLocaleString()}</td>
@@ -857,7 +888,7 @@
             </button>
           </td>
         </tr>`).join('')
-      : `<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--text-tertiary)">No results found</td></tr>`;
+      : `<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text-tertiary)">No results found</td></tr>`;
 
     const end = Math.min(start + perPage, total);
     info.innerHTML = total
@@ -918,6 +949,7 @@
     ref:     'A' + String(116 + i).padStart(5, '0'),
     chassis: 'WDC2539052F422655',
     year:    2022,
+    curr:    'USD',
     total:   32650,
     paid:    20000,
     remaining: 0,
@@ -978,6 +1010,7 @@
           </td>
           <td class="chassis-cell">${r.chassis}</td>
           <td style="font-size:13px;color:var(--text-primary);text-align:right;">${r.year}</td>
+          <td><span class="currency-pill">${r.curr}</span></td>
           <td class="amount-cell" style="text-align:right;font-variant-numeric:tabular-nums;">$${r.paid.toLocaleString()}</td>
           <td class="paid-cell" style="text-align:right;font-variant-numeric:tabular-nums;">$${r.paid.toLocaleString()}</td>
           <td>
@@ -986,7 +1019,7 @@
             </button>
           </td>
         </tr>`).join('')
-      : `<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-tertiary)">No results found</td></tr>`;
+      : `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-tertiary)">No results found</td></tr>`;
 
     const end = Math.min(start + compPerPage, total);
     info.innerHTML = total
@@ -1033,6 +1066,7 @@
         </td>
         <td class="al-year">${r.year}</td>
         <td class="al-chassis">${r.chassis}</td>
+        <td><span class="currency-pill">${r.curr}</span></td>
         <td class="al-price">$${r.total.toLocaleString()}</td>
         <td class="al-paid">$&nbsp;${r.paid.toLocaleString()}</td>
         <td class="al-remaining ${r.remaining === 0 ? 'zero' : 'nonzero'}">
@@ -1042,13 +1076,13 @@
           <div class="al-input-wrap">
             <span class="al-dollar">$</span>
             <input
-              type="number" min="0" step="0.01"
+              type="text" inputmode="decimal"
               placeholder="Enter Amount"
               class="al-input"
               data-max="${r.remaining}"
               data-rowid="${r.id}"
               data-idx="${idx}"
-              oninput="validateInput(this)"
+              oninput="formatAmountInput(this)"
               onfocus="this.parentElement.classList.add('focused')"
               onblur="this.parentElement.classList.remove('focused')"
             />
@@ -1419,6 +1453,14 @@
     transition:all .2s;
   }
   .btn-done:hover{background:#1d3f68;transform:translateY(-1px);}
+
+  /* Currency pill — matching Wallet page style */
+  .currency-pill{
+    display:inline-block;padding:2px 8px;
+    background:rgba(0,0,0,0.04);border-radius:6px;
+    font-size:11px;font-weight:600;color:var(--text-secondary);
+    letter-spacing:0.02em;
+  }
 </style>
 </head>
 <body>
@@ -1501,6 +1543,7 @@
             <th><div style="display:inline-flex;align-items:center;gap:5px;">Make<br>Mode<br>Model code</div></th>
             <th><div style="display:inline-flex;align-items:center;gap:5px;">Year<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
             <th><div style="display:inline-flex;align-items:center;gap:5px;">Chassis No.<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
+            <th><div style="display:inline-flex;align-items:center;gap:5px;">Purch. Curr.</div></th>
             <th><div style="display:inline-flex;align-items:center;gap:5px;">Purchase Price<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
             <th><div style="display:inline-flex;align-items:center;gap:5px;">Paid<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
             <th><div style="display:inline-flex;align-items:center;gap:5px;">Remaining<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
@@ -1613,6 +1656,7 @@
         </td>
         <td class="al-year">\${r.year}</td>
         <td class="al-chassis">\${r.chassis}</td>
+        <td><span class="currency-pill">\${r.curr}</span></td>
         <td class="al-price">$\${r.total.toLocaleString()}</td>
         <td class="al-paid">$&nbsp;\${r.paid.toLocaleString()}</td>
         <td class="al-remaining \${r.remaining === 0 ? 'zero' : 'nonzero'}">
@@ -1622,12 +1666,12 @@
           <div class="al-input-wrap">
             <span class="al-dollar">$</span>
             <input
-              type="number" min="0" max="\${r.remaining}" step="0.01"
+              type="text" inputmode="decimal"
               placeholder="Enter Amount"
               class="al-input"
               data-max="\${r.remaining}"
               data-rowid="\${r.id}"
-              oninput="validateInput(this)"
+              oninput="formatAmountInput(this)"
               onfocus="this.parentElement.classList.add('focused')"
               onblur="this.parentElement.classList.remove('focused')"
             />
@@ -1639,9 +1683,27 @@
 
   function validateInput(input) {
     const max = parseFloat(input.dataset.max);
-    const val = parseFloat(input.value);
+    const val = parseFloat(input.value.replace(/,/g, ''));
     // Only flag error if max > 0 and value exceeds it
     input.classList.toggle('error', max > 0 && !isNaN(val) && val > max);
+  }
+
+  function formatAmountInput(input) {
+    const cursor = input.selectionStart;
+    const oldLen = input.value.length;
+    let raw = input.value.replace(/[^0-9.]/g, '');
+    const parts = raw.split('.');
+    if (parts.length > 2) raw = parts[0] + '.' + parts.slice(1).join('');
+    const dotIdx = raw.indexOf('.');
+    let intPart = dotIdx >= 0 ? raw.substring(0, dotIdx) : raw;
+    let decPart = dotIdx >= 0 ? '.' + raw.substring(dotIdx + 1, dotIdx + 3) : '';
+    intPart = intPart.replace(/^0+(?=\\d)/, '');
+    intPart = intPart.replace(/\\B(?=(\\d{3})+(?!\\d))/g, ',');
+    input.value = intPart + decPart;
+    const newLen = input.value.length;
+    const newPos = Math.max(0, cursor + (newLen - oldLen));
+    input.setSelectionRange(newPos, newPos);
+    validateInput(input);
   }
 
   function submitAllocation() {
@@ -1654,7 +1716,7 @@
       .map(inp => {
         const idx = parseInt(inp.dataset.idx);
         const row = ROWS[idx];
-        const amt = parseFloat(inp.value);
+        const amt = parseFloat(inp.value.replace(/,/g, ''));
         return { row, amt };
       })
       .filter(e => e.row && !isNaN(e.amt) && e.amt > 0);
