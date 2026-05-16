@@ -2401,7 +2401,7 @@
     margin-top:20px;height:40px;padding:0 28px;
     background:#173559;color:#fff;border:none;
     border-radius:10px;font-size:13px;font-weight:600;
-    cursor:pointer;font-family:var(--font);
+    cursor:pointer;font-family:var(--font-body);
     box-shadow:0 4px 14px rgba(23,53,89,0.28);
     transition:all .2s;
   }
@@ -2683,7 +2683,6 @@
         </div>
         <div class="success-title">Allocation Confirmed!</div>
         <div class="success-msg" id="success-msg">Your payment allocation has been processed successfully.</div>
-        <button class="btn-done" onclick="closeModal()">Done</button>
       </div>
     </div>
 
@@ -2850,6 +2849,8 @@
       total + ' across ' + count + ' has been successfully allocated.';
     document.getElementById('modal-confirm-view').style.display = 'none';
     document.getElementById('modal-success-view').style.display = '';
+    if(window._autoCloseTimer) clearTimeout(window._autoCloseTimer);
+    window._autoCloseTimer = setTimeout(() => closeModal(), 30000);
   }
 
   // Close on overlay click
@@ -2920,6 +2921,21 @@
       closeHistoryPanel();
     }
   </script>
+
+  <!-- ── Success Toast ── -->
+  <div id="success-toast">
+    <div class="toast-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="toast-body">
+      <div class="toast-title">Allocation Confirmed!</div>
+      <div class="toast-msg" id="toast-msg">Payment has been successfully allocated.</div>
+    </div>
+    <button class="toast-close" onclick="dismissToast()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="toast-progress" id="toast-progress-bar"></div>
+  </div>
 
   <!-- ── Panel Overlay ── -->
   <div class="panel-overlay" id="panel-overlay" onclick="closeOpenPanel()"></div>
