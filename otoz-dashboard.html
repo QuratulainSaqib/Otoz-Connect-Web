@@ -8037,7 +8037,34 @@
         ['Destination Port', r.dest],
       ];
 
-      document.getElementById('st-veh-img').src = CAR_IMAGE;
+      // Sync Stage 4 fields based on row ref
+      if (r.ref === 'A00224') {
+        STAGE_DETAILS[4] = {
+          sub: 'Inspection completed · result: <b style="color:#c33d1e">Fail</b>',
+          doneSub: 'Inspection failed — vehicle did not meet required standards.',
+          fields: [
+            ['Inspection Date', '25 / 08 / 2026'],
+            ['Inspection Status', { kind: 'status-pill', value: 'Fail', tone: 'danger' }],
+          ],
+          docs: [
+            { name: 'Inspection_Report_A00224.pdf', kind: 'report' }
+          ],
+          docTitle: 'Inspection Report'
+        };
+      } else {
+        STAGE_DETAILS[4] = {
+          sub: 'Inspection completed · result: <b>Pass</b>',
+          doneSub: 'Final inspection certificate and verification status updated.',
+          fields: [
+            ['Inspection Date', '25 / 08 / 2026'],
+            ['Inspection Status', { kind: 'status-pill', value: 'Pass', tone: 'success' }],
+          ],
+          docs: [
+            { name: 'Inspection_Certificate_A00116.pdf', kind: 'report' }
+          ],
+          docTitle: 'Inspection Certificate'
+        };
+      }
       document.getElementById('st-veh-title').innerHTML = r.make + ' ' + r.model + ' <span class="vc-year">&middot; ' + r.year + '</span>';
       document.getElementById('st-veh-chassis').textContent = r.chassis;
       // Progress indicators removed per UX feedback
