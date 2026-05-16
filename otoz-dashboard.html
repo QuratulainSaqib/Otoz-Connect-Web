@@ -3965,7 +3965,7 @@
       transform: translateY(-1px);
     }
 
-    /* Document thumbnail — consistent neutral document icon (all kinds) */
+    /* Document thumbnail */
     .doc-thumb {
       width: 40px;
       height: 48px;
@@ -4169,6 +4169,44 @@
 
     .yard-thumb:hover img {
       transform: scale(1.06);
+    }
+
+    .yard-thumb .yard-dl {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+      color: #1d1d1f;
+      z-index: 3;
+    }
+
+    .yard-thumb:hover .yard-dl {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .yard-thumb .yard-dl:hover {
+      background: #fff;
+      color: var(--accent);
+    }
+
+    .yard-thumb .yard-dl svg {
+      width: 14px;
+      height: 14px;
     }
 
     @media (max-width: 540px) {
@@ -7380,6 +7418,9 @@
             detail.yardPhotos.forEach((p, idx) => {
               bodyContent += `<div class="yard-thumb">
               <img src="${CAR_IMAGE}" alt="${p.angle || ''}" loading="lazy">
+              <button class="yard-dl" title="Download" onclick="event.stopPropagation();alert('Download photo ${idx+1}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </button>
             </div>`;
             });
             bodyContent += '</div>';
