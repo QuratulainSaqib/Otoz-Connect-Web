@@ -428,6 +428,78 @@
       padding-left: 34px;
     }
 
+    /* Searchable dropdown filter */
+    .search-dropdown {
+      position: relative;
+    }
+
+    .search-dropdown input {
+      padding-right: 34px;
+    }
+
+    .search-dropdown .sd-chev {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-tertiary);
+      width: 14px;
+      height: 14px;
+      pointer-events: none;
+      transition: transform 0.2s ease;
+    }
+
+    .search-dropdown.open .sd-chev {
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    .sd-panel {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      max-height: 240px;
+      overflow-y: auto;
+      z-index: 50;
+      display: none;
+      padding: 4px;
+    }
+
+    .search-dropdown.open .sd-panel {
+      display: block;
+    }
+
+    .sd-option {
+      padding: 8px 10px;
+      font-size: 13px;
+      color: var(--text-primary);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.12s ease;
+    }
+
+    .sd-option:hover,
+    .sd-option.active {
+      background: var(--surface-elev);
+    }
+
+    .sd-option.selected {
+      background: rgba(0, 122, 255, 0.08);
+      color: var(--accent, #0a3a72);
+      font-weight: 600;
+    }
+
+    .sd-empty {
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      text-align: center;
+    }
+
     .toolbar-divider {
       width: 1px;
       height: 24px;
@@ -889,6 +961,55 @@
       opacity: 1;
     }
 
+    /* Reusable tooltip for any element (matches action-btn tooltip style) */
+    .has-tooltip {
+      position: relative;
+      cursor: help;
+    }
+
+    .has-tooltip[data-tooltip]::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      padding: 5px 9px;
+      background: var(--text-primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+      border-radius: 6px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 30;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .has-tooltip[data-tooltip]::before {
+      content: "";
+      position: absolute;
+      bottom: calc(100% + 3px);
+      left: 50%;
+      transform: translateX(-50%);
+      border: 4px solid transparent;
+      border-top-color: var(--text-primary);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease;
+      z-index: 30;
+    }
+
+    .has-tooltip:hover[data-tooltip]::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .has-tooltip:hover[data-tooltip]::before {
+      opacity: 1;
+    }
+
     /* ---------- Pagination ---------- */
     .pagination-bar {
       display: flex;
@@ -1224,7 +1345,9 @@
       color: var(--text-secondary);
     }
 
-    .field label .req {
+    .field label .req,
+    .bl-field label .req,
+    label .req {
       color: var(--danger);
       margin-left: 2px;
     }
@@ -1934,6 +2057,19 @@
       border-radius: 6px;
       flex-shrink: 0;
       margin-top: 1px;
+      background: #fff;
+      border: 1.5px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: transparent;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .confirm-check-card input:checked + .check-box {
+      background: var(--text-primary);
+      border-color: var(--text-primary);
+      color: #fff;
     }
 
     .confirm-check-card .check-box svg {
@@ -4429,7 +4565,7 @@
     }
 
     .bl-dispatch-form.open {
-      max-height: 800px;
+      max-height: 1400px;
       margin-bottom: 14px;
     }
 
@@ -5007,13 +5143,19 @@
               <polyline points="6 9 12 15 18 9" />
             </svg>
           </div>
-          <div class="filter with-search">
-            <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          <div class="filter">
+            <select>
+              <option>All Destination Ports</option>
+              <option>Dar es Salaam</option>
+              <option>Durban</option>
+              <option>Lagos</option>
+              <option>Mombasa Port</option>
+              <option>Zimbabwe</option>
+            </select>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
               stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="7" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              <polyline points="6 9 12 15 18 9" />
             </svg>
-            <input type="text" placeholder="All Destination Ports" />
           </div>
           <div class="filter with-search">
             <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
@@ -5324,7 +5466,7 @@
               </div>
             </div>
             <div class="field">
-              <label>Postal Code <span class="req">*</span></label>
+              <label>Postal Code</label>
               <input type="text" value="00263">
             </div>
             <div class="field">
@@ -5427,7 +5569,7 @@
               </div>
             </div>
             <div class="field">
-              <label>Postal Code <span class="req">*</span></label>
+              <label>Postal Code</label>
               <input type="text" placeholder="Enter Postal Code">
             </div>
             <div class="field">
@@ -5517,7 +5659,7 @@
               </div>
             </div>
             <div class="field">
-              <label>Postal Code <span class="req">*</span></label>
+              <label>Postal Code</label>
               <input type="text" placeholder="Enter Postal Code">
             </div>
             <div class="field">
@@ -5539,7 +5681,7 @@
       </div>
 
       <label class="confirm-check-card">
-        <input type="checkbox" checked>
+        <input type="checkbox">
         <span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"
             stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12" />
@@ -6109,7 +6251,7 @@
               </div>
             </div>
             <div class="field">
-              <label>Postal Code <span class="req">*</span></label>
+              <label>Postal Code</label>
               <input type="text" placeholder="Enter Postal Code">
             </div>
             <div class="field">
@@ -6222,7 +6364,7 @@
               </div>
             </div>
             <div class="field">
-              <label>Postal Code <span class="req">*</span></label>
+              <label>Postal Code</label>
               <input type="text" placeholder="Enter Postal Code">
             </div>
             <div class="field">
@@ -6322,7 +6464,7 @@
               </div>
             </div>
             <div class="field">
-              <label>Postal Code <span class="req">*</span></label>
+              <label>Postal Code</label>
               <input type="text" placeholder="Enter Postal Code">
             </div>
             <div class="field">
@@ -6417,7 +6559,7 @@
       </div>
 
       <label class="confirm-check-card">
-        <input type="checkbox" id="cf-agree" checked>
+        <input type="checkbox" id="cf-agree">
         <span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"
             stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12" />
@@ -6507,6 +6649,12 @@
       "United States": { code: "+1", flag: "🇺🇸", format: "201 555 0123" },
       "United Kingdom": { code: "+44", flag: "🇬🇧", format: "7400 123456" },
       "UAE": { code: "+971", flag: "🇦🇪", format: "50 123 4567" },
+      "United Arab Emirates": { code: "+971", flag: "🇦🇪", format: "50 123 4567" },
+      "Saudi Arabia": { code: "+966", flag: "🇸🇦", format: "50 123 4567" },
+      "Canada": { code: "+1", flag: "🇨🇦", format: "416 555 0123" },
+      "Australia": { code: "+61", flag: "🇦🇺", format: "412 345 678" },
+      "Singapore": { code: "+65", flag: "🇸🇬", format: "8123 4567" },
+      "Malaysia": { code: "+60", flag: "🇲🇾", format: "12 345 6789" },
       "India": { code: "+91", flag: "🇮🇳", format: "98765 43210" },
       "Japan": { code: "+81", flag: "🇯🇵", format: "90 1234 5678" },
     };
@@ -6543,15 +6691,15 @@
 
     // 10 rows — covers all 8 stages, plus 2 extras
     const rows = [
-      { stage: 1, ref: "A00100", chassis: "WDC2539052F422655", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", sale: "$27,500", saleType: "link", bcn: "C", dest: "Mombasa Port" },
+      { stage: 1, ref: "A00100", chassis: "WDC2539052F422655", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "C", dest: "Mombasa Port" },
       { stage: 2, ref: "A00106", chassis: "JTDBR32E830088121", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "JPY", purchase: "¥24,205", sale: null, saleType: "btn", bcn: null, dest: "Zimbabwe" },
-      { stage: 3, ref: "A00116", chassis: "MR053ZK60M1029841", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", sale: "$27,500", saleType: "link", bcn: "BCN", state: "change-requested", dest: "Zimbabwe" },
-      { stage: 4, ref: "A00150", chassis: "JN1TENT32U0023456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", sale: "$27,500", saleType: "link", bcn: "B", dest: "Zimbabwe" },
+      { stage: 3, ref: "A00116", chassis: "MR053ZK60M1029841", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "JPY", sale: "¥4,150,000", saleType: "link", bcn: "BCN", state: "change-requested", dest: "Zimbabwe" },
+      { stage: 4, ref: "A00150", chassis: "JN1TENT32U0023456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "B", dest: "Zimbabwe" },
       { stage: 5, ref: "A00159", chassis: "MMBJNKB40NH001234", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "JPY", purchase: "¥24,205", sale: null, saleType: "btn", bcn: null, dest: "Zimbabwe" },
-      { stage: 6, ref: "A00170", chassis: "JHMGE8H56DC123456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", sale: "$27,500", saleType: "link", bcn: "BC", dest: "Mombasa Port" },
-      { stage: 7, ref: "A00185", chassis: "JF1GG7LL5BG023456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", sale: "$27,500", saleType: "link", bcn: "C", dest: "Dar es Salaam" },
-      { stage: 8, ref: "A00202", chassis: "5YJSA1E26HF200012", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", sale: "$27,500", saleType: "link", bcn: "BCN", dest: "Zimbabwe" },
-      { stage: 1, ref: "A00210", chassis: "WBA8B9C50GK999812", make: "Honda", model: "Vezel", code: "DAA-RU3", year: 2023, date: "02/08/2026", curr: "USD", purchase: "$28,100", sale: "$31,200", saleType: "link", bcn: "B", dest: "Lagos" },
+      { stage: 6, ref: "A00170", chassis: "JHMGE8H56DC123456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "EUR", sale: "€25,300", saleType: "link", bcn: "BC", dest: "Mombasa Port" },
+      { stage: 7, ref: "A00185", chassis: "JF1GG7LL5BG023456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "C", dest: "Dar es Salaam" },
+      { stage: 8, ref: "A00202", chassis: "5YJSA1E26HF200012", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "JPY", sale: "¥4,150,000", saleType: "link", bcn: "BCN", dest: "Zimbabwe" },
+      { stage: 1, ref: "A00210", chassis: "WBA8B9C50GK999812", make: "Honda", model: "Vezel", code: "DAA-RU3", year: 2023, date: "02/08/2026", curr: "USD", purchase: "$28,100", saleCurr: "USD", sale: "$31,200", saleType: "link", bcn: "B", dest: "Lagos" },
       { stage: 4, ref: "A00224", chassis: "ZAR93000007123451", make: "Nissan", model: "X-Trail", code: "DBA-T32", year: 2021, date: "02/08/2026", curr: "JPY", purchase: "¥3,150,000", sale: null, saleType: "btn", bcn: null, dest: "Durban" },
     ];
 
@@ -6596,11 +6744,24 @@
 
     function renderSale(r, idx) {
       if (r.saleType === "btn") return `<button class="add-btn" onclick="openSale(${idx})">${ico.plus} Add Sale</button>`;
-      return `<a class="price-link" href="#" onclick="event.preventDefault(); openSaleView(${idx});">${r.sale}</a>`;
+      return `<a class="price-link" href="#" onclick="event.preventDefault(); openSaleView(${idx});">${r.sale.replace(/[$¥€£]/g, '')}</a>`;
     }
 
     // Real Toyota Raize photo embedded as base64 (single source, reused per row)
     const CAR_IMAGE = "data:image/jpeg;base64,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";
+
+    // Car type icons (SVG data URIs) - cycles through different vehicle types per row
+    const CAR_ICONS = [
+      // Sedan
+      "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 36'><defs><linearGradient id='sedan' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23dde6f2'/><stop offset='1' stop-color='%23b8c5d6'/></linearGradient></defs><path d='M6 24 L10 14 Q12 10 17 9 L26 7 Q32 6 38 7 L46 9 Q50 10 53 13 L58 18 L58 24 Z' fill='url(%23sedan)' stroke='%234a5870' stroke-width='1' stroke-linejoin='round'/><path d='M16 13 Q19 10 24 9 L36 9 Q42 10 45 13 L46 16 L15 16 Z' fill='%238fb4e0' opacity='0.6'/><line x1='30' y1='9' x2='30' y2='16' stroke='%234a5870' stroke-width='0.8'/><circle cx='17' cy='25' r='5' fill='%231a1a1a'/><circle cx='17' cy='25' r='2.5' fill='%23555'/><circle cx='47' cy='25' r='5' fill='%231a1a1a'/><circle cx='47' cy='25' r='2.5' fill='%23555'/></svg>",
+      // SUV
+      "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 36'><defs><linearGradient id='suv' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23e8d4b8'/><stop offset='1' stop-color='%23b8a085'/></linearGradient></defs><path d='M5 24 L7 12 Q8 8 13 7 L20 6 L44 6 L51 7 Q56 8 58 12 L60 24 Z' fill='url(%23suv)' stroke='%234a3520' stroke-width='1' stroke-linejoin='round'/><path d='M13 11 L20 9 L44 9 L51 11 L52 17 L13 17 Z' fill='%23a8c4e0' opacity='0.6'/><line x1='32' y1='9' x2='32' y2='17' stroke='%234a3520' stroke-width='0.8'/><line x1='22' y1='9' x2='22' y2='17' stroke='%234a3520' stroke-width='0.8'/><line x1='42' y1='9' x2='42' y2='17' stroke='%234a3520' stroke-width='0.8'/><circle cx='17' cy='25' r='5.5' fill='%231a1a1a'/><circle cx='17' cy='25' r='2.8' fill='%23555'/><circle cx='47' cy='25' r='5.5' fill='%231a1a1a'/><circle cx='47' cy='25' r='2.8' fill='%23555'/></svg>",
+      // Mini / Hatchback
+      "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 36'><defs><linearGradient id='mini' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23ffd9d9'/><stop offset='1' stop-color='%23e08585'/></linearGradient></defs><path d='M12 25 L14 14 Q15 10 19 9 L24 7 Q30 6 35 7 L40 9 Q45 11 47 16 L50 25 Z' fill='url(%23mini)' stroke='%23703030' stroke-width='1' stroke-linejoin='round'/><path d='M20 12 Q23 10 27 9 L33 9 Q37 10 40 13 L41 17 L19 17 Z' fill='%23a8c4e0' opacity='0.6'/><line x1='30' y1='9' x2='30' y2='17' stroke='%23703030' stroke-width='0.8'/><circle cx='21' cy='26' r='5' fill='%231a1a1a'/><circle cx='21' cy='26' r='2.5' fill='%23555'/><circle cx='42' cy='26' r='5' fill='%231a1a1a'/><circle cx='42' cy='26' r='2.5' fill='%23555'/></svg>",
+      // Pickup Truck
+      "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 36'><defs><linearGradient id='truck' x1='0' y1='0' x2='0' y2='1'><stop offset='0' stop-color='%23c8e8c8'/><stop offset='1' stop-color='%2386b886'/></linearGradient></defs><path d='M4 24 L4 16 L26 16 L28 8 Q29 6 32 6 L42 6 Q45 6 46 9 L47 16 L60 16 L60 24 Z' fill='url(%23truck)' stroke='%23254025' stroke-width='1' stroke-linejoin='round'/><path d='M29 9 Q30 8 32 8 L42 8 Q44 8 45 10 L46 16 L28 16 Z' fill='%23a8c4e0' opacity='0.6'/><rect x='4' y='17' width='22' height='7' fill='none' stroke='%23254025' stroke-width='0.6'/><circle cx='13' cy='25' r='5' fill='%231a1a1a'/><circle cx='13' cy='25' r='2.5' fill='%23555'/><circle cx='49' cy='25' r='5' fill='%231a1a1a'/><circle cx='49' cy='25' r='2.5' fill='%23555'/></svg>",
+    ];
+
     function carThumb(idx) {
       return CAR_IMAGE;
     }
@@ -6620,10 +6781,10 @@
         <td>${r.year}</td>
         <td><span class="chassis">${r.chassis}</span></td>
         <td><span class="destination">${ico.pin}${r.dest}</span></td>
-        <td>${r.date}</td>
+        <td><span class="has-tooltip" data-tooltip="DD/MM/YYYY">${r.date}</span></td>
         <td><span class="currency-pill">${r.curr}</span></td>
-        <td style="text-align: right;"><span class="price">${r.purchase}</span></td>
-        <td><span class="currency-pill">${r.curr}</span></td>
+        <td style="text-align: right;"><span class="price">${r.purchase.replace(/[$¥€£]/g, '')}</span></td>
+        <td>${r.sale ? `<span class="currency-pill">${r.saleCurr || r.curr}</span>` : '<span style="color: var(--muted, #9aa3b2);">-</span>'}</td>
         <td style="text-align: right;">${renderSale(r, i)}</td>
         <td>${renderBcn(r, i)}</td>
         <td>
@@ -6634,6 +6795,57 @@
         </td>
       </tr>
     `).join("");
+    }
+
+    /* -------- Destination Port — searchable dropdown -------- */
+    function getDestPortOptions() {
+      // Unique destination values from rows
+      return [...new Set(rows.map(r => r.dest))].sort();
+    }
+
+    function renderDestOptions(filterText) {
+      const panel = document.getElementById('dest-port-panel');
+      const ft = (filterText || '').trim().toLowerCase();
+      const selectedVal = document.getElementById('dest-port-input').dataset.selected || '';
+      const opts = getDestPortOptions().filter(o => !ft || o.toLowerCase().includes(ft));
+
+      let html = '';
+      // "All" option always at the top
+      html += `<div class="sd-option ${!selectedVal ? 'selected' : ''}" onmousedown="selectDestOption('')">All Destination Ports</div>`;
+
+      if (opts.length === 0) {
+        html += `<div class="sd-empty">No matches</div>`;
+      } else {
+        opts.forEach(o => {
+          html += `<div class="sd-option ${selectedVal === o ? 'selected' : ''}" onmousedown="selectDestOption('${o.replace(/'/g, "\\'")}')">${o}</div>`;
+        });
+      }
+      panel.innerHTML = html;
+    }
+
+    function openDestDropdown() {
+      const dd = document.getElementById('dest-port-dd');
+      const input = document.getElementById('dest-port-input');
+      renderDestOptions(input.value === (input.dataset.selected || '') ? '' : input.value);
+      dd.classList.add('open');
+    }
+
+    function closeDestDropdown() {
+      document.getElementById('dest-port-dd').classList.remove('open');
+    }
+
+    function filterDestOptions(value) {
+      document.getElementById('dest-port-dd').classList.add('open');
+      renderDestOptions(value);
+    }
+
+    function selectDestOption(value) {
+      const input = document.getElementById('dest-port-input');
+      input.value = value;
+      input.dataset.selected = value;
+      closeDestDropdown();
+      // Hook for actual filtering logic (filters rows by destination if needed)
+      // For now visual selection only — wire into row filter if required.
     }
 
     /* -------- Pagination -------- */
@@ -6703,7 +6915,7 @@
       document.getElementById('sv-veh-chassis').textContent = r.chassis;
       const data = [
         ['Currency', r.curr],
-        ['Sale Price', r.sale],
+        ['Sale Price', r.sale.replace(/[$¥€£]/g, '')],
         ['Destination Country', r.dest],
         ['Destination Port', 'Kadoma'],
       ];
@@ -7006,7 +7218,7 @@
         docTitle: 'Inspection Certificate'
       },
       5: {
-        sub: 'Vessel in transit · tracking via DHL',
+        sub: 'Vessel in transit',
         doneSub: 'Vessel booking confirmed and shipping schedule updated.',
         groups: [
           {
@@ -7028,13 +7240,6 @@
               ['Destination Port', 'Durban, South Africa'],
               ['ETA (Arrival)', '05 / 10 / 2026'],
             ]
-          },
-          {
-            title: 'Document Tracking',
-            fields: [
-              ['Company Name', 'DHL'],
-              ['Tracking Number', '0123243s44vdgfg55'],
-            ]
           }
         ]
       },
@@ -7043,6 +7248,7 @@
         doneSub: 'Official Bill of Lading (BL) document available for download.',
         fields: [
           ['Upload Date', '22 / 09 / 2026'],
+          ['Shipment Tracking', '0123243s44vdgfg55'],
         ],
         docs: [
           { name: 'Bill_of_Lading_Copy_A00116.pdf', kind: 'bl' }
@@ -7053,7 +7259,8 @@
         sub: 'Final settlement & remaining payment overview',
         doneSub: 'Total cost, paid amount, and remaining balance summary.',
         fields: [
-          ['Purchase Price', { kind: 'highlight', value: '$16,120', tone: 'success' }],
+          ['PURCH. CURR.', 'USD'],
+          ['Purchase Price', { kind: 'highlight', value: '16,120', tone: 'success' }],
           ['ETD Date', '05 / 10 / 2026'],
         ],
         paymentSummary: [
@@ -7070,10 +7277,11 @@
         blMethod: 'dispatch',
         dispatch: {
           name: 'John Mwangi',
-          phone: '+263 77 123 4567',
+          phoneLocal: '77 123 4567',
           address: '14 Samora Machel Ave, CBD',
-          city: 'Harare',
           country: 'Zimbabwe',
+          city: 'Harare',
+          postalCode: '00263',
           email: 'john.mwangi@example.com'
         }
       }
@@ -7245,6 +7453,17 @@
 
       html += '<div class="sf-divider"></div>';
 
+      // Document Tracking (moved from Stage 5 — shows here before BL method selection)
+      html += `<div class="sf-group">
+      <div class="sf-group-title"><span class="sf-group-dot"></span>Document Tracking</div>
+      <div class="stage-fields-grid">
+        <div class="sf-cell"><div class="sf-key">Company Name</div><div class="sf-val">DHL</div></div>
+        <div class="sf-cell"><div class="sf-key">Tracking Number</div><div class="sf-val">0123243s44vdgfg55</div></div>
+      </div>
+    </div>`;
+
+      html += '<div class="sf-divider"></div>';
+
       // Bill of Lading Method picker
       html += `<div class="sf-section-label">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
@@ -7297,47 +7516,48 @@
       <div class="bl-dispatch-form ${method === 'dispatch' ? 'open' : ''}" id="bl-dispatch-form">
         <div class="bl-dispatch-hint">Dispatch details — filled by agent</div>
         <div class="bl-form-grid">
-          <div class="bl-field">
-            <label>Name</label>
-            <input type="text" value="${d.name || ''}" placeholder="Recipient name">
-          </div>
-          <div class="bl-field">
-            <label>Phone Number</label>
-            <input type="tel" value="${d.phone || ''}" placeholder="+92 — 1234567889">
+          <div class="bl-field bl-field--full">
+            <label>Name <span class="req">*</span></label>
+            <input type="text" value="${d.name || ''}" placeholder="Recipient name" required>
           </div>
           <div class="bl-field bl-field--full">
-            <label>Address</label>
-            <input type="text" value="${d.address || ''}" placeholder="Street address">
+            <label>Address <span class="req">*</span></label>
+            <input type="text" value="${d.address || ''}" placeholder="Street address" required>
           </div>
-          <div class="bl-field">
-            <label>Country</label>
-            <select id="bl-country" onchange="updateBlCities(this.value)">
+          <div class="bl-field bl-field--full">
+            <label>Country <span class="req">*</span></label>
+            <select id="bl-country" onchange="updateBlCities(this.value); setPhonePrefix(this, 'bl-dispatch')" required>
               <option value="">Select Country</option>
               <option value="Pakistan" ${d.country === 'Pakistan' ? 'selected' : ''}>Pakistan</option>
-              <option value="United Arab Emirates" ${d.country === 'United Arab Emirates' ? 'selected' : ''}>United Arab Emirates</option>
-              <option value="Saudi Arabia" ${d.country === 'Saudi Arabia' ? 'selected' : ''}>Saudi Arabia</option>
-              <option value="Japan" ${d.country === 'Japan' ? 'selected' : ''}>Japan</option>
-              <option value="United Kingdom" ${d.country === 'United Kingdom' ? 'selected' : ''}>United Kingdom</option>
-              <option value="United States" ${d.country === 'United States' ? 'selected' : ''}>United States</option>
-              <option value="Canada" ${d.country === 'Canada' ? 'selected' : ''}>Canada</option>
-              <option value="Australia" ${d.country === 'Australia' ? 'selected' : ''}>Australia</option>
+              <option value="Zimbabwe" ${d.country === 'Zimbabwe' ? 'selected' : ''}>Zimbabwe</option>
               <option value="Kenya" ${d.country === 'Kenya' ? 'selected' : ''}>Kenya</option>
               <option value="Tanzania" ${d.country === 'Tanzania' ? 'selected' : ''}>Tanzania</option>
-              <option value="South Africa" ${d.country === 'South Africa' ? 'selected' : ''}>South Africa</option>
-              <option value="Singapore" ${d.country === 'Singapore' ? 'selected' : ''}>Singapore</option>
-              <option value="Malaysia" ${d.country === 'Malaysia' ? 'selected' : ''}>Malaysia</option>
             </select>
           </div>
           <div class="bl-field">
-            <label>City</label>
-            <select id="bl-city" ${!d.country ? 'disabled' : ''}>
+            <label>City <span class="req">*</span></label>
+            <select id="bl-city" ${!d.country ? 'disabled' : ''} required>
               <option value="">${d.country ? 'Select City' : 'Select country first'}</option>
-              ${d.country && window.BL_CITIES && window.BL_CITIES[d.country] ? window.BL_CITIES[d.country].map(c => `<option value="${c}" ${d.city === c ? 'selected' : ''}>${c}</option>`).join('') : ''}
+              ${d.country && window.BL_CITIES && window.BL_CITIES[d.country] ? window.BL_CITIES[d.country].map(c => `<option value="${c}" ${d.city === c ? 'selected' : ''}>${c}</option>`).join('') : (d.city ? `<option value="${d.city}" selected>${d.city}</option>` : '')}
             </select>
           </div>
-          <div class="bl-field bl-field--full">
-            <label>Email</label>
-            <input type="email" value="${d.email || ''}" placeholder="email@example.com">
+          <div class="bl-field">
+            <label>Postal Code</label>
+            <input type="text" value="${d.postalCode || ''}" placeholder="Enter postal code">
+          </div>
+          <div class="bl-field">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" value="${d.email || ''}" placeholder="email@example.com" required>
+          </div>
+          <div class="bl-field">
+            <label>Phone Number <span class="req">*</span></label>
+            <div class="phone-input">
+              <span class="phone-prefix">
+                <span class="phone-flag" id="bl-dispatch-phone-flag">${d.country && COUNTRY_DATA[d.country] ? COUNTRY_DATA[d.country].flag : '🌐'}</span>
+                <span class="phone-code" id="bl-dispatch-phone-code">${d.country && COUNTRY_DATA[d.country] ? COUNTRY_DATA[d.country].code : '+'}</span>
+              </span>
+              <input type="tel" id="bl-dispatch-phone-input" value="${d.phoneLocal || ''}" placeholder="${d.country && COUNTRY_DATA[d.country] ? COUNTRY_DATA[d.country].format : 'Phone number'}" required>
+            </div>
           </div>
         </div>
       </div>`;
@@ -7367,6 +7587,7 @@
       'Kenya':                 ['Nairobi', 'Mombasa', 'Kisumu', 'Nakuru', 'Eldoret'],
       'Tanzania':              ['Dar es Salaam', 'Dodoma', 'Mwanza', 'Arusha', 'Zanzibar'],
       'South Africa':          ['Johannesburg', 'Cape Town', 'Durban', 'Pretoria', 'Port Elizabeth'],
+      'Zimbabwe':              ['Harare', 'Bulawayo', 'Mutare', 'Gweru', 'Chitungwiza', 'Kwekwe', 'Kadoma'],
       'Singapore':             ['Singapore'],
       'Malaysia':              ['Kuala Lumpur', 'Johor Bahru', 'Penang', 'Ipoh', 'Shah Alam']
     };
@@ -7424,9 +7645,9 @@
         ['Model', r.model],
         ['Chassis No.', r.chassis],
         ['Registration Year', String(r.year)],
-        ['Currency', r.curr],
-        ['Purchase Price', r.purchase],
-        ['Purchase Date', r.date.replace(/\//g, ' / ')],
+        ['PURCH. CURR.', r.curr],
+        ['Purchase Price', r.purchase.replace(/[$¥€£]/g, '')],
+        ['Purchase Date (DD/MM/YYYY)', r.date.replace(/\//g, ' / ')],
         ['Auction Site', 'iUC'],
         ['Destination Port', r.dest],
       ];
