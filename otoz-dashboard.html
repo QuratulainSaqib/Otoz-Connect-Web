@@ -8297,7 +8297,6 @@
       const thumbsEl = document.getElementById('ylb-thumbs');
       const prevBtn = document.getElementById('ylb-prev');
       const nextBtn = document.getElementById('ylb-next');
-      const badge = document.getElementById('ylb-angle-badge');
       const counter = document.getElementById('ylb-counter');
 
       // Move track
@@ -8306,7 +8305,6 @@
 
       // Update badge & counter
       const p = _ylbPhotos[_ylbCurrent];
-      badge.textContent = p.angle || `Photo ${_ylbCurrent + 1}`;
       counter.textContent = `${_ylbCurrent + 1} / ${_ylbPhotos.length}`;
 
       // Update prev/next
@@ -8370,7 +8368,6 @@
       <!-- Main image stage -->
       <div class="ylb-stage">
         <div class="ylb-img-track" id="ylb-track"></div>
-        <div class="ylb-angle-badge" id="ylb-angle-badge">Front</div>
         <div class="ylb-counter" id="ylb-counter">1 / 13</div>
         <button class="ylb-nav ylb-prev" id="ylb-prev" onclick="ylbGo(-1)" aria-label="Previous photo">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
