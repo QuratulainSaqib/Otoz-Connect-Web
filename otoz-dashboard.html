@@ -761,6 +761,107 @@
       text-decoration: underline;
     }
 
+    /* Updated Sale Price — clickable cell with "Updated" tag */
+    .updated-sale-cell {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      padding: 0;
+      background: none;
+      border: none;
+      font-family: inherit;
+    }
+    .updated-sale-cell .price-link {
+      pointer-events: none;
+    }
+    .updated-sale-cell:hover .price-link {
+      color: var(--accent-hover);
+      text-decoration: underline;
+    }
+    .updated-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #92400e;
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      padding: 2px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+    .updated-tag svg {
+      width: 9px;
+      height: 9px;
+    }
+
+    /* Updated sale popup — addition row highlights */
+    .details-card.addition-card .details-section-head {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .details-card.addition-card .details-section-head .updated-tag {
+      margin-left: auto;
+    }
+    .details-row.amount-row .details-val {
+      font-weight: 700;
+      color: #92400e;
+      font-variant-numeric: tabular-nums;
+    }
+    .updated-total-card {
+      background: linear-gradient(180deg, #fff7ed 0%, #fef3c7 100%);
+      border: 1px solid #fde68a;
+      border-left: 3px solid #d97706;
+      border-radius: var(--radius-lg);
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .updated-total-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #78350f;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .updated-total-label small {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #92400e;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .updated-total-amount {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+      font-size: 19px;
+      font-weight: 700;
+      color: #78350f;
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+    }
+    .updated-total-amount .ut-curr {
+      font-size: 11px;
+      font-weight: 600;
+      color: #92400e;
+      background: rgba(255,255,255,0.6);
+      padding: 2px 7px;
+      border-radius: 5px;
+      letter-spacing: 0.02em;
+    }
+
     .add-btn {
       display: inline-flex;
       align-items: center;
@@ -6246,6 +6347,7 @@
         <div class="details-section-head">Sale Price Details</div>
         <div class="details-section-body" id="sv-body"></div>
       </div>
+      <div id="sv-extra"></div>
     </div>
   </aside>
 
@@ -7583,7 +7685,7 @@
       { stage: 6, ref: "A00170", chassis: "JHMGE8H56DC123456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "EUR", sale: "€25,300", saleType: "link", bcn: "BC", dest: "Mombasa Port" },
       { stage: 7, ref: "A00185", chassis: "JF1GG7LL5BG023456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "C", dest: "Dar es Salaam" },
       { stage: 8, ref: "A00202", chassis: "5YJSA1E26HF200012", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "JPY", sale: "¥4,150,000", saleType: "link", bcn: "BCN", dest: "Zimbabwe" },
-      { stage: 4, ref: "A00210", chassis: "WBA8B9C50GK999812", make: "Honda", model: "Vezel", code: "DAA-RU3", year: 2023, date: "02/08/2026", curr: "USD", purchase: "$28,100", saleCurr: "USD", sale: "$31,200", saleType: "link", bcn: "B", dest: "Lagos" },
+      { stage: 4, ref: "A00210", chassis: "WBA8B9C50GK999812", make: "Honda", model: "Vezel", code: "DAA-RU3", year: 2023, date: "02/08/2026", curr: "USD", purchase: "$28,100", saleCurr: "USD", sale: "$31,200", saleType: "link", bcn: "B", dest: "Lagos", updatedSale: { title: "Repair Cost Recovery", reason: "Additional charges applied to recover repair expenses incurred during the failed inspection.", addition: 1700, newTotal: 32900, date: "23 / 05 / 2026" } },
       { stage: 4, ref: "A00224", chassis: "ZAR93000007123451", make: "Nissan", model: "X-Trail", code: "DBA-T32", year: 2021, date: "02/08/2026", curr: "JPY", purchase: "¥3,150,000", sale: null, saleType: "btn", bcn: null, dest: "Durban" },
     ];
 
@@ -7628,6 +7730,19 @@
 
     function renderSale(r, idx) {
       if (r.saleType === "btn") return `<button class="add-btn" onclick="openSale(${idx})">${ico.plus} Add Sale</button>`;
+      if (r.updatedSale) {
+        // Format new total with the row's currency symbol
+        const symMatch = r.sale.match(/^[$¥€£]/);
+        const sym = symMatch ? symMatch[0] : '';
+        const newTotalStr = sym + r.updatedSale.newTotal.toLocaleString();
+        return `<button class="updated-sale-cell" onclick="openSaleView(${idx})">
+          <span class="price-link">${newTotalStr.replace(/[$¥€£]/g, '')}</span>
+          <span class="updated-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Updated
+          </span>
+        </button>`;
+      }
       return `<a class="price-link" href="#" onclick="event.preventDefault(); openSaleView(${idx});">${r.sale.replace(/[$¥€£]/g, '')}</a>`;
     }
 
@@ -7806,6 +7921,44 @@
       document.getElementById('sv-body').innerHTML = data.map(([k, v]) =>
         `<div class="details-row"><div class="details-key">${k}</div><div class="details-val">${v}</div></div>`
       ).join('');
+
+      // If this row has an updated sale (addition), append the addition card + new total
+      const extra = document.getElementById('sv-extra');
+      if (r.updatedSale) {
+        const us = r.updatedSale;
+        const additionFormatted = us.addition.toLocaleString();
+        const newTotalFormatted = us.newTotal.toLocaleString();
+        extra.innerHTML = `
+          <div class="details-card tight addition-card">
+            <div class="details-section-head">
+              Addition in Sale Price
+              <span class="updated-tag">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                Updated
+              </span>
+            </div>
+            <div class="details-section-body">
+              <div class="details-row"><div class="details-key">Date</div><div class="details-val">${us.date}</div></div>
+              <div class="details-row"><div class="details-key">Title</div><div class="details-val">${us.title}</div></div>
+              <div class="details-row"><div class="details-key">Reason</div><div class="details-val">${us.reason}</div></div>
+              <div class="details-row amount-row"><div class="details-key">Amount</div><div class="details-val">+ ${r.curr} ${additionFormatted}</div></div>
+            </div>
+          </div>
+          <div class="updated-total-card">
+            <div class="updated-total-label">
+              Updated Total Sale Price
+              <small>Includes the addition above</small>
+            </div>
+            <div class="updated-total-amount">
+              <span class="ut-curr">${r.curr}</span>
+              ${newTotalFormatted}
+            </div>
+          </div>
+        `;
+      } else {
+        extra.innerHTML = '';
+      }
+
       document.getElementById('overlay').classList.add('open');
       document.getElementById('panel-sale-view').classList.add('open');
       document.body.style.overflow = 'hidden';
