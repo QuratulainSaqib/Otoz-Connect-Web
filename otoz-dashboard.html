@@ -2084,6 +2084,44 @@
       font-weight: 500;
     }
 
+    /* Error state when user tries to submit without checking */
+    .confirm-check-card.error {
+      border-color: #ef4444;
+      background: #fef2f2;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10);
+    }
+    .confirm-check-card.error .check-box {
+      border-color: #ef4444;
+    }
+    .confirm-check-card.shake {
+      animation: ck-shake 0.45s cubic-bezier(.36,.07,.19,.97) both;
+    }
+    @keyframes ck-shake {
+      10%, 90% { transform: translateX(-2px); }
+      20%, 80% { transform: translateX(3px); }
+      30%, 50%, 70% { transform: translateX(-5px); }
+      40%, 60% { transform: translateX(5px); }
+    }
+    .confirm-check-error {
+      font-size: 12px;
+      color: #dc2626;
+      font-weight: 500;
+      margin-top: -10px;
+      margin-bottom: 14px;
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding-left: 2px;
+    }
+    .confirm-check-error.show {
+      display: flex;
+    }
+    .confirm-check-error svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
     /* Confirm panel footer with two buttons */
     .panel-footer.split {
       display: grid;
@@ -6935,8 +6973,8 @@
         </div>
       </div>
 
-      <label class="confirm-check-card">
-        <input type="checkbox" id="cf-agree">
+      <label class="confirm-check-card" id="cf-agree-card">
+        <input type="checkbox" id="cf-agree" onchange="clearAgreeError()">
         <span class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"
             stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12" />
@@ -6944,6 +6982,14 @@
         <span class="ck-text">I have reviewed all details and confirm they are accurate as per the buyer's official
           document.</span>
       </label>
+      <div class="confirm-check-error" id="cf-agree-error">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        Please confirm you have reviewed all details before submitting.
+      </div>
     </div>
     <div class="panel-footer split">
       <button class="btn-secondary" onclick="backToConsignee()">
@@ -7375,6 +7421,13 @@
     }
     function openConfirm() {
       fillConfirm('cf');
+      // Reset agreement checkbox + error state on each open
+      const agree = document.getElementById('cf-agree');
+      if (agree) agree.checked = false;
+      const card = document.getElementById('cf-agree-card');
+      if (card) card.classList.remove('error', 'shake');
+      const err = document.getElementById('cf-agree-error');
+      if (err) err.classList.remove('show');
       // Slide consignee panel out, confirm panel in (overlay stays)
       document.getElementById('panel-consignee').classList.remove('open');
       document.getElementById('panel-confirm').classList.add('open');
@@ -7384,6 +7437,22 @@
       document.getElementById('panel-consignee').classList.add('open');
     }
     function confirmSubmit() {
+      // Require the user to confirm they reviewed the details
+      const agree = document.getElementById('cf-agree');
+      if (!agree.checked) {
+        const card = document.getElementById('cf-agree-card');
+        const err = document.getElementById('cf-agree-error');
+        card.classList.add('error');
+        err.classList.add('show');
+        // Restart shake animation
+        card.classList.remove('shake');
+        void card.offsetWidth;
+        card.classList.add('shake');
+        // Scroll the checkbox into view in case it's below the fold
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+
       // For demo: mark the vehicle row as having Consignee = "BCN"
       const r = window._currentVehicle;
       if (r) {
@@ -7395,6 +7464,14 @@
         renderRows();
       }
       closePanels();
+    }
+
+    function clearAgreeError() {
+      const agree = document.getElementById('cf-agree');
+      if (agree.checked) {
+        document.getElementById('cf-agree-card').classList.remove('error', 'shake');
+        document.getElementById('cf-agree-error').classList.remove('show');
+      }
     }
 
     /* View existing consignee */
