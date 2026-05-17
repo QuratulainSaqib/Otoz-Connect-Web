@@ -4657,6 +4657,35 @@
       width: 13px;
       height: 13px;
     }
+
+    /* Re-inspection details — separate card, same surface as repair-details */
+    .reinspection-details {
+      margin-top: 14px;
+      background: var(--surface-elev);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      display: none;
+    }
+    .reinspection-details.show {
+      display: block;
+      animation: qs-fade-in 0.32s ease both;
+    }
+    .reinspection-details-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .reinspection-details-title svg {
+      width: 13px;
+      height: 13px;
+    }
     .repair-block-label {
       font-size: 12px;
       font-weight: 600;
@@ -8390,7 +8419,9 @@
                   <span>Vehicle is scheduled for re-inspection. The updated inspection certificate will be available here once completed.</span>
                 </div>
               </div>
-              <div class="sf-section-label" style="margin-top:16px;">
+            </div>
+            <div class="reinspection-details" id="reinspection-details">
+              <div class="reinspection-details-title">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                 Re-Inspection Details
               </div>
@@ -9015,6 +9046,10 @@
       // Reveal repair details (comments, after-repair photos, agent notice)
       const repair = document.getElementById('repair-details');
       if (repair) repair.classList.add('show');
+
+      // Reveal separate re-inspection details card
+      const reinsp = document.getElementById('reinspection-details');
+      if (reinsp) reinsp.classList.add('show');
     }
 
     /* After-repair photo viewer — reuses yard lightbox UI */
