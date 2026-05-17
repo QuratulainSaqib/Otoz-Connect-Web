@@ -291,6 +291,77 @@
   }
   .submit-btn svg { width: 16px; height: 16px; }
 
+  .secondary-btn {
+    width: 100%;
+    height: 48px;
+    background: #fff;
+    color: #173559;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-family: 'Sora', sans-serif;
+    font-size: 14.5px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.18s ease;
+    margin-top: 10px;
+  }
+  .secondary-btn:hover {
+    border-color: #cbd5e1;
+    background: #f8fafc;
+  }
+  .secondary-btn:disabled {
+    color: #94a3b8;
+    cursor: not-allowed;
+    background: #f8fafc;
+  }
+  .secondary-btn svg { width: 16px; height: 16px; }
+
+  .sent-email-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f1f5f9;
+    color: #173559;
+    padding: 6px 12px;
+    border-radius: 99px;
+    font-size: 12.5px;
+    font-weight: 600;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  .sent-email-pill svg { width: 13px; height: 13px; stroke: #0ea5e9; }
+
+  .toast {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: #173559;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 13.5px;
+    font-weight: 500;
+    box-shadow: 0 8px 24px rgba(30,41,59,0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.25s ease;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .toast svg { width: 16px; height: 16px; stroke: #22c55e; }
+
   .footer-tag {
     text-align: center;
     margin-top: 20px;
@@ -445,9 +516,33 @@
           <label class="field-label" for="reset-email">Email address</label>
           <input class="field-input" type="email" id="reset-email" placeholder="email@example.com" autocomplete="off" name="reset-email-field">
         </div>
-        <button class="submit-btn" onclick="goToNewPassword()">
+        <button class="submit-btn" onclick="sendResetLink()">
           Send reset link
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+
+      <!-- RESET LINK SENT VIEW -->
+      <div class="view" id="view-sent">
+        <a class="back-link" onclick="showView('login')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back to login
+        </a>
+        <h1 class="form-title">Reset link sent</h1>
+        <p class="form-sub">A secure password reset link has been sent to your email. The link may take a few minutes to arrive.</p>
+        <div style="text-align:center; margin-bottom: 22px;">
+          <span class="sent-email-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span id="sent-email-display">email@example.com</span>
+          </span>
+        </div>
+        <button class="submit-btn" onclick="openEmail()">
+          Open Email
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </button>
+        <button class="secondary-btn" id="resend-btn" onclick="resendLink()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          <span id="resend-text">Resend Link</span>
         </button>
       </div>
 
@@ -485,12 +580,22 @@
   </div>
 </div>
 
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg">Reset link sent again</span>
+</div>
+
 <script>
   function showView(name) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById('view-' + name).classList.add('active');
   }
   function goToNewPassword() {
+    showView('newpw');
+  }
+
+  function sendResetLink() {
     const email = document.getElementById('reset-email').value.trim();
     if (!email) {
       alert('Please enter your email address');
@@ -500,7 +605,41 @@
       alert('Please enter a valid email address');
       return;
     }
+    document.getElementById('sent-email-display').textContent = email;
+    showView('sent');
+  }
+
+  function openEmail() {
     showView('newpw');
+  }
+
+  function resendLink() {
+    const btn = document.getElementById('resend-btn');
+    const txt = document.getElementById('resend-text');
+    if (btn.disabled) return;
+
+    showToast('Reset link sent again');
+
+    btn.disabled = true;
+    let seconds = 30;
+    txt.textContent = `Resend Link (${seconds}s)`;
+    const interval = setInterval(() => {
+      seconds--;
+      if (seconds <= 0) {
+        clearInterval(interval);
+        btn.disabled = false;
+        txt.textContent = 'Resend Link';
+      } else {
+        txt.textContent = `Resend Link (${seconds}s)`;
+      }
+    }, 1000);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
   }
   function togglePw(id, btn) {
     const inp = document.getElementById(id);
