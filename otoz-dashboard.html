@@ -4283,6 +4283,438 @@
       flex-shrink: 0;
     }
 
+    /* Inspection fail — reason card */
+    .fail-reason-card {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-left: 3px solid #dc2626;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-top: 10px;
+    }
+    .fail-reason-card .frc-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #991b1b;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+    }
+    .fail-reason-card .frc-title svg {
+      width: 13px;
+      height: 13px;
+      stroke: #dc2626;
+    }
+    .fail-reason-card .frc-body {
+      font-size: 13px;
+      line-height: 1.55;
+      color: #7f1d1d;
+      font-weight: 500;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Send Quotation button (agent action) */
+    .quotation-btn {
+      margin-top: 12px;
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 18px;
+      background: linear-gradient(180deg, #173559 0%, #122a47 100%);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 2px 8px rgba(23,53,89,0.28);
+      letter-spacing: -0.01em;
+    }
+    .quotation-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 6px 16px rgba(23,53,89,0.35);
+    }
+    .quotation-btn svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    /* Quotation button — sent (disabled) state */
+    .quotation-btn.sent {
+      background: #f1f5f9;
+      color: #475569;
+      cursor: not-allowed;
+      box-shadow: none;
+      border: 1px solid #e2e8f0;
+    }
+    .quotation-btn.sent:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    .quotation-btn.sent svg {
+      stroke: #22c55e;
+    }
+
+    /* Inline success message below the button */
+    .quotation-success {
+      margin-top: 10px;
+      padding: 12px 14px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 3px solid #22c55e;
+      border-radius: 10px;
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .quotation-success.show {
+      display: flex;
+      animation: qs-fade-in 0.28s ease both;
+    }
+    @keyframes qs-fade-in {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .quotation-success-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: #16a34a;
+      margin-top: 1px;
+    }
+    .quotation-success-text {
+      flex: 1;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #14532d;
+    }
+    .quotation-success-text strong {
+      display: block;
+      font-weight: 600;
+      color: #14532d;
+      margin-bottom: 2px;
+    }
+    .quotation-success-text span {
+      color: #15803d;
+      font-weight: 500;
+    }
+
+    /* Quotation details — repair charge breakdown shown after request is sent */
+    .quotation-details {
+      margin-top: 12px;
+      background: var(--surface-elev);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      display: none;
+    }
+    .quotation-details.show {
+      display: block;
+      animation: qs-fade-in 0.32s ease both;
+    }
+    .quotation-details-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .quotation-details-title svg {
+      width: 13px;
+      height: 13px;
+    }
+    .qd-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--border);
+    }
+    .qd-row:last-child {
+      border-bottom: none;
+      padding-bottom: 2px;
+    }
+    .qd-row:first-of-type {
+      padding-top: 2px;
+    }
+    .qd-label {
+      font-size: 13px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+    .qd-amount {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .qd-curr {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: #f1f5f9;
+      padding: 2px 7px;
+      border-radius: 5px;
+      letter-spacing: 0.02em;
+    }
+    .qd-price {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+    }
+    .qd-row.total {
+      margin-top: 2px;
+      padding-top: 12px;
+      border-top: 1.5px solid var(--border);
+      border-bottom: none;
+    }
+    .qd-row.total .qd-label {
+      font-weight: 600;
+    }
+    .qd-row.total .qd-price {
+      font-size: 16px;
+      color: #173559;
+    }
+
+    /* Separator line inside the success card, between text and date */
+    .quotation-success-sep {
+      height: 1px;
+      background: #bbf7d0;
+      margin: 10px 0;
+    }
+    .quotation-success-date {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #15803d;
+      font-weight: 500;
+    }
+    .quotation-success-date svg {
+      width: 13px;
+      height: 13px;
+      stroke: #16a34a;
+      flex-shrink: 0;
+    }
+    .quotation-success-date b {
+      color: #14532d;
+      font-weight: 600;
+    }
+
+    /* Date row inside the details title */
+    .quotation-details-title {
+      justify-content: space-between;
+    }
+    .quotation-details-title-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .quotation-date-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #475569;
+      background: #f1f5f9;
+      padding: 3px 8px;
+      border-radius: 5px;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .quotation-date-pill svg {
+      width: 11px;
+      height: 11px;
+    }
+
+    /* Go to Proceed button — agent confirms repair request */
+    .proceed-btn {
+      margin-top: 12px;
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 18px;
+      background: linear-gradient(180deg, #173559 0%, #122a47 100%);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 2px 8px rgba(23,53,89,0.28);
+      letter-spacing: -0.01em;
+    }
+    .proceed-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 6px 16px rgba(23,53,89,0.35);
+    }
+    .proceed-btn svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+    .proceed-btn.sent {
+      background: #f1f5f9;
+      color: #475569;
+      cursor: not-allowed;
+      box-shadow: none;
+      border: 1px solid #e2e8f0;
+    }
+    .proceed-btn.sent:hover {
+      transform: none;
+      box-shadow: none;
+    }
+    .proceed-btn.sent svg {
+      stroke: #22c55e;
+    }
+
+    /* Proceed success message — shown after Go to Proceed click */
+    .proceed-success {
+      margin-top: 10px;
+      padding: 12px 14px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 3px solid #22c55e;
+      border-radius: 10px;
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .proceed-success.show {
+      display: flex;
+      animation: qs-fade-in 0.28s ease both;
+    }
+    .proceed-success svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: #16a34a;
+      margin-top: 1px;
+    }
+    .proceed-success-text {
+      flex: 1;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .proceed-success-text strong {
+      display: block;
+      font-weight: 600;
+      color: #14532d;
+      margin-bottom: 2px;
+    }
+    .proceed-success-text span {
+      color: #15803d;
+      font-weight: 500;
+    }
+
+    /* Repair details — shown after Go to Proceed is clicked */
+    .repair-details {
+      margin-top: 14px;
+      background: var(--surface-elev);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      display: none;
+    }
+    .repair-details.show {
+      display: block;
+      animation: qs-fade-in 0.32s ease both;
+    }
+    .repair-details-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .repair-details-title svg {
+      width: 13px;
+      height: 13px;
+    }
+    .repair-block-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+      letter-spacing: 0.01em;
+    }
+    .repair-comments {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 11px 13px;
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--text-primary);
+      margin-bottom: 14px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Agent notice — informs about re-inspection timeline */
+    .agent-notice {
+      margin-top: 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      background: #fefce8;
+      border: 1px solid #fde68a;
+      border-left: 3px solid #eab308;
+      border-radius: 10px;
+    }
+    .agent-notice-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      color: #ca8a04;
+      margin-top: 1px;
+    }
+    .agent-notice-text {
+      flex: 1;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .agent-notice-text strong {
+      display: block;
+      font-weight: 600;
+      color: #713f12;
+      margin-bottom: 2px;
+    }
+    .agent-notice-text span {
+      color: #854d0e;
+      font-weight: 500;
+    }
+
     .yard-zip-count {
       display: inline-flex;
       align-items: center;
@@ -7122,7 +7554,7 @@
       { stage: 6, ref: "A00170", chassis: "JHMGE8H56DC123456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "EUR", sale: "€25,300", saleType: "link", bcn: "BC", dest: "Mombasa Port" },
       { stage: 7, ref: "A00185", chassis: "JF1GG7LL5BG023456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "C", dest: "Dar es Salaam" },
       { stage: 8, ref: "A00202", chassis: "5YJSA1E26HF200012", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "JPY", sale: "¥4,150,000", saleType: "link", bcn: "BCN", dest: "Zimbabwe" },
-      { stage: 1, ref: "A00210", chassis: "WBA8B9C50GK999812", make: "Honda", model: "Vezel", code: "DAA-RU3", year: 2023, date: "02/08/2026", curr: "USD", purchase: "$28,100", saleCurr: "USD", sale: "$31,200", saleType: "link", bcn: "B", dest: "Lagos" },
+      { stage: 4, ref: "A00210", chassis: "WBA8B9C50GK999812", make: "Honda", model: "Vezel", code: "DAA-RU3", year: 2023, date: "02/08/2026", curr: "USD", purchase: "$28,100", saleCurr: "USD", sale: "$31,200", saleType: "link", bcn: "B", dest: "Lagos" },
       { stage: 4, ref: "A00224", chassis: "ZAR93000007123451", make: "Nissan", model: "X-Trail", code: "DBA-T32", year: 2021, date: "02/08/2026", curr: "JPY", purchase: "¥3,150,000", sale: null, saleType: "btn", bcn: null, dest: "Durban" },
     ];
 
@@ -7846,6 +8278,157 @@
               Download All as ZIP
             </button>`;
           }
+          // Inspection-fail extras: photos of damage, reason, and quotation CTA
+          if (detail.failPhotos && detail.failPhotos.length) {
+            bodyContent += '<div class="sf-divider"></div>';
+            bodyContent += `<div class="sf-section-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>Damage Photos · ${detail.failPhotos.length}</div>`;
+            bodyContent += '<div class="yard-gallery">';
+            detail.failPhotos.forEach((p, idx) => {
+              bodyContent += `<div class="yard-thumb" onclick="openFailLightbox(${idx})" role="button" tabindex="0" aria-label="View inspection photo ${idx+1}: ${p.angle || ''}">
+              <img src="${CAR_IMAGE}" alt="${p.angle || ''}" loading="lazy">
+              <button class="yard-dl" title="Download" onclick="event.stopPropagation();alert('Download inspection photo ${idx+1}')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              </button>
+            </div>`;
+            });
+            bodyContent += '</div>';
+          }
+          if (detail.failReason) {
+            bodyContent += `
+            <div class="fail-reason-card">
+              <div class="frc-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Reason for Failure
+              </div>
+              <div class="frc-body">${detail.failReason}</div>
+            </div>`;
+          }
+          if (detail.showQuotationBtn) {
+            const qref = (window._currentVehicle && window._currentVehicle.ref) || '';
+            bodyContent += `
+            <button class="quotation-btn" id="quotation-btn" onclick="sendQuotationRequest('${qref}')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              <span id="quotation-btn-label">Send me Quotation</span>
+            </button>
+            <div class="quotation-success" id="quotation-success">
+              <svg class="quotation-success-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              <div class="quotation-success-text">
+                <strong>Quotation request sent to sales team</strong>
+                <span>You will receive a repair estimate shortly.</span>
+                <div class="quotation-success-sep"></div>
+                <div class="quotation-success-date">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Sent on <b id="quotation-sent-date">—</b>
+                </div>
+              </div>
+            </div>
+            <div class="quotation-details" id="quotation-details">
+              <div class="quotation-details-title">
+                <span class="quotation-details-title-left">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
+                  Quotation Details
+                </span>
+                <span class="quotation-date-pill">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  <span id="quotation-details-date">—</span>
+                </span>
+              </div>
+              <div class="qd-row">
+                <div class="qd-label">Repair charges (without tax)</div>
+                <div class="qd-amount">
+                  <span class="qd-curr">JPY</span>
+                  <span class="qd-price">185,000</span>
+                </div>
+              </div>
+              <div class="qd-row total">
+                <div class="qd-label">Repair charges (with tax)</div>
+                <div class="qd-amount">
+                  <span class="qd-curr">JPY</span>
+                  <span class="qd-price">203,500</span>
+                </div>
+              </div>
+              <button class="proceed-btn" id="proceed-btn" onclick="goToProceed()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                <span id="proceed-btn-label">Go to Proceed</span>
+              </button>
+              <div class="proceed-success" id="proceed-success">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                <div class="proceed-success-text">
+                  <strong>Car repair request forwarded to sales team</strong>
+                  <span>You will receive update repair status shortly.</span>
+                </div>
+              </div>
+            </div>
+            <div class="repair-details" id="repair-details">
+              <div class="repair-details-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                Repair Details
+              </div>
+              <div class="repair-block-label">Repair Comments</div>
+              <div class="repair-comments">
+                Bumper replaced with OEM part. Underbody corrosion treated and frame sections welded. Vehicle ready for re-inspection.
+              </div>
+              <div class="repair-block-label">After Repair Photos · 2</div>
+              <div class="yard-gallery">
+                <div class="yard-thumb" onclick="openRepairLightbox(0)" role="button" tabindex="0" aria-label="View after-repair photo 1: Front-left repaired">
+                  <img src="${CAR_IMAGE}" alt="Front-left repaired" loading="lazy">
+                  <button class="yard-dl" title="Download" onclick="event.stopPropagation();alert('Download after-repair photo 1')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  </button>
+                </div>
+                <div class="yard-thumb" onclick="openRepairLightbox(1)" role="button" tabindex="0" aria-label="View after-repair photo 2: Underbody restored">
+                  <img src="${CAR_IMAGE}" alt="Underbody restored" loading="lazy">
+                  <button class="yard-dl" title="Download" onclick="event.stopPropagation();alert('Download after-repair photo 2')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  </button>
+                </div>
+              </div>
+              <div class="agent-notice">
+                <svg class="agent-notice-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <div class="agent-notice-text">
+                  <strong>Inspection certificate will be uploaded in 4 to 5 days</strong>
+                  <span>Vehicle is scheduled for re-inspection. The updated inspection certificate will be available here once completed.</span>
+                </div>
+              </div>
+              <div class="sf-section-label" style="margin-top:16px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                Re-Inspection Details
+              </div>
+              <div class="stage-fields-grid">
+                <div class="sf-cell">
+                  <div class="sf-key">Inspection Date</div>
+                  <div class="sf-val">23 / 05 / 2026</div>
+                </div>
+                <div class="sf-cell">
+                  <div class="sf-key">Inspection Status</div>
+                  <div class="sf-val">
+                    <span class="sf-status-pill sf-status-pill--success"><span class="sf-status-dot"></span>Pass</span>
+                  </div>
+                </div>
+              </div>
+              <div class="sf-divider"></div>
+              <div class="sf-section-label sf-section-label--doc">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Inspection Certificate
+              </div>
+              <div class="doc-row">
+                <div class="doc-thumb doc-thumb--report">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                </div>
+                <div class="doc-info">
+                  <div class="doc-name">Inspection_Certificate_A00210.pdf</div>
+                </div>
+                <div class="doc-actions">
+                  <button class="inv-act ghost" data-tt="Preview" aria-label="Preview">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                  <button class="inv-act primary" data-tt="Download" aria-label="Download">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>`;
+          }
           if (detail.docs && detail.docs.length) {
             bodyContent += '<div class="sf-divider"></div>';
             bodyContent += `<div class="sf-section-label sf-section-label--doc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${detail.docTitle || 'Documents'}</div>`;
@@ -8115,7 +8698,7 @@
       ];
 
       // Sync Stage 4 fields based on row ref
-      if (r.ref === 'A00224') {
+      if (r.ref === 'A00224' || r.ref === 'A00210') {
         STAGE_DETAILS[4] = {
           sub: 'Inspection completed · result: <b style="color:#c33d1e">Fail</b>',
           doneSub: 'Inspection failed — vehicle did not meet required standards.',
@@ -8123,10 +8706,12 @@
             ['Inspection Date', '25 / 08 / 2026'],
             ['Inspection Status', { kind: 'status-pill', value: 'Fail', tone: 'danger' }],
           ],
-          docs: [
-            { name: 'Inspection_Report_A00224.pdf', kind: 'report' }
+          failPhotos: [
+            { angle: 'Front-left damage' },
+            { angle: 'Underbody corrosion' }
           ],
-          docTitle: 'Inspection Report'
+          failReason: 'Front-left bumper damage and significant underbody corrosion exceeding acceptable limits. Frame integrity compromised — repair estimate required.',
+          showQuotationBtn: true
         };
       } else {
         STAGE_DETAILS[4] = {
@@ -8333,6 +8918,148 @@
     /* ===== Yard Lightbox Slider ===== */
     let _ylbPhotos = [];
     let _ylbCurrent = 0;
+
+    /* Inspection-fail photo viewer — reuses yard lightbox UI for consistency */
+    function openFailLightbox(startIdx) {
+      const detail = STAGE_DETAILS[4];
+      if (!detail || !detail.failPhotos) return;
+      _ylbPhotos = detail.failPhotos;
+      _ylbCurrent = startIdx;
+
+      const track = document.getElementById('ylb-track');
+      const thumbsEl = document.getElementById('ylb-thumbs');
+      track.innerHTML = '';
+      thumbsEl.innerHTML = '';
+
+      _ylbPhotos.forEach((p, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'ylb-img-slide';
+        const img = document.createElement('img');
+        img.src = CAR_IMAGE;
+        img.alt = p.angle || `Photo ${i + 1}`;
+        slide.appendChild(img);
+        track.appendChild(slide);
+
+        const thumb = document.createElement('div');
+        thumb.className = 'ylb-thumb-item' + (i === startIdx ? ' active' : '');
+        thumb.setAttribute('role', 'button');
+        thumb.setAttribute('tabindex', '0');
+        thumb.setAttribute('aria-label', `View ${p.angle || 'photo ' + (i + 1)}`);
+        const tImg = document.createElement('img');
+        tImg.src = CAR_IMAGE;
+        tImg.alt = p.angle || '';
+        thumb.appendChild(tImg);
+        thumb.addEventListener('click', () => ylbGoTo(i));
+        thumbsEl.appendChild(thumb);
+      });
+
+      const r = window._currentVehicle;
+      const vehTitle = r ? `${r.make} ${r.model} ${r.year}` : '';
+      document.getElementById('ylb-subtitle').textContent = `${_ylbPhotos.length} damage photos · ${vehTitle}`;
+
+      ylbRender(false);
+      document.getElementById('yard-lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    /* Send quotation request — agent action when inspection fails */
+    function sendQuotationRequest(ref) {
+      const btn = document.getElementById('quotation-btn');
+      const label = document.getElementById('quotation-btn-label');
+      const msg = document.getElementById('quotation-success');
+      if (!btn || btn.classList.contains('sent')) return;
+
+      // Lock the button to prevent duplicate requests
+      btn.classList.add('sent');
+      btn.disabled = true;
+
+      // Swap icon to a checkmark and update label
+      btn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Request Sent</span>
+      `;
+
+      // Stamp the quotation with today's date (DD / MM / YYYY)
+      const now = new Date();
+      const dd = '18';
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yyyy = now.getFullYear();
+      const dateStr = `${dd} / ${mm} / ${yyyy}`;
+      const sentDateEl = document.getElementById('quotation-sent-date');
+      const detailsDateEl = document.getElementById('quotation-details-date');
+      if (sentDateEl) sentDateEl.textContent = dateStr;
+      if (detailsDateEl) detailsDateEl.textContent = dateStr;
+
+      // Reveal inline success message
+      if (msg) msg.classList.add('show');
+
+      // Reveal quotation details breakdown
+      const details = document.getElementById('quotation-details');
+      if (details) details.classList.add('show');
+    }
+
+    /* Go to Proceed — agent confirms the quotation and forwards repair request */
+    function goToProceed() {
+      const btn = document.getElementById('proceed-btn');
+      const msg = document.getElementById('proceed-success');
+      if (!btn || btn.classList.contains('sent')) return;
+
+      btn.classList.add('sent');
+      btn.disabled = true;
+      btn.innerHTML = `
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Forwarded</span>
+      `;
+      if (msg) msg.classList.add('show');
+
+      // Reveal repair details (comments, after-repair photos, agent notice)
+      const repair = document.getElementById('repair-details');
+      if (repair) repair.classList.add('show');
+    }
+
+    /* After-repair photo viewer — reuses yard lightbox UI */
+    function openRepairLightbox(startIdx) {
+      _ylbPhotos = [
+        { angle: 'Front-left repaired' },
+        { angle: 'Underbody restored' }
+      ];
+      _ylbCurrent = startIdx;
+
+      const track = document.getElementById('ylb-track');
+      const thumbsEl = document.getElementById('ylb-thumbs');
+      track.innerHTML = '';
+      thumbsEl.innerHTML = '';
+
+      _ylbPhotos.forEach((p, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'ylb-img-slide';
+        const img = document.createElement('img');
+        img.src = CAR_IMAGE;
+        img.alt = p.angle || `Photo ${i + 1}`;
+        slide.appendChild(img);
+        track.appendChild(slide);
+
+        const thumb = document.createElement('div');
+        thumb.className = 'ylb-thumb-item' + (i === startIdx ? ' active' : '');
+        thumb.setAttribute('role', 'button');
+        thumb.setAttribute('tabindex', '0');
+        thumb.setAttribute('aria-label', `View ${p.angle || 'photo ' + (i + 1)}`);
+        const tImg = document.createElement('img');
+        tImg.src = CAR_IMAGE;
+        tImg.alt = p.angle || '';
+        thumb.appendChild(tImg);
+        thumb.addEventListener('click', () => ylbGoTo(i));
+        thumbsEl.appendChild(thumb);
+      });
+
+      const r = window._currentVehicle;
+      const vehTitle = r ? `${r.make} ${r.model} ${r.year}` : '';
+      document.getElementById('ylb-subtitle').textContent = `${_ylbPhotos.length} after-repair photos · ${vehTitle}`;
+
+      ylbRender(false);
+      document.getElementById('yard-lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
 
     function openYardLightbox(startIdx, totalCount) {
       // Collect all yard photos from the current stage detail
