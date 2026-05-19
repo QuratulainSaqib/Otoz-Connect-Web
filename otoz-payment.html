@@ -3568,6 +3568,27 @@
     box-shadow: 0 2px 4px rgba(23,53,89,0.22), 0 8px 18px rgba(23,53,89,0.22);
   }
   .btn-add-payment:active { transform: translateY(0); }
+
+  /* Payment Allocation button (inline table button) */
+  .btn-pay-alloc {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    background: #173559;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    box-shadow: 0 2px 6px rgba(23, 53, 89, 0.25);
+    white-space: nowrap;
+  }
+  .btn-pay-alloc:hover { background: #1d3557; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(23, 53, 89, 0.32); }
+  .btn-pay-alloc:active { transform: translateY(0); }
+  .btn-pay-alloc svg { width: 11px; height: 11px; }
 </style>
 </head>
 <body>
@@ -3704,6 +3725,7 @@
             <th style="text-align:right"><span class="th-inner">Currency</span></th>
             <th style="text-align:right"><span class="th-inner">Amount</span></th>
             <th><span class="th-inner">Status</span></th>
+            <th><span class="th-inner">Payment Allocation</span></th>
             <th><span class="th-inner">Confirmation Receipt</span></th>
             <th><span class="th-inner">Rejection Reason</span></th>
           </tr>
@@ -5755,6 +5777,7 @@
           <td style="text-align:right"><span class="currency-pill">${r.curr}</span></td>
           <td style="text-align:right;font-variant-numeric:tabular-nums">${r.amt}</td>
           <td>${statusPill(r.status)}</td>
+          <td>${r.status === 'confirmed' ? '<button class="btn-pay-alloc" onclick="openPaymentAllocation(' + r.id + ',\'' + encodeURIComponent(r.txn) + '\',\'' + r.amt + '\',\'' + r.curr + '\',\'' + r.date + '\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Payment Allocation</button>' : '<span class="wal-empty">—</span>'}</td>
           <td>${conf}</td>
           <td>${rejection}</td>
         </tr>`;
@@ -5818,6 +5841,18 @@
   function submitAddPayment() {
     // Demo — would post to API in real app
     closePanels();
+  }
+
+  /* ========== Payment Allocation Navigation ========== */
+  function openPaymentAllocation(id, txn, amt, curr, date) {
+    const params = new URLSearchParams({
+      paymentId: id,
+      txn: decodeURIComponent(txn),
+      amt: amt,
+      curr: curr,
+      date: date
+    });
+    window.open('otoz-allocation.html?' + params.toString(), '_blank');
   }
 
   /* -------- Init -------- */
