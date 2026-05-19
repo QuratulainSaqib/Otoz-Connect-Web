@@ -1,0 +1,3054 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Otoz Connect — Payment Allocation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif;
+      --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --surface-elev: #fbfbfd;
+      --border: rgba(0, 0, 0, 0.06);
+      --border-strong: rgba(0, 0, 0, 0.12);
+      --divider: rgba(0, 0, 0, 0.04);
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --text-tertiary: #86868b;
+      --accent: #0071e3;
+      --accent-hover: #0077ed;
+      --green: #1c9e5e;
+      --danger: #ff3b30;
+      --navy: #173559;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html,
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 14px;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border);
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    .nav-inner {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .brand-logo {
+      height: 28px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      transition: transform .25s ease, filter .25s ease
+    }
+
+    .brand-logo:hover {
+      transform: scale(1.04);
+      filter: drop-shadow(0 2px 6px rgba(0, 113, 227, .25))
+    }
+
+    .nav-center {
+      display: flex;
+      gap: 4px;
+      background: rgba(0, 0, 0, 0.04);
+      padding: 4px;
+      border-radius: var(--radius-pill);
+    }
+
+    .nav-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-radius: var(--radius-pill);
+      transition: all .18s ease;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+    }
+
+    .nav-link:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.6)
+    }
+
+    .nav-link.active {
+      background: #fff;
+      color: var(--text-primary);
+      box-shadow: var(--shadow-sm)
+    }
+
+    .nav-link svg {
+      width: 14px;
+      height: 14px
+    }
+
+    .nav-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px
+    }
+
+    .help-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border: 1px solid rgba(0, 113, 227, 0.18);
+      border-radius: var(--radius-pill);
+      background: rgba(0, 113, 227, 0.09);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .18s ease;
+      font-family: var(--font-body);
+      text-decoration: none
+    }
+
+    .help-btn:hover {
+      background: rgba(0, 113, 227, 0.15);
+      transform: translateY(-1px)
+    }
+
+    .help-btn svg {
+      width: 13px;
+      height: 13px
+    }
+
+    .logout-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--text-primary);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      border: none;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      transition: all .18s ease;
+      font-family: var(--font-body);
+    }
+
+    .logout-btn:hover {
+      background: #000;
+      transform: translateY(-1px)
+    }
+
+    .logout-btn svg {
+      width: 13px;
+      height: 13px
+    }
+
+    /* ── Page ── */
+    .page {
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 28px 20px 60px
+    }
+
+    /* ── Header ── */
+    .header-row {
+      margin-bottom: 20px;
+    }
+
+    .greeting h1 {
+      font-family: var(--font-display);
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .greeting h1 .name {
+      background: linear-gradient(135deg, #1d1d1f 0%, #0071e3 90%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .greeting p {
+      margin-top: 6px;
+      color: var(--text-secondary);
+      font-size: 15px
+    }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 12px 14px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: nowrap
+    }
+
+    .toolbar-left {
+      flex: 1 1 auto;
+      min-width: 0
+    }
+
+    .toolbar-right {
+      flex: 0 0 auto
+    }
+
+    .filter {
+      position: relative;
+      flex: 1 1 160px;
+      min-width: 140px;
+      max-width: 240px
+    }
+
+    .filter.compact {
+      flex: 0 0 auto;
+      min-width: 140px;
+      max-width: 175px
+    }
+
+    .filter select,
+    .filter input {
+      width: 100%;
+      height: 38px;
+      padding: 0 36px 0 14px;
+      background: var(--surface-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--text-primary);
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      transition: all .18s ease;
+    }
+
+    .filter.with-search input {
+      padding-left: 34px
+    }
+
+    .filter select:hover,
+    .filter input:hover {
+      border-color: var(--border-strong)
+    }
+
+    .filter select:focus,
+    .filter input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.15);
+      background: #fff;
+    }
+
+    .filter .chev {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--text-tertiary);
+      width: 14px;
+      height: 14px;
+    }
+
+    .filter .search-ico {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-tertiary);
+      width: 14px;
+      height: 14px;
+    }
+
+    /* ── Payment Allocation Button ── */
+    .btn-alloc {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 18px;
+      height: 38px;
+      background: #173559;
+      color: #fff;
+      border: none;
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: not-allowed;
+      white-space: nowrap;
+      box-shadow: none;
+      opacity: 0.45;
+      transition: all .2s ease;
+    }
+
+    .btn-alloc.active {
+      opacity: 1;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(23, 53, 89, 0.25);
+    }
+
+    .btn-alloc.active:hover {
+      background: #1d3f68;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(23, 53, 89, 0.32);
+    }
+
+    .btn-alloc svg {
+      width: 14px;
+      height: 14px
+    }
+
+    /* Tooltip for disabled Payment Allocation button */
+    .btn-alloc-wrap {
+      position: relative;
+      display: inline-flex;
+    }
+
+    .btn-alloc-wrap .alloc-tooltip {
+      position: absolute;
+      left: calc(100% + 12px);
+      top: 50%;
+      transform: translateY(-50%) translateX(-8px);
+      padding: 7px 14px;
+      background: #1d1d1f;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      border-radius: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 30;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+      letter-spacing: -0.005em;
+    }
+
+    .btn-alloc-wrap .alloc-tooltip::after {
+      content: "";
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 6px solid transparent;
+      border-right-color: #1d1d1f;
+    }
+
+    .btn-alloc-wrap:hover .alloc-tooltip {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    .btn-alloc.active+.alloc-tooltip {
+      display: none;
+    }
+
+    /* Currency pill — matching Wallet page style */
+    .currency-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── View History Button ── */
+    .btn-history {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border: none;
+      border-radius: var(--radius-md);
+      background: #173559;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .18s ease;
+      white-space: nowrap;
+    }
+
+    .btn-history:hover {
+      background: #1d3f68;
+      transform: translateY(-1px)
+    }
+
+    /* ── Table Card ── */
+    .table-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      width: 100%
+    }
+
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 980px
+    }
+
+    thead th {
+      background: var(--surface-elev);
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: capitalize;
+      letter-spacing: 0.07em;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    thead th .th-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th .sort-ico {
+      width: 10px;
+      height: 10px;
+      opacity: 0.45
+    }
+
+    /* Checkbox column */
+    thead th.cb-th {
+      width: 48px;
+      text-align: center;
+      padding: 13px 8px;
+    }
+
+    tbody td.cb-td {
+      text-align: center;
+      padding: 16px 8px;
+      vertical-align: middle;
+    }
+
+    .row-cb {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: #173559;
+      border-radius: 4px;
+    }
+
+    tbody td {
+      padding: 16px;
+      font-size: 13px;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--divider);
+      vertical-align: middle;
+    }
+
+    tbody tr {
+      transition: background .15s ease
+    }
+
+    tbody tr:hover {
+      background: rgba(0, 113, 227, 0.018)
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none
+    }
+
+    /* Make/Model cell — bold black combined, code below */
+    .make-cell {
+      line-height: 1.55
+    }
+
+    .make-cell .name-combined {
+      font-weight: 700;
+      color: #000000;
+      font-size: 13.5px;
+      letter-spacing: -0.01em;
+    }
+
+    .make-cell .code {
+      font-family: "SF Mono", Menlo, monospace;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      margin-top: 1px;
+    }
+
+    .chassis-cell {
+      font-family: "SF Mono", Menlo, monospace;
+      font-size: 12px;
+      color: var(--text-secondary)
+    }
+
+    .amount-cell {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-variant-numeric: tabular-nums
+    }
+
+    .paid-cell {
+      font-weight: 600;
+      color: var(--green);
+      font-variant-numeric: tabular-nums
+    }
+
+    .allocated-cell {
+      color: var(--text-secondary);
+      font-variant-numeric: tabular-nums
+    }
+
+    .remaining-cell {
+      font-weight: 600;
+      font-variant-numeric: tabular-nums
+    }
+
+    /* ── Pagination ── */
+    .pagination-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 20px;
+      background: var(--surface-elev);
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .page-info {
+      font-size: 13px;
+      color: var(--text-secondary)
+    }
+
+    .page-info b {
+      color: var(--text-primary);
+      font-weight: 600
+    }
+
+    .pager {
+      display: flex;
+      align-items: center;
+      gap: 4px
+    }
+
+    .pg-btn {
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .15s ease;
+      font-family: var(--font-body);
+    }
+
+    .pg-btn:hover:not(:disabled) {
+      background: #fff;
+      border-color: var(--border-strong);
+      color: var(--text-primary)
+    }
+
+    .pg-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed
+    }
+
+    .pg-btn.active {
+      background: var(--text-primary);
+      color: #fff;
+      border-color: var(--text-primary);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .pg-btn svg {
+      width: 14px;
+      height: 14px
+    }
+
+    /* ── Panel overlay ── */
+    .panel-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0);
+      backdrop-filter: blur(0px);
+      -webkit-backdrop-filter: blur(0px);
+      opacity: 0;
+      pointer-events: none;
+      transition: background .3s ease, backdrop-filter .3s ease, opacity .3s ease;
+      z-index: 100;
+    }
+
+    .panel-overlay.open {
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ── Side panel ── */
+    .side-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: 520px;
+      max-width: 100vw;
+      background: var(--surface);
+      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.18);
+      transform: translateX(100%);
+      transition: transform .42s cubic-bezier(0.32, 0.72, 0.2, 1);
+      z-index: 101;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .side-panel.open {
+      transform: translateX(0)
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      height: 64px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+
+    .panel-header h2 {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    .panel-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0, 0, 0, 0.04);
+      color: var(--text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all .18s ease;
+    }
+
+    .panel-close:hover {
+      background: rgba(0, 0, 0, 0.08);
+      color: var(--text-primary);
+      transform: rotate(90deg)
+    }
+
+    .panel-close svg {
+      width: 16px;
+      height: 16px
+    }
+
+    .panel-body {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding: 20px 24px 24px
+    }
+
+    .panel-body>* {
+      max-width: 100%;
+      box-sizing: border-box
+    }
+
+    /* ── Vehicle hero card ── */
+    .vehicle-card {
+      position: relative;
+      background:
+        radial-gradient(120% 100% at 100% 0%, rgba(0, 163, 255, 0.18) 0%, transparent 55%),
+        radial-gradient(80% 100% at 0% 100%, rgba(0, 113, 227, 0.12) 0%, transparent 50%),
+        linear-gradient(135deg, #0a1628 0%, #1d3557 50%, #2a4a73 100%);
+      border-radius: var(--radius-lg);
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #fff;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 24px rgba(10, 22, 40, 0.28), 0 2px 6px rgba(10, 22, 40, 0.12);
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .vehicle-card::before {
+      content: "";
+      position: absolute;
+      top: -40%;
+      right: -20%;
+      width: 280px;
+      height: 280px;
+      background: radial-gradient(circle, rgba(0, 163, 255, 0.18) 0%, transparent 60%);
+      filter: blur(30px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .vehicle-card>* {
+      position: relative;
+      z-index: 1
+    }
+
+    .vc-img-wrap {
+      flex-shrink: 0;
+      padding: 4px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.04));
+      border-radius: 12px;
+      box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .vc-img-wrap img {
+      width: 72px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 8px;
+      display: block
+    }
+
+    .vc-info {
+      flex: 1;
+      min-width: 0
+    }
+
+    .vc-title {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px
+    }
+
+    .vc-title .vc-year {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.65);
+      margin-left: 6px;
+    }
+
+    .vc-chassis {
+      text-align: right;
+      flex-shrink: 0;
+      padding-left: 12px;
+      border-left: 1px solid rgba(255, 255, 255, 0.12)
+    }
+
+    .vc-chassis .vc-label {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.65);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      margin-bottom: 4px
+    }
+
+    .vc-chassis .vc-no {
+      font-family: "SF Mono", Menlo, monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.02em
+    }
+
+    /* ── Amount summary cards ── */
+    .amount-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px
+    }
+
+    .amount-card {
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      border: 1px solid transparent;
+    }
+
+    .amount-card--full {
+      grid-column: 1 / -1;
+    }
+
+    /* Only flex-row when there's a side-section like the Purch. Curr. chip */
+    .amount-card--full:has(.amount-card-curr),
+    .amount-card--full:has(.amount-card-side) {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .amount-card--full .amount-card-main {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* When main block is on the right side (positions swapped) */
+    .amount-card--full .amount-card-main--end {
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .amount-card-curr {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+
+    .amount-card-curr-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: capitalize;
+      color: rgba(22, 101, 52, 0.7);
+    }
+
+    .amount-card-curr-value {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: rgba(22, 101, 52, 0.95);
+      background: rgba(28, 158, 94, 0.12);
+      padding: 4px 12px;
+      border-radius: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    .amount-card.green {
+      background: linear-gradient(135deg, #f0fdf6 0%, #dcfce7 100%);
+      border-color: rgba(28, 158, 94, 0.18);
+    }
+
+    .amount-card.blue {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-color: rgba(0, 113, 227, 0.18);
+    }
+
+    .amount-card.amber {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border-color: rgba(217, 119, 6, 0.2);
+    }
+
+    .amount-card-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: capitalize;
+      margin-bottom: 6px;
+    }
+
+    .amount-card.green .amount-card-label {
+      color: rgba(22, 101, 52, 0.7)
+    }
+
+    .amount-card.amber .amount-card-label {
+      color: rgba(146, 64, 14, 0.7)
+    }
+
+    .amount-card.blue .amount-card-label {
+      color: rgba(0, 86, 179, 0.7)
+    }
+
+    .amount-card-value {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1
+    }
+
+    .amount-card.green .amount-card-value {
+      color: #15803d
+    }
+
+    .amount-card.amber .amount-card-value {
+      color: #b45309
+    }
+
+    .amount-card.blue .amount-card-value {
+      color: #0071e3
+    }
+
+    /* ── History timeline ── */
+    .history-section {
+      margin-bottom: 20px
+    }
+
+    .history-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .history-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border)
+    }
+
+    .history-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0
+    }
+
+    .history-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .history-item:last-child {
+      border-bottom: none
+    }
+
+    .h-dot-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 3px
+    }
+
+    .h-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+      box-shadow: 0 0 0 3px rgba(28, 158, 94, 0.15);
+    }
+
+    .h-line {
+      width: 1px;
+      flex: 1;
+      background: var(--border);
+      margin-top: 4px;
+      min-height: 20px
+    }
+
+    .history-item:last-child .h-line {
+      display: none
+    }
+
+    .h-info {
+      flex: 1
+    }
+
+    .h-amount {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: -0.01em
+    }
+
+    .h-date {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-top: 2px
+    }
+
+    .h-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(28, 158, 94, 0.1);
+      color: var(--green);
+      border: 1px solid rgba(28, 158, 94, 0.15);
+      flex-shrink: 0;
+      align-self: center;
+    }
+
+    /* ── Header row: 12-col grid (3 greeting + 9 KPI cards) ── */
+    .header-row {
+      display: grid;
+      grid-template-columns: 4fr 8fr;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    /* ── KPI Cards ── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f5f9ff 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: var(--shadow-md);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10)
+    }
+
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .stat-icon svg {
+      width: 22px;
+      height: 22px
+    }
+
+    .stat-icon.blue {
+      background: linear-gradient(135deg, #0071e3 0%, #00a3ff 100%);
+      box-shadow: 0 4px 12px rgba(0, 113, 227, 0.28);
+    }
+
+    .stat-icon.indigo {
+      background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.28);
+    }
+
+    .stat-icon.emerald {
+      background: linear-gradient(135deg, #059669 0%, #34d399 100%);
+      box-shadow: 0 4px 12px rgba(5, 150, 105, 0.28);
+    }
+
+    .stat-body {
+      min-width: 0;
+      flex: 1
+    }
+
+    .stat-label {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      text-transform: capitalize;
+      letter-spacing: 0.06em;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+      line-height: 1;
+      margin-top: 4px;
+    }
+
+    .stat-currency {
+      font-weight: 500;
+      opacity: 0.78;
+      margin-right: 2px;
+      font-size: 0.76em;
+      vertical-align: 0.14em
+    }
+
+    .stat-sub {
+      font-size: 11.5px;
+      color: var(--text-tertiary);
+      margin-top: 3px;
+    }
+
+    /* ── Tabs ── */
+    .tabs-bar {
+      display: inline-flex;
+      gap: 6px;
+      margin-bottom: 24px;
+      background: rgba(0, 0, 0, 0.045);
+      padding: 5px;
+      border-radius: 14px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+    .tab-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: all .22s ease;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .tab-btn.active {
+      color: #173559;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10), 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .tab-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 7px;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 20px;
+      transition: all .22s;
+    }
+
+    .tab-btn.active .tab-count {
+      background: rgba(23, 53, 89, 0.12);
+      color: #173559;
+    }
+
+    .tab-btn:not(.active) .tab-count {
+      background: rgba(0, 0, 0, 0.07);
+      color: var(--text-secondary);
+    }
+
+    .tab-btn:not(.active):hover .tab-count {
+      background: rgba(23, 53, 89, 0.08);
+      color: #173559;
+    }
+
+    .tab-panel {
+      display: none
+    }
+
+    .tab-panel.active {
+      display: block
+    }
+
+    /* Completed Payments toolbar — search only, no checkbox/alloc btn */
+    .toolbar-completed {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 12px 14px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="brand">
+        <img class="brand-logo" src="otoz_connect_logo.png" alt="otozFlow"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='block'" />
+        <span style="display:none;font-size:20px;font-weight:700;letter-spacing:-0.02em">
+          otoz<span style="color:#0071e3">.</span>ai
+        </span>
+      </div>
+
+      <div class="nav-center">
+        <a class="nav-link" href="./otoz-dashboard.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          Dashboard
+        </a>
+        <a class="nav-link" href="./otoz-payment.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <rect x="2" y="6" width="20" height="13" rx="2" />
+            <path d="M2 11h20" />
+          </svg>
+          Payment
+        </a>
+        <a class="nav-link active" href="./otoz-payment-allocation.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+          </svg>
+          Payment Allocation
+        </a>
+      </div>
+
+      <div class="nav-right">
+        <a class="help-btn" href="./help.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          Help
+        </a>
+        <button class="logout-btn" onclick="window.location.href='./Index.html'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Logout
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Page ── -->
+  <main class="page">
+
+    <!-- Header: 3-col greeting + 9-col KPI cards -->
+    <div class="header-row">
+
+      <!-- Left: Greeting (3-grid) -->
+      <div class="greeting">
+        <h1>Welcome back, <span class="name">Fahad</span></h1>
+        <p>Track your vehicles and manage shipments — all in one place.</p>
+      </div>
+
+      <!-- Right: KPI Cards (9-grid) -->
+      <div class="kpi-row">
+
+        <!-- Card 1: Total Payment -->
+        <div class="stat-card">
+          <div class="stat-icon blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4" />
+              <path d="M4 6v12c0 1.1.9 2 2 2h14v-4" />
+              <path d="M18 12a2 2 0 0 0 0 4h4v-4z" />
+            </svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-label">Total Payment</div>
+            <div class="stat-value"><span class="stat-currency">$</span><span id="stat-total-payment">653,000</span></div>
+
+          </div>
+        </div>
+
+        <!-- Card 2: Total Allocated Amount -->
+        <div class="stat-card">
+          <div class="stat-icon indigo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-label">Total Allocated</div>
+            <div class="stat-value"><span class="stat-currency">$</span><span id="stat-total-allocated">200,000</span></div>
+
+          </div>
+        </div>
+
+        <!-- Card 3: Total Unallocated Amount -->
+        <div class="stat-card">
+          <div class="stat-icon emerald">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="16" />
+              <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-label">Total Unallocated</div>
+            <div class="stat-value"><span class="stat-currency">$</span><span id="stat-total-unallocated">453,000</span></div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Tabs ── -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" id="tab-pending" onclick="switchTab('pending')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+        </svg>
+        Pending Allocation
+        <span class="tab-count" id="count-pending">20</span>
+      </button>
+      <button class="tab-btn" id="tab-completed" onclick="switchTab('completed')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+        Completed Payments
+        <span class="tab-count" id="count-completed">20</span>
+      </button>
+    </div>
+
+    <!-- ══ TAB 1: Pending Payments ══ -->
+    <div class="tab-panel active" id="panel-pending">
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <div class="filter with-search">
+            <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input type="text" placeholder="Search" oninput="filterTable(this.value)" />
+          </div>
+          <div class="btn-alloc-wrap">
+            <button class="btn-alloc" id="btn-alloc" disabled onclick="openAllocationPage()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Payment Allocation
+            </button>
+            <span class="alloc-tooltip">Please select at least one vehicle to allocate payments</span>
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <div class="filter compact">
+            <select id="rows-select" onchange="changeRows(this.value)">
+              <option value="10">10 Rows Displayed</option>
+              <option value="20" selected>20 Rows Displayed</option>
+              <option value="50">50 Rows Displayed</option>
+            </select>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+          <div class="filter compact">
+            <select id="sort-select" onchange="sortTable(this.value)">
+              <option value="">Sort By</option>
+              <option value="total">Purchase Price</option>
+              <option value="paid">Paid</option>
+              <option value="allocated">Allocated Amount</option>
+              <option value="remaining">Remaining Balance</option>
+            </select>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Table -->
+      <div class="table-card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="cb-th"></th>
+                <th>
+                  <div class="th-inner">Make / Mode / Model Code</div>
+                </th>
+                <th>
+                  <div class="th-inner">Year <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 15l5 5 5-5" />
+                      <path d="M7 9l5-5 5 5" />
+                    </svg></div>
+                </th>
+                <th>
+                  <div class="th-inner">Chassis No. <svg class="sort-ico" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 15l5 5 5-5" />
+                      <path d="M7 9l5-5 5 5" />
+                    </svg></div>
+                </th>
+                <th>
+                  <div class="th-inner">Destination Port</div>
+                </th>
+                <th style="text-align:right">
+                  <div class="th-inner">Purch. Curr.</div>
+                </th>
+                <th>
+                  <div class="th-inner">Purchase Price <svg class="sort-ico" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 15l5 5 5-5" />
+                      <path d="M7 9l5-5 5 5" />
+                    </svg></div>
+                </th>
+                <th>
+                  <div class="th-inner">Paid <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 15l5 5 5-5" />
+                      <path d="M7 9l5-5 5 5" />
+                    </svg></div>
+                </th>
+                <th>
+                  <div class="th-inner">Allocated Amount <svg class="sort-ico" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 15l5 5 5-5" />
+                      <path d="M7 9l5-5 5 5" />
+                    </svg></div>
+                </th>
+                <th>
+                  <div class="th-inner">Remaining Amount <svg class="sort-ico" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 15l5 5 5-5" />
+                      <path d="M7 9l5-5 5 5" />
+                    </svg></div>
+                </th>
+                <th>
+                  <div class="th-inner">View History</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="pay-tbody"></tbody>
+          </table>
+        </div>
+        <div class="pagination-bar">
+          <div class="page-info" id="pay-info">Showing <b>1–20</b> of <b>20</b> rows</div>
+          <div class="pager" id="pay-pager"></div>
+        </div>
+      </div>
+
+    </div><!-- /tab-panel pending -->
+
+    <!-- ══ TAB 2: Completed Payments ══ -->
+    <div class="tab-panel" id="panel-completed">
+
+      <!-- Completed Toolbar -->
+      <div class="toolbar-completed">
+        <div class="filter with-search" style="max-width:260px;">
+          <svg class="search-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input type="text" placeholder="Search" oninput="filterCompleted(this.value)" />
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div class="filter compact">
+            <select id="rows-select-c" onchange="changeRowsCompleted(this.value)">
+              <option value="10">10 Rows Displayed</option>
+              <option value="20" selected>20 Rows Displayed</option>
+              <option value="50">50 Rows Displayed</option>
+            </select>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+          <div class="filter compact">
+            <select id="sort-select-c" onchange="sortCompleted(this.value)">
+              <option value="">Sort By</option>
+              <option value="total">Purchase Price</option>
+              <option value="paid">Paid</option>
+            </select>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completed Table -->
+      <div class="table-card">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  <div class="th-inner">ID <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 15l5 5 5-5" />
+                      <path d="M7 9l5-5 5 5" />
+                    </svg></div>
+                </th>
+                <th>
+                  <div class="th-inner">Make / Mode / Model Code <svg class="sort-ico" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 15l5 5 5-5" />
+                      <path d="M7 9l5-5 5 5" />
+                    </svg></div>
+                </th>
+                <th>
+                  <div class="th-inner">Year <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 15l5 5 5-5" />
+                      <path d="M7 9l5-5 5 5" />
+                    </svg></div>
+                </th>
+                <th>
+                  <div class="th-inner">Chassis No. <svg class="sort-ico" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 15l5 5 5-5" />
+                      <path d="M7 9l5-5 5 5" />
+                    </svg></div>
+                </th>
+                <th style="text-align:right">
+                  <div class="th-inner">Purch. Curr.</div>
+                </th>
+                <th>
+                  <div class="th-inner">Purchase Price <svg class="sort-ico" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 15l5 5 5-5" />
+                      <path d="M7 9l5-5 5 5" />
+                    </svg></div>
+                </th>
+                <th>
+                  <div class="th-inner">Paid <svg class="sort-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M7 15l5 5 5-5" />
+                      <path d="M7 9l5-5 5 5" />
+                    </svg></div>
+                </th>
+                <th>
+                  <div class="th-inner">View History</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="comp-tbody"></tbody>
+          </table>
+        </div>
+        <div class="pagination-bar">
+          <div class="page-info" id="comp-info">Showing <b>1–20</b> of <b>20</b> rows</div>
+          <div class="pager" id="comp-pager"></div>
+        </div>
+      </div>
+
+    </div><!-- /tab-panel completed -->
+
+  </main>
+
+  <script>
+    /* ── Data ── */
+    const PEND_CURRENCIES = ['USD', 'JPY', 'USD', 'EUR', 'JPY', 'USD', 'JPY', 'USD', 'EUR', 'USD'];
+    const DEST_PORTS = ['Mombasa Port', 'Dar es Salaam', 'Durban', 'Lagos', 'Zimbabwe'];
+    const RAW = Array.from({ length: 20 }, (_, i) => ({
+      id: i + 1,
+      make: 'Toyota',
+      model: 'Raize',
+      code: '5BA-A200A',
+      chassis: 'WDC2539052F422655',
+      year: 2022,
+      curr: PEND_CURRENCIES[i % PEND_CURRENCIES.length],
+      dest: DEST_PORTS[i % DEST_PORTS.length],
+      total: 32650,
+      paid: 20000,
+      allocated: i === 2 ? 20.0000 : 10.0000,
+      remaining: 12650,
+      history: [
+        { amount: 5000, date: 'Apr 28, 2026', time: '14:30' },
+        { amount: 7000, date: 'Mar 15, 2026', time: '10:15' },
+        { amount: 3000, date: 'Feb 03, 2026', time: '16:45' },
+        { amount: 5000, date: 'Jan 10, 2026', time: '09:00' },
+      ]
+    }));
+
+    let filtered = [...RAW];
+    let curPage = 1;
+    let perPage = 20;
+
+    /* ── Filter ── */
+    function filterTable(q) {
+      const v = q.trim().toLowerCase();
+      filtered = RAW.filter(r => r.chassis.toLowerCase().includes(v) || (r.make + ' ' + r.model).toLowerCase().includes(v));
+      curPage = 1;
+      render();
+    }
+
+    /* ── Sort ── */
+    function sortTable(key) {
+      if (!key) { filtered = [...RAW]; render(); return; }
+      filtered.sort((a, b) => b[key] - a[key]);
+      curPage = 1;
+      render();
+    }
+
+    /* ── Rows per page ── */
+    function changeRows(val) {
+      perPage = parseInt(val);
+      curPage = 1;
+      render();
+    }
+
+    /* ── Checkbox logic ── */
+    function onRowCheck() {
+      const allBoxes = document.querySelectorAll('.row-cb[data-id]');
+      const checkedBoxes = document.querySelectorAll('.row-cb[data-id]:checked');
+      const btn = document.getElementById('btn-alloc');
+      const selectAll = document.getElementById('select-all');
+
+      // Enable/disable Payment Allocation button
+      if (checkedBoxes.length > 0) {
+        btn.disabled = false;
+        btn.classList.add('active');
+      } else {
+        btn.disabled = true;
+        btn.classList.remove('active');
+      }
+
+      // Update select-all checkbox state
+      if (selectAll) {
+        if (checkedBoxes.length === 0) {
+          selectAll.checked = false;
+          selectAll.indeterminate = false;
+        } else if (checkedBoxes.length === allBoxes.length) {
+          selectAll.checked = true;
+          selectAll.indeterminate = false;
+        } else {
+          selectAll.checked = false;
+          selectAll.indeterminate = true;
+        }
+      }
+    }
+
+    function toggleSelectAll(masterCb) {
+      const allBoxes = document.querySelectorAll('.row-cb[data-id]');
+      allBoxes.forEach(cb => { cb.checked = masterCb.checked; });
+      const btn = document.getElementById('btn-alloc');
+      if (masterCb.checked && allBoxes.length > 0) {
+        btn.disabled = false;
+        btn.classList.add('active');
+      } else {
+        btn.disabled = true;
+        btn.classList.remove('active');
+      }
+    }
+
+    /* ── Render ── */
+    function render() {
+      const tbody = document.getElementById('pay-tbody');
+      const info = document.getElementById('pay-info');
+      const pager = document.getElementById('pay-pager');
+      const total = filtered.length;
+      const pages = Math.max(1, Math.ceil(total / perPage));
+      if (curPage > pages) curPage = pages;
+      const start = (curPage - 1) * perPage;
+      const slice = filtered.slice(start, start + perPage);
+
+      tbody.innerHTML = slice.length
+        ? slice.map(r => `
+        <tr>
+          <td class="cb-td">
+            <input type="checkbox" class="row-cb" data-id="${r.id}" onchange="onRowCheck()" />
+          </td>
+          <td>
+            <div class="make-cell">
+              <div class="name-combined">${r.make} ${r.model}</div>
+              <div class="code">${r.code}</div>
+            </div>
+          </td>
+          <td>${r.year}</td>
+          <td class="chassis-cell">${r.chassis}</td>
+          <td>${r.dest}</td>
+          <td style="text-align:right"><span class="currency-pill">${r.curr}</span></td>
+          <td style="text-align:right;font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums;">${r.total.toLocaleString()}</td>
+          <td style="text-align:right;font-weight:600;color:var(--green);font-variant-numeric:tabular-nums;">$&nbsp;${r.paid.toLocaleString()}</td>
+          <td style="text-align:right;font-weight:600;color:var(--text-secondary);font-variant-numeric:tabular-nums;">$&nbsp;${(10000).toLocaleString()}</td>
+          <td style="text-align:right;font-weight:600;font-variant-numeric:tabular-nums;color:${r.remaining === 0 ? 'var(--green)' : 'var(--danger)'};">
+            ${r.remaining === 0 ? '$&nbsp;0.00' : '$&nbsp;' + r.remaining.toLocaleString()}
+          </td>
+          <td>
+            <button class="btn-history" onclick="openHistoryPanel(${JSON.stringify(r).replace(/"/g, '&quot;')})">
+              View History
+            </button>
+          </td>
+        </tr>`).join('')
+        : `<tr><td colspan="11" style="text-align:center;padding:40px;color:var(--text-tertiary)">No results found</td></tr>`;
+
+      const end = Math.min(start + perPage, total);
+      info.innerHTML = total
+        ? `Showing <b>${start + 1}–${end}</b> of <b>${total}</b> rows`
+        : `No rows`;
+
+      /* Pager */
+      let btns = '';
+      btns += `<button class="pg-btn" onclick="goPage(${curPage - 1})" ${curPage === 1 ? 'disabled' : ''}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>`;
+      for (let p = 1; p <= pages; p++) {
+        if (pages > 7 && p > 2 && p < pages - 1 && Math.abs(p - curPage) > 1) {
+          if (p === 3 || p === pages - 2) btns += `<span style="padding:0 4px;color:var(--text-tertiary)">…</span>`;
+          continue;
+        }
+        btns += `<button class="pg-btn${p === curPage ? ' active' : ''}" onclick="goPage(${p})">${p}</button>`;
+      }
+      btns += `<button class="pg-btn" onclick="goPage(${curPage + 1})" ${curPage === pages ? 'disabled' : ''}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>`;
+      pager.innerHTML = btns;
+
+      // Reset select-all & button after re-render
+      const selectAllReset = document.getElementById('select-all');
+      if (selectAllReset) {
+        selectAllReset.checked = false;
+        selectAllReset.indeterminate = false;
+      }
+      const btn = document.getElementById('btn-alloc');
+      btn.disabled = true;
+      btn.classList.remove('active');
+    }
+
+    function goPage(p) {
+      const pages = Math.max(1, Math.ceil(filtered.length / perPage));
+      if (p < 1 || p > pages) return;
+      curPage = p;
+      render();
+      window.scrollTo(0, 0);
+    }
+
+    /* ── Init ── */
+    render();
+
+    /* ── Tab Switching ── */
+    function switchTab(tab) {
+      document.getElementById('tab-pending').classList.toggle('active', tab === 'pending');
+      document.getElementById('tab-completed').classList.toggle('active', tab === 'completed');
+      document.getElementById('panel-pending').classList.toggle('active', tab === 'pending');
+      document.getElementById('panel-completed').classList.toggle('active', tab === 'completed');
+      if (tab === 'completed') renderCompleted();
+    }
+
+    /* ── Completed Payments Data ── */
+    const COMP_RAW = Array.from({ length: 20 }, (_, i) => ({
+      id: i + 1,
+      make: 'Toyota',
+      model: 'Raize',
+      code: '5BA-A200A',
+      ref: 'A' + String(116 + i).padStart(5, '0'),
+      chassis: 'WDC2539052F422655',
+      year: 2022,
+      curr: PEND_CURRENCIES[i % PEND_CURRENCIES.length],
+      total: 32650,
+      paid: 32650,
+      remaining: 0,
+      history: [
+        { amount: 10000, date: 'Apr 28, 2026', time: '14:30' },
+        { amount: 10000, date: 'Mar 15, 2026', time: '10:15' },
+        { amount: 7650, date: 'Feb 03, 2026', time: '16:45' },
+        { amount: 5000, date: 'Jan 10, 2026', time: '09:00' },
+      ]
+    }));
+
+    let compFiltered = [...COMP_RAW];
+    let compPage = 1;
+    let compPerPage = 20;
+
+    document.getElementById('count-pending').textContent = RAW.length;
+    document.getElementById('count-completed').textContent = COMP_RAW.length;
+
+    function filterCompleted(q) {
+      const v = q.trim().toLowerCase();
+      compFiltered = COMP_RAW.filter(r => r.chassis.toLowerCase().includes(v) || (r.make + ' ' + r.model).toLowerCase().includes(v));
+      compPage = 1;
+      renderCompleted();
+    }
+
+    function sortCompleted(key) {
+      if (!key) { compFiltered = [...COMP_RAW]; renderCompleted(); return; }
+      compFiltered.sort((a, b) => b[key] - a[key]);
+      compPage = 1;
+      renderCompleted();
+    }
+
+    function changeRowsCompleted(val) {
+      compPerPage = parseInt(val);
+      compPage = 1;
+      renderCompleted();
+    }
+
+    function renderCompleted() {
+      const tbody = document.getElementById('comp-tbody');
+      const info = document.getElementById('comp-info');
+      const pager = document.getElementById('comp-pager');
+      const total = compFiltered.length;
+      const pages = Math.max(1, Math.ceil(total / compPerPage));
+      if (compPage > pages) compPage = pages;
+      const start = (compPage - 1) * compPerPage;
+      const slice = compFiltered.slice(start, start + compPerPage);
+
+      tbody.innerHTML = slice.length
+        ? slice.map(r => `
+        <tr>
+          <td style="font-size:13px;font-weight:500;color:var(--text-secondary);">${r.id}</td>
+          <td>
+            <div class="make-cell">
+              <div class="name-combined">${r.make} ${r.model}</div>
+              <div class="code">${r.code}</div>
+            </div>
+          </td>
+          <td style="font-size:13px;color:var(--text-primary);">${r.year}</td>
+          <td class="chassis-cell">${r.chassis}</td>
+          <td style="text-align:right"><span class="currency-pill">${r.curr}</span></td>
+          <td class="amount-cell" style="text-align:right;font-variant-numeric:tabular-nums;">${r.paid.toLocaleString()}</td>
+          <td class="paid-cell" style="text-align:right;font-variant-numeric:tabular-nums;">$${r.paid.toLocaleString()}</td>
+          <td>
+            <button class="btn-history" onclick="openHistoryPanel(${JSON.stringify(r).replace(/"/g, '&quot;')}, false)">
+              View History
+            </button>
+          </td>
+        </tr>`).join('')
+        : `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-tertiary)">No results found</td></tr>`;
+
+      const end = Math.min(start + compPerPage, total);
+      info.innerHTML = total
+        ? `Showing <b>${start + 1}–${end}</b> of <b>${total}</b> rows`
+        : `No rows`;
+
+      let btns = '';
+      btns += `<button class="pg-btn" onclick="goPageC(${compPage - 1})" ${compPage === 1 ? 'disabled' : ''}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>`;
+      for (let p = 1; p <= pages; p++) {
+        if (pages > 7 && p > 2 && p < pages - 1 && Math.abs(p - compPage) > 1) {
+          if (p === 3 || p === pages - 2) btns += `<span style="padding:0 4px;color:var(--text-tertiary)">…</span>`;
+          continue;
+        }
+        btns += `<button class="pg-btn${p === compPage ? ' active' : ''}" onclick="goPageC(${p})">${p}</button>`;
+      }
+      btns += `<button class="pg-btn" onclick="goPageC(${compPage + 1})" ${compPage === pages ? 'disabled' : ''}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>`;
+      pager.innerHTML = btns;
+    }
+
+    function goPageC(p) {
+      const pages = Math.max(1, Math.ceil(compFiltered.length / compPerPage));
+      if (p < 1 || p > pages) return;
+      compPage = p;
+      renderCompleted();
+      window.scrollTo(0, 0);
+    }
+
+    function openAllocationPage() {
+      const checked = document.querySelectorAll('.row-cb[data-id]:checked');
+      if (checked.length === 0) return;
+
+      const selectedIds = Array.from(checked).map(cb => parseInt(cb.dataset.id));
+      const selectedRows = RAW.filter(r => selectedIds.includes(r.id));
+
+      // Read live stat values from main page so allocation page mirrors them
+      const statTotalPayment     = (document.getElementById('stat-total-payment')     || {}).textContent || '0';
+      const statTotalAllocated   = (document.getElementById('stat-total-allocated')   || {}).textContent || '0';
+      const statTotalUnallocated = (document.getElementById('stat-total-unallocated') || {}).textContent || '0';
+
+      const tableRows = selectedRows.map((r, idx) => `
+      <tr>
+        <td>
+          <div class="al-make-name">${r.make} ${r.model}</div>
+          <div class="al-make-code">${r.code}</div>
+        </td>
+        <td class="al-year">${r.year}</td>
+        <td class="al-chassis">${r.chassis}</td>
+        <td style="text-align:right"><span class="currency-pill">${r.curr}</span></td>
+        <td class="al-price">${r.total.toLocaleString()}</td>
+        <td class="al-paid">$&nbsp;${r.paid.toLocaleString()}</td>
+        <td class="al-remaining ${r.remaining === 0 ? 'zero' : 'nonzero'}">
+          $&nbsp;${r.remaining === 0 ? '0.00' : r.remaining.toLocaleString()}
+        </td>
+        <td class="al-input-cell">
+          <div class="al-input-col">
+            <div class="al-input-wrap">
+              <span class="al-dollar">$</span>
+              <input
+                type="text" inputmode="decimal"
+                placeholder="Enter Amount"
+                class="al-input"
+                data-max="${r.remaining}"
+                data-rowid="${r.id}"
+                data-idx="${idx}"
+                oninput="formatAmountInput(this)"
+                onfocus="this.parentElement.classList.add('focused')"
+                onblur="this.parentElement.classList.remove('focused')"
+              />
+            </div>
+            <span class="al-error-msg" data-for="${r.id}">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span class="al-error-text"></span>
+            </span>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+
+      const pageHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Payment Allocation — otoz.ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:             #f5f5f7;
+    --surface:        #ffffff;
+    --surface-elev:   #fbfbfd;
+    --border:         rgba(0,0,0,0.06);
+    --border-strong:  rgba(0,0,0,0.12);
+    --divider:        rgba(0,0,0,0.04);
+    --text-primary:   #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-tertiary:  #86868b;
+    --green:          #1c9e5e;
+    --danger:         #ff3b30;
+    --navy:           #173559;
+    --shadow-sm:      0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md:      0 4px 16px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --radius-sm:      8px;
+    --radius-md:      12px;
+    --radius-lg:      18px;
+    --radius-pill:    999px;
+    --font: -apple-system,BlinkMacSystemFont,"SF Pro Text","Inter",sans-serif;
+    --font-display: -apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);font-family:var(--font);font-size:14px;color:var(--text-primary);-webkit-font-smoothing:antialiased;letter-spacing:-0.01em;line-height:1.45;}
+
+  /* ── Navbar — identical to main page ── */
+  .navbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,0.72);
+    backdrop-filter:saturate(180%) blur(20px);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid var(--border);
+    height:64px;display:flex;align-items:center;padding:0 20px;
+  }
+  .nav-inner{
+    width:100%;display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;gap:24px;
+  }
+  .brand{display:flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:16px;font-weight:700;color:var(--text-primary);letter-spacing:-0.02em;text-decoration:none;}
+  .brand-logo{height:28px;width:auto;display:block;object-fit:contain;transition:transform .25s ease,filter .25s ease}
+  .brand-logo:hover{transform:scale(1.04);filter:drop-shadow(0 2px 6px rgba(0,113,227,.25))}
+  .nav-center{
+    display:flex;gap:4px;
+    background:rgba(0,0,0,0.04);
+    padding:4px;border-radius:var(--radius-pill);
+  }
+  .nav-link{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:7px 16px;font-size:13px;font-weight:500;
+    color:var(--text-secondary);text-decoration:none;
+    border-radius:var(--radius-pill);transition:all .18s ease;
+    cursor:pointer;border:none;background:transparent;font-family:var(--font);
+  }
+  .nav-link:hover{color:var(--text-primary);background:rgba(255,255,255,0.6)}
+  .nav-link.active{background:#fff;color:var(--text-primary);box-shadow:var(--shadow-sm)}
+  .nav-link svg{width:14px;height:14px}
+  .nav-right{display:flex;justify-content:flex-end;align-items:center;gap:8px}
+  .help-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:7px 14px;border:1px solid rgba(0,113,227,0.18);
+    border-radius:var(--radius-pill);background:rgba(0,113,227,0.09);
+    color:#0071e3;font-size:13px;font-weight:500;
+    cursor:pointer;transition:all .18s ease;font-family:var(--font);
+    text-decoration:none
+  }
+  .help-btn:hover{background:rgba(0,113,227,0.15);transform:translateY(-1px)}
+  .help-btn svg{width:13px;height:13px}
+  .logout-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:7px 14px;background:var(--text-primary);color:#fff;
+    font-size:13px;font-weight:500;border:none;
+    border-radius:var(--radius-pill);cursor:pointer;
+    transition:all .18s ease;font-family:var(--font);
+  }
+  .logout-btn:hover{background:#000;transform:translateY(-1px)}
+  .logout-btn svg{width:13px;height:13px}
+
+  /* ── Page shell ── */
+  .page{max-width:100%;padding:28px 20px 80px}
+
+  /* ── Greeting ── */
+  .greeting{margin-bottom:0}
+  .greeting h1{font-family:var(--font-display);font-size:34px;font-weight:700;letter-spacing:-0.025em;color:var(--text-primary);line-height:1.1;}
+  .greeting h1 .name{background:linear-gradient(135deg,#1d1d1f 0%,#0071e3 90%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .greeting p{margin-top:6px;color:var(--text-secondary);font-size:15px}
+
+  /* ── Toolbar row above table ── */
+  .alloc-toolbar{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius-lg);padding:12px 16px;
+    margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;
+    box-shadow:var(--shadow-sm);gap:12px;
+  }
+  .alloc-toolbar-left{display:flex;align-items:center;gap:10px}
+  .alloc-toolbar-right{display:flex;align-items:center;gap:10px}
+
+  /* Search input */
+  .search-wrap{position:relative}
+  .search-wrap input{
+    height:38px;padding:0 14px 0 36px;width:220px;
+    background:var(--surface-elev);border:1px solid var(--border);
+    border-radius:var(--radius-md);font-family:var(--font);
+    font-size:13px;color:var(--text-primary);
+    transition:all .18s ease;outline:none;
+  }
+  .search-wrap input:focus{border-color:#0071e3;box-shadow:0 0 0 3px rgba(0,113,227,0.15);background:#fff;}
+  .search-wrap .s-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--text-tertiary);width:14px;height:14px;pointer-events:none}
+
+  /* Rows / Sort dropdowns */
+  .ctrl-wrap{position:relative;flex:0 0 auto}
+  .ctrl-wrap select{
+    height:38px;padding:0 34px 0 14px;
+    background:var(--surface-elev);border:1px solid var(--border);
+    border-radius:var(--radius-md);font-family:var(--font);
+    font-size:13px;color:var(--text-primary);
+    appearance:none;-webkit-appearance:none;cursor:pointer;
+    transition:all .18s ease;outline:none;min-width:140px;
+  }
+  .ctrl-wrap select:focus{border-color:#0071e3;box-shadow:0 0 0 3px rgba(0,113,227,0.15);}
+  .ctrl-wrap .chev{position:absolute;right:11px;top:50%;transform:translateY(-50%);color:var(--text-tertiary);width:14px;height:14px;pointer-events:none}
+
+  /* ── Table card ── */
+  .table-card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    box-shadow:var(--shadow-md);
+  }
+  .table-wrap{overflow-x:auto;width:100%}
+  table{width:100%;border-collapse:separate;border-spacing:0;min-width:900px}
+
+  thead th{
+    background:var(--surface-elev);text-align:left;
+    font-size:11px;font-weight:600;color:var(--text-secondary);
+    text-transform:capitalize;letter-spacing:0.07em;
+    padding:13px 16px;border-bottom:1px solid var(--border);
+    white-space:nowrap;
+  }
+  /* Last column header right-aligned */
+  thead th:last-child{text-align:right;padding-right:20px}
+
+  tbody td{
+    padding:16px;font-size:13px;color:var(--text-primary);
+    border-bottom:1px solid var(--divider);vertical-align:middle;
+  }
+  tbody tr{transition:background .15s ease}
+  tbody tr:hover{background:rgba(23,53,89,0.018)}
+  tbody tr:last-child td{border-bottom:none}
+
+  /* Make/Model cell */
+  .al-make-name{font-weight:700;color:#000;font-size:13.5px;letter-spacing:-0.01em;line-height:1.4}
+  .al-make-code{font-family:"SF Mono",Menlo,monospace;font-size:11px;color:var(--text-tertiary);margin-top:1px}
+  .al-year{font-size:13px;color:var(--text-primary)}
+  .al-chassis{font-family:"SF Mono",Menlo,monospace;font-size:12px;color:var(--text-secondary)}
+  .al-price{font-weight:700;color:var(--text-primary);font-variant-numeric:tabular-nums;text-align:right}
+  .al-paid{font-weight:600;color:var(--green);font-variant-numeric:tabular-nums;text-align:right}
+  .al-remaining{font-weight:600;font-variant-numeric:tabular-nums;text-align:right}
+  .al-remaining.nonzero{color:var(--danger)}
+  .al-remaining.zero{color:var(--green)}
+
+  /* Allocate Amount input cell */
+  .al-input-cell{text-align:right;padding-right:20px}
+  .al-input-wrap{
+    display:inline-flex;align-items:center;
+    position:relative;
+  }
+  .al-input-col{
+    display:inline-flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:6px;
+  }
+  .al-error-msg{
+    display:none;
+    font-size:11.5px;
+    font-weight:500;
+    color:var(--danger);
+    line-height:1.35;
+    max-width:220px;
+    text-align:right;
+    white-space:normal;
+    animation:alErrFade .18s ease-out;
+  }
+  .al-error-msg.show{display:inline-flex;align-items:flex-start;gap:5px}
+  .al-error-msg svg{
+    width:13px;height:13px;flex-shrink:0;margin-top:1px;
+    stroke:var(--danger);
+  }
+  .al-error-text{flex:1}
+  @keyframes alErrFade{
+    from{opacity:0;transform:translateY(-2px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+  .al-dollar{
+    position:absolute;left:12px;top:50%;transform:translateY(-50%);
+    color:var(--text-secondary);font-size:13px;font-weight:500;
+    pointer-events:none;z-index:1;
+  }
+  .al-input{
+    width:180px;height:40px;
+    padding:0 14px 0 26px;
+    border:1.5px solid var(--border-strong);
+    border-radius:var(--radius-md);
+    font-family:var(--font);font-size:13px;font-weight:500;
+    color:var(--text-primary);background:#fff;
+    outline:none;
+    transition:border-color .18s,box-shadow .18s;
+    -moz-appearance:textfield;
+  }
+  .al-input::placeholder{color:var(--text-tertiary);font-weight:400}
+  .al-input::-webkit-outer-spin-button,
+  .al-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .al-input-wrap.focused .al-input{
+    border-color:var(--navy);
+    box-shadow:0 0 0 3px rgba(23,53,89,0.12);
+  }
+  .al-input.error{border-color:var(--danger) !important;box-shadow:0 0 0 3px rgba(255,59,48,0.12) !important}
+
+  /* ── Total Unallocated Bar (right-aligned, ~1/4 width) ── */
+  .balance-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:14px;
+  }
+  .balance-bar{
+    grid-column:4;
+    background:linear-gradient(135deg,#173559 0%,#1d3f68 100%);
+    border-radius:var(--radius-lg);
+    padding:14px 18px;
+    display:flex;align-items:center;justify-content:space-between;
+    box-shadow:0 6px 20px rgba(23,53,89,0.18);
+    color:#fff;
+    gap:12px;
+  }
+  .balance-bar-left{
+    display:flex;align-items:center;gap:10px;min-width:0;
+  }
+  .balance-icon{
+    width:34px;height:34px;border-radius:9px;
+    background:rgba(255,255,255,0.14);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .balance-icon svg{width:18px;height:18px;color:#fff;}
+  .balance-text{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .balance-label{
+    font-size:10.5px;font-weight:500;
+    text-transform:uppercase;letter-spacing:0.06em;
+    color:rgba(255,255,255,0.7);
+    white-space:nowrap;
+  }
+  .balance-sub{
+    font-size:11px;color:rgba(255,255,255,0.55);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .balance-bar-right{
+    font-family:var(--font-display);
+    font-size:20px;font-weight:700;
+    letter-spacing:-0.02em;
+    color:#fff;
+    transition:color .18s ease;
+    white-space:nowrap;
+  }
+  .balance-bar-right.warn{ color:#ffb84d; }
+  .balance-bar-right.negative{ color:#ff6b5e; }
+
+  /* ── Footer / action bar ── */
+  .table-footer{
+    display:flex;justify-content:flex-end;align-items:center;
+    padding:16px 20px;
+    background:var(--surface-elev);
+    border-top:1px solid var(--border);
+  }
+  .btn-allocate{
+    display:inline-flex;align-items:center;gap:8px;
+    height:44px;padding:0 28px;
+    background:var(--navy);color:#fff;
+    border:none;border-radius:var(--radius-md);
+    font-family:var(--font);font-size:14px;font-weight:600;
+    cursor:pointer;transition:all .2s ease;
+    box-shadow:0 4px 14px rgba(23,53,89,0.28);
+    letter-spacing:-0.01em;
+  }
+  .btn-allocate:hover{background:#1d3f68;transform:translateY(-1px);box-shadow:0 6px 20px rgba(23,53,89,0.36)}
+  .btn-allocate:active{transform:translateY(0);box-shadow:0 2px 8px rgba(23,53,89,0.28)}
+  .btn-allocate svg{width:15px;height:15px}
+
+  /* ── Confirmation Modal ── */
+  .modal-overlay{
+    position:fixed;inset:0;
+    background:rgba(0,0,0,0.45);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;
+    z-index:200;
+    opacity:0;pointer-events:none;
+    transition:opacity .25s ease;
+  }
+  .modal-overlay.open{opacity:1;pointer-events:auto;}
+  .modal{
+    background:#fff;
+    border-radius:20px;
+    width:540px;max-width:calc(100vw - 40px);
+    max-height:80vh;
+    display:flex;flex-direction:column;
+    box-shadow:0 24px 64px rgba(0,0,0,0.22),0 4px 16px rgba(0,0,0,0.10);
+    transform:translateY(16px) scale(0.98);
+    transition:transform .28s cubic-bezier(0.34,1.56,0.64,1),opacity .25s ease;
+    opacity:0;
+  }
+  .modal-overlay.open .modal{transform:translateY(0) scale(1);opacity:1;}
+  .modal-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:20px 24px 0;flex-shrink:0;
+  }
+  .modal-head-left{display:flex;align-items:center;gap:12px;}
+  .modal-icon{
+    width:42px;height:42px;border-radius:12px;flex-shrink:0;
+    background:linear-gradient(135deg,#173559 0%,#2a5298 100%);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 12px rgba(23,53,89,0.28);
+  }
+  .modal-icon svg{width:20px;height:20px;color:#fff;}
+  .modal-title{font-size:17px;font-weight:700;color:#1d1d1f;letter-spacing:-0.02em;}
+  .modal-sub{font-size:12.5px;color:#6e6e73;margin-top:2px;}
+  .modal-close{
+    width:30px;height:30px;border-radius:50%;border:none;
+    background:rgba(0,0,0,0.05);color:#6e6e73;
+    display:inline-flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:all .18s ease;flex-shrink:0;
+  }
+  .modal-close:hover{background:rgba(0,0,0,0.10);color:#1d1d1f;transform:rotate(90deg);}
+  .modal-close svg{width:14px;height:14px;}
+  .modal-divider{height:1px;background:rgba(0,0,0,0.06);margin:16px 0 0;}
+  .modal-body{overflow-y:auto;padding:0 24px;flex:1;}
+  .modal-body::-webkit-scrollbar{width:4px;}
+  .modal-body::-webkit-scrollbar-track{background:transparent;}
+  .modal-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.12);border-radius:4px;}
+
+  /* Summary total strip */
+  .modal-total-strip{
+    display:flex;align-items:center;justify-content:space-between;
+    background:linear-gradient(135deg,#0d2137 0%,#173559 100%);
+    border-radius:12px;padding:14px 18px;margin:18px 0 14px;
+    color:#fff;
+  }
+  .modal-total-label{font-size:12px;font-weight:600;opacity:0.78;text-transform:capitalize;letter-spacing:0.06em;}
+  .modal-total-value{font-size:22px;font-weight:700;letter-spacing:-0.02em;}
+  .modal-total-count{font-size:11.5px;opacity:0.65;margin-top:1px;}
+
+  /* Vehicle rows in modal */
+  .modal-vehicle-list{display:flex;flex-direction:column;gap:0;margin-bottom:18px;}
+  .modal-vehicle-row{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:13px 0;
+    border-bottom:1px solid rgba(0,0,0,0.05);
+  }
+  .modal-vehicle-row:last-child{border-bottom:none;}
+  .mvr-left{display:flex;align-items:center;gap:10px;min-width:0;}
+  .mvr-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--green);flex-shrink:0;
+    box-shadow:0 0 0 3px rgba(28,158,94,0.15);
+  }
+  .mvr-info{min-width:0;}
+  .mvr-name{font-size:13px;font-weight:700;color:#000;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .mvr-chassis{font-family:"SF Mono",Menlo,monospace;font-size:11px;color:#86868b;margin-top:1px;}
+  .mvr-right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+  .mvr-amount{font-size:15px;font-weight:700;color:#173559;letter-spacing:-0.01em;}
+  .mvr-badge{
+    font-size:11px;font-weight:600;padding:3px 9px;
+    border-radius:999px;
+    background:rgba(28,158,94,0.1);color:#1c9e5e;
+    border:1px solid rgba(28,158,94,0.18);
+  }
+
+  .modal-foot{
+    display:flex;align-items:center;justify-content:flex-end;gap:10px;
+    padding:16px 24px;
+    border-top:1px solid rgba(0,0,0,0.06);
+    flex-shrink:0;
+  }
+  .btn-cancel-modal{
+    height:40px;padding:0 20px;
+    border:1.5px solid rgba(0,0,0,0.14);background:#fff;
+    border-radius:10px;font-size:13px;font-weight:600;
+    color:#1d1d1f;cursor:pointer;font-family:var(--font);
+    transition:all .18s;
+    display:inline-flex;align-items:center;gap:7px;
+  }
+  .btn-cancel-modal svg{width:14px;height:14px;}
+  .btn-cancel-modal:hover{background:#f5f5f7;border-color:rgba(0,0,0,0.22);}
+  .btn-confirm-modal{
+    height:40px;padding:0 22px;
+    background:#173559;color:#fff;border:none;
+    border-radius:10px;font-size:13px;font-weight:600;
+    cursor:pointer;font-family:var(--font);
+    transition:all .2s;
+    box-shadow:0 4px 14px rgba(23,53,89,0.28);
+    display:inline-flex;align-items:center;gap:7px;
+  }
+  .btn-confirm-modal:hover{background:#1d3f68;transform:translateY(-1px);box-shadow:0 6px 18px rgba(23,53,89,0.36);}
+  .btn-confirm-modal svg{width:14px;height:14px;}
+
+  /* Success state */
+  .modal-success{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:32px 24px 28px;text-align:center;
+  }
+  .success-ring{
+    width:64px;height:64px;border-radius:50%;
+    background:linear-gradient(135deg,#d1fae5 0%,#a7f3d0 100%);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:16px;
+    box-shadow:0 0 0 8px rgba(28,158,94,0.08);
+  }
+  .success-ring svg{width:28px;height:28px;color:#1c9e5e;}
+  .success-title{font-size:17px;font-weight:700;color:#1d1d1f;letter-spacing:-0.02em;margin-bottom:6px;}
+  .success-msg{font-size:13px;color:#6e6e73;line-height:1.5;max-width:320px;}
+  .btn-done{
+    margin-top:20px;height:40px;padding:0 28px;
+    background:#173559;color:#fff;border:none;
+    border-radius:10px;font-size:13px;font-weight:600;
+    cursor:pointer;font-family:var(--font-body);
+    box-shadow:0 4px 14px rgba(23,53,89,0.28);
+    transition:all .2s;
+  }
+  .btn-done:hover{background:#1d3f68;transform:translateY(-1px);}
+
+  /* Currency pill — matching Wallet page style */
+  .currency-pill{
+    display:inline-block;padding:2px 8px;
+    background:rgba(0,0,0,0.04);border-radius:6px;
+    font-size:11px;font-weight:600;color:var(--text-secondary);
+    letter-spacing:0.02em;
+  }
+
+  /* ── Header row: 12-col grid (3 greeting + 9 KPI cards) — mirrored from main page ── */
+  .header-row{
+    display:grid;
+    grid-template-columns:4fr 8fr;
+    gap:24px;
+    align-items:center;
+    margin-bottom:28px;
+  }
+
+  /* ── KPI Stat Cards — mirrored from main page ── */
+  .kpi-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:16px;
+  }
+  .stat-card{
+    background:linear-gradient(135deg,#ffffff 0%,#f5f9ff 100%);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    padding:16px 20px;
+    display:flex;align-items:center;gap:14px;
+    box-shadow:var(--shadow-md);
+    transition:transform .2s ease,box-shadow .2s ease;
+  }
+  .stat-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(0,0,0,0.10);
+  }
+  .stat-icon{
+    width:44px;height:44px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;flex-shrink:0;
+  }
+  .stat-icon svg{width:22px;height:22px;}
+  .stat-icon.blue{
+    background:linear-gradient(135deg,#0071e3 0%,#00a3ff 100%);
+    box-shadow:0 4px 12px rgba(0,113,227,0.28);
+  }
+  .stat-icon.indigo{
+    background:linear-gradient(135deg,#4f46e5 0%,#818cf8 100%);
+    box-shadow:0 4px 12px rgba(79,70,229,0.28);
+  }
+  .stat-icon.emerald{
+    background:linear-gradient(135deg,#059669 0%,#34d399 100%);
+    box-shadow:0 4px 12px rgba(5,150,105,0.28);
+  }
+  .stat-body{min-width:0;flex:1;}
+  .stat-label{
+    font-size:11.5px;color:var(--text-secondary);
+    text-transform:capitalize;letter-spacing:0.06em;
+    font-weight:500;white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis;
+  }
+  .stat-value{
+    font-family:var(--font-display);
+    font-size:24px;font-weight:700;
+    color:var(--text-primary);
+    letter-spacing:-0.02em;line-height:1;margin-top:4px;
+  }
+  .stat-currency{
+    font-weight:500;opacity:0.78;margin-right:2px;
+    font-size:0.76em;vertical-align:0.14em;
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Navbar — matching main page ── -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="brand">
+      <img class="brand-logo" src="oto-flow Logo.png" alt="otozFlow" />
+    </div>
+    <div class="nav-center">
+      <button class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </button>
+      <button class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        Wallet
+      </button>
+      <button class="nav-link active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Payment Allocation
+      </button>
+    </div>
+    <div class="nav-right">
+      <a class="help-btn" href="./help.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Help
+      </a>
+      <button class="logout-btn" onclick="window.location.href='./Index.html'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Page ── -->
+<main class="page">
+
+  <!-- Header: 3-col greeting + 9-col KPI cards — mirrored from main page -->
+  <div class="header-row">
+
+    <!-- Left: Greeting -->
+    <div class="greeting">
+      <h1>Welcome back, <span class="name">Fahad</span></h1>
+      <p>Track your vehicles and manage shipments — all in one place.</p>
+    </div>
+
+    <!-- Right: KPI Cards (mirrored from main page) -->
+    <div class="kpi-row">
+
+      <!-- Card 1: Total Payment -->
+      <div class="stat-card">
+        <div class="stat-icon blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/>
+            <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/>
+            <path d="M18 12a2 2 0 0 0 0 4h4v-4z"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <div class="stat-label">Total Payment</div>
+          <div class="stat-value"><span class="stat-currency">$</span>${statTotalPayment}</div>
+        </div>
+      </div>
+
+      <!-- Card 2: Total Allocated -->
+      <div class="stat-card">
+        <div class="stat-icon indigo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <div class="stat-label">Total Allocated</div>
+          <div class="stat-value"><span class="stat-currency">$</span>${statTotalAllocated}</div>
+        </div>
+      </div>
+
+      <!-- Card 3: Total Unallocated -->
+      <div class="stat-card">
+        <div class="stat-icon emerald">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="16"/>
+            <line x1="8" y1="12" x2="16" y2="12"/>
+          </svg>
+        </div>
+        <div class="stat-body">
+          <div class="stat-label">Total Unallocated</div>
+          <div class="stat-value"><span class="stat-currency">$</span>${statTotalUnallocated}</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Total Unallocated Bar (live updates as user enters amounts) -->
+  <div class="balance-row">
+    <div class="balance-bar">
+      <div class="balance-bar-left">
+        <div class="balance-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2"/>
+            <line x1="2" y1="10" x2="22" y2="10"/>
+            <line x1="6" y1="15" x2="10" y2="15"/>
+          </svg>
+        </div>
+        <div class="balance-text">
+          <div class="balance-label">Total Unallocated</div>
+          <div class="balance-sub">Updates as you allocate</div>
+        </div>
+      </div>
+      <div class="balance-bar-right" id="balance-amount" data-initial="${statTotalUnallocated}">$${statTotalUnallocated}</div>
+    </div>
+  </div>
+
+  <!-- Table card -->
+  <div class="table-card">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th><div style="display:inline-flex;align-items:center;gap:5px;">Make<br>Mode<br>Model code</div></th>
+            <th><div style="display:inline-flex;align-items:center;gap:5px;">Year<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
+            <th><div style="display:inline-flex;align-items:center;gap:5px;">Chassis No.<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
+            <th style="text-align:right"><div style="display:inline-flex;align-items:center;gap:5px;">Purch. Curr.</div></th>
+            <th style="text-align:right"><div style="display:inline-flex;align-items:center;gap:5px;">Purchase Price<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
+            <th style="text-align:right"><div style="display:inline-flex;align-items:center;gap:5px;">Paid<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
+            <th style="text-align:right"><div style="display:inline-flex;align-items:center;gap:5px;">Remaining<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg></div></th>
+            <th style="text-align:right">Allocate Amount</th>
+          </tr>
+        </thead>
+        <tbody id="alloc-tbody">${tableRows}</tbody>
+      </table>
+    </div>
+    <div class="table-footer">
+      <button class="btn-allocate" onclick="submitAllocation()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        Allocate Amount
+      </button>
+    </div>
+  </div>
+
+</main>
+
+<!-- ── Confirmation Modal ── -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" id="modal">
+
+    <!-- Default: confirmation view -->
+    <div id="modal-confirm-view">
+      <div class="modal-head">
+        <div class="modal-head-left">
+          <div class="modal-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div>
+            <div class="modal-title">Confirm Payment Allocation</div>
+            <div class="modal-sub" id="modal-sub">Review and confirm the allocations below</div>
+          </div>
+        </div>
+        <button class="modal-close" onclick="closeModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-divider"></div>
+
+      <div class="modal-body">
+        <!-- Total strip -->
+        <div class="modal-total-strip">
+          <div>
+            <div class="modal-total-label">Total Allocation Amount</div>
+            <div class="modal-total-count" id="modal-total-count"></div>
+          </div>
+          <div class="modal-total-value" id="modal-total-value">$0.00</div>
+        </div>
+
+        <!-- Per-vehicle rows -->
+        <div class="modal-vehicle-list" id="modal-vehicle-list"></div>
+      </div>
+
+      <div class="modal-foot">
+        <button class="btn-cancel-modal" onclick="closeModal()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          Cancel
+        </button>
+        <button class="btn-confirm-modal" onclick="confirmAllocation()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Confirm Allocation
+        </button>
+      </div>
+    </div>
+
+    <!-- Success view (shown after confirm) -->
+    <div id="modal-success-view" style="display:none;">
+      <div class="modal-success">
+        <div class="success-ring">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="success-title">Allocation Confirmed!</div>
+        <div class="success-msg" id="success-msg">Your payment allocation has been processed successfully.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const ROWS = ${JSON.stringify(selectedRows)};
+  let filtered = [...ROWS];
+
+  function filterRows(q) {
+    const v = q.trim().toLowerCase();
+    filtered = ROWS.filter(r =>
+      r.chassis.toLowerCase().includes(v) ||
+      (r.make + ' ' + r.model).toLowerCase().includes(v)
+    );
+    renderTable();
+  }
+
+  function sortRows(key) {
+    if (!key) { filtered = [...ROWS]; }
+    else { filtered = [...filtered].sort((a,b) => b[key] - a[key]); }
+    renderTable();
+  }
+
+  function changeRows(val) { renderTable(); }
+
+  function renderTable() {
+    const tbody = document.getElementById('alloc-tbody');
+    tbody.innerHTML = filtered.map((r, idx) => \`
+      <tr>
+        <td>
+          <div class="al-make-name">\${r.make} \${r.model}</div>
+          <div class="al-make-code">\${r.code}</div>
+        </td>
+        <td class="al-year">\${r.year}</td>
+        <td class="al-chassis">\${r.chassis}</td>
+        <td style="text-align:right"><span class="currency-pill">\${r.curr}</span></td>
+        <td class="al-price">$\${r.total.toLocaleString()}</td>
+        <td class="al-paid">$&nbsp;\${r.paid.toLocaleString()}</td>
+        <td class="al-remaining \${r.remaining === 0 ? 'zero' : 'nonzero'}">
+          $&nbsp;\${r.remaining === 0 ? '0.00' : r.remaining.toLocaleString()}
+        </td>
+        <td class="al-input-cell">
+          <div class="al-input-col">
+            <div class="al-input-wrap">
+              <span class="al-dollar">$</span>
+              <input
+                type="text" inputmode="decimal"
+                placeholder="Enter Amount"
+                class="al-input"
+                data-max="\${r.remaining}"
+                data-rowid="\${r.id}"
+                oninput="formatAmountInput(this)"
+                onfocus="this.parentElement.classList.add('focused')"
+                onblur="this.parentElement.classList.remove('focused')"
+              />
+            </div>
+            <span class="al-error-msg" data-for="\${r.id}">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span class="al-error-text"></span>
+            </span>
+          </div>
+        </td>
+      </tr>
+    \`).join('');
+  }
+
+  function validateInput(input) {
+    const max = parseFloat(input.dataset.max);
+    const val = parseFloat(input.value.replace(/,/g, ''));
+    const overLimit = max > 0 && !isNaN(val) && val > max;
+    input.classList.toggle('error', overLimit);
+
+    // Find the matching error message element (sibling of input-wrap, inside same input-col)
+    const col = input.closest('.al-input-col');
+    const msgEl = col ? col.querySelector('.al-error-msg') : null;
+    if (!msgEl) return;
+    const textEl = msgEl.querySelector('.al-error-text');
+
+    if (overLimit) {
+      const maxFmt = '$' + Math.round(max).toLocaleString();
+      const overBy = '$' + Math.round(val - max).toLocaleString();
+      if (textEl) textEl.textContent = \`Exceeds remaining balance by \${overBy}. Max allowed: \${maxFmt}\`;
+      msgEl.classList.add('show');
+    } else {
+      msgEl.classList.remove('show');
+      if (textEl) textEl.textContent = '';
+    }
+  }
+
+  function formatAmountInput(input) {
+    const cursor = input.selectionStart;
+    const oldLen = input.value.length;
+    let raw = input.value.replace(/[^0-9.]/g, '');
+    const parts = raw.split('.');
+    if (parts.length > 2) raw = parts[0] + '.' + parts.slice(1).join('');
+    const dotIdx = raw.indexOf('.');
+    let intPart = dotIdx >= 0 ? raw.substring(0, dotIdx) : raw;
+    let decPart = dotIdx >= 0 ? '.' + raw.substring(dotIdx + 1, dotIdx + 3) : '';
+    intPart = intPart.replace(/^0+(?=\\d)/, '');
+    input.value = intPart + decPart;
+    const newLen = input.value.length;
+    const newPos = Math.max(0, cursor + (newLen - oldLen));
+    input.setSelectionRange(newPos, newPos);
+    validateInput(input);
+    updateAllocateTotal();
+  }
+
+  function updateAllocateTotal() {
+    let total = 0;
+    document.querySelectorAll('.al-input').forEach(inp => {
+      const val = parseFloat(inp.value.replace(/,/g, ''));
+      if (!isNaN(val) && val > 0) total += val;
+    });
+
+    // Live Total Unallocated = initial unallocated − sum of all input values, clamped at 0
+    const balEl = document.getElementById('balance-amount');
+    if (balEl) {
+      const initial = parseFloat((balEl.dataset.initial || '0').replace(/,/g, '')) || 0;
+      const remaining = Math.max(0, initial - total);
+      balEl.textContent = '$' + Math.round(remaining).toLocaleString();
+      balEl.classList.remove('warn', 'negative');
+      if (initial > 0 && remaining < initial * 0.1) balEl.classList.add('warn');
+    }
+  }
+
+  function submitAllocation() {
+    if (document.querySelectorAll('.al-input.error').length > 0) {
+      alert('Please fix the highlighted amounts — they cannot exceed the remaining balance.');
+      return;
+    }
+    // Collect all inputs that have a positive value, map by data-idx → ROWS[idx]
+    const entries = Array.from(document.querySelectorAll('.al-input'))
+      .map(inp => {
+        const idx = parseInt(inp.dataset.idx);
+        const row = ROWS[idx];
+        const amt = parseFloat(inp.value.replace(/,/g, ''));
+        return { row, amt };
+      })
+      .filter(e => e.row && !isNaN(e.amt) && e.amt > 0);
+
+    if (entries.length === 0) {
+      alert('Please enter at least one allocation amount.');
+      return;
+    }
+
+    // Build modal content
+    const total = entries.reduce((s, e) => s + e.amt, 0);
+    document.getElementById('modal-total-value').textContent =
+      '$' + total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    document.getElementById('modal-total-count').textContent =
+      entries.length + ' vehicle' + (entries.length > 1 ? 's' : '') + ' selected';
+    document.getElementById('modal-sub').textContent =
+      'Review the ' + entries.length + ' allocation' + (entries.length > 1 ? 's' : '') + ' below before confirming';
+
+    document.getElementById('modal-vehicle-list').innerHTML = entries.map(e => \`
+      <div class="modal-vehicle-row">
+        <div class="mvr-left">
+          <div class="mvr-dot"></div>
+          <div class="mvr-info">
+            <div class="mvr-name">\${e.row.make} \${e.row.model} · \${e.row.year}</div>
+            <div class="mvr-chassis">\${e.row.chassis}</div>
+          </div>
+        </div>
+        <div class="mvr-right">
+          <div class="mvr-amount">$\${e.amt.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+        </div>
+      </div>
+    \`).join('');
+
+    // Reset to confirm view
+    document.getElementById('modal-confirm-view').style.display = '';
+    document.getElementById('modal-success-view').style.display = 'none';
+    document.getElementById('modal-overlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('open');
+  }
+
+  function confirmAllocation() {
+    const total = document.getElementById('modal-total-value').textContent;
+    const count = document.getElementById('modal-total-count').textContent;
+    document.getElementById('success-msg').textContent =
+      total + ' across ' + count + ' has been successfully allocated.';
+    document.getElementById('modal-confirm-view').style.display = 'none';
+    document.getElementById('modal-success-view').style.display = '';
+    if(window._autoCloseTimer) clearTimeout(window._autoCloseTimer);
+    window._autoCloseTimer = setTimeout(() => closeModal(), 30000);
+  }
+
+  // Close on overlay click
+  document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+<\/script>
+</body>
+</html>`;
+
+      const blob = new Blob([pageHTML], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    }
+
+    /* ── History Panel ── */
+    function openHistoryPanel(row, showRemaining = true) {
+      document.getElementById('ph-title').innerHTML = `${row.make} ${row.model} <span class="vc-year">&middot; ${row.year}</span>`;
+      document.getElementById('ph-chassis').textContent = row.chassis;
+      const img = document.getElementById('ph-veh-img');
+      if (img) img.src = 'https://cdn.motor1.com/images/mgl/BboJJ/s1/toyota-raize.jpg';
+
+      document.getElementById('ph-purchase').textContent = row.total.toLocaleString();
+      document.getElementById('ph-paid').textContent = `$${row.paid.toLocaleString()}`;
+      document.getElementById('ph-remaining').textContent = row.remaining === 0 ? '$0.00' : `$${row.remaining.toLocaleString()}`;
+
+      // Show or hide Remaining Amount card based on which tab triggered the panel
+      const remainingCard = document.getElementById('ph-remaining-card');
+      const amountGrid = document.getElementById('ph-amount-grid');
+      const paidCard = document.getElementById('ph-paid')?.closest('.amount-card');
+      if (remainingCard) {
+        remainingCard.style.display = showRemaining ? '' : 'none';
+      }
+      if (paidCard) {
+        // When Remaining is hidden (Completed), Total Paid takes full width of row 2
+        paidCard.classList.toggle('amount-card--full', !showRemaining);
+      }
+      if (amountGrid) {
+        // Always 2 columns: Purchase Price (full-width row 1), then Total Paid + Remaining in row 2
+        amountGrid.style.gridTemplateColumns = '1fr 1fr';
+      }
+
+      const hist = document.getElementById('ph-history');
+      const sorted = [...row.history].sort((a, b) => new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time));
+      hist.innerHTML = sorted.map((h, i) => `
+      <div class="history-item">
+        <div class="h-dot-wrap">
+          <div class="h-dot"></div>
+          ${i < sorted.length - 1 ? '<div class="h-line"></div>' : ''}
+        </div>
+        <div class="h-info">
+          <div class="h-amount">+ $${h.amount.toLocaleString()}</div>
+          <div class="h-date">${h.date} at ${h.time}</div>
+        </div>
+        <span class="h-badge">Allocated</span>
+      </div>`).join('');
+
+      document.getElementById('panel-history').classList.add('open');
+      document.getElementById('panel-overlay').classList.add('open');
+    }
+
+    function closeHistoryPanel() {
+      document.getElementById('panel-history').classList.remove('open');
+      document.getElementById('panel-overlay').classList.remove('open');
+    }
+
+    function closeOpenPanel() {
+      closeHistoryPanel();
+    }
+  </script>
+
+  
+
+  <!-- ── Panel Overlay ── -->
+  <div class="panel-overlay" id="panel-overlay" onclick="closeOpenPanel()"></div>
+
+  <!-- ── History Panel ── -->
+  <aside class="side-panel" id="panel-history" aria-hidden="true">
+    <div class="panel-header">
+      <h2>Payment History</h2>
+      <button class="panel-close" onclick="closeHistoryPanel()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+          stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="panel-body">
+      <!-- Vehicle Hero Card -->
+      <div class="vehicle-card">
+        <div class="vc-img-wrap">
+          <img src="https://cdn.motor1.com/images/mgl/BboJJ/s1/toyota-raize.jpg" id="ph-veh-img" alt="vehicle"
+            onerror="this.style.display='none'" />
+        </div>
+        <div class="vc-info">
+          <div class="vc-title" id="ph-title">Toyota Raize</div>
+        </div>
+        <div class="vc-chassis">
+          <div class="vc-label">Chassis No.</div>
+          <div class="vc-no" id="ph-chassis">WDC2539052F422655</div>
+        </div>
+      </div>
+
+      <!-- Amount Summary Cards -->
+      <div class="amount-grid" id="ph-amount-grid">
+        <div class="amount-card green amount-card--full">
+          <div class="amount-card-curr">
+            <div class="amount-card-curr-label">Purch. Curr.</div>
+            <div class="amount-card-curr-value" id="ph-purch-curr">USD</div>
+          </div>
+          <div class="amount-card-main amount-card-main--end">
+            <div class="amount-card-label">Purchase Price</div>
+            <div class="amount-card-value" id="ph-purchase">32,650</div>
+          </div>
+        </div>
+        <div class="amount-card blue">
+          <div class="amount-card-label">Total Paid</div>
+          <div class="amount-card-value" id="ph-paid">$20,000</div>
+        </div>
+        <div class="amount-card amber" id="ph-remaining-card">
+          <div class="amount-card-label">Remaining Amount</div>
+          <div class="amount-card-value" id="ph-remaining">$2,650</div>
+        </div>
+      </div>
+
+      <!-- Payment History -->
+      <div class="history-section">
+        <div class="history-label">Payment History</div>
+        <div class="history-list" id="ph-history"></div>
+      </div>
+    </div>
+  </aside>
+
+</body>
+
+</html>
+
+
