@@ -1431,17 +1431,7 @@
             </svg>
             <input type="text" placeholder="Search" oninput="filterTable(this.value)" />
           </div>
-          <div class="btn-alloc-wrap">
-            <button class="btn-alloc" id="btn-alloc" disabled onclick="openAllocationPage()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                stroke-linejoin="round">
-                <line x1="12" y1="5" x2="12" y2="19" />
-                <line x1="5" y1="12" x2="19" y2="12" />
-              </svg>
-              Payment Allocation
-            </button>
-            <span class="alloc-tooltip">Please select at least one vehicle to allocate payments</span>
-          </div>
+
         </div>
         <div class="toolbar-right">
           <div class="filter compact">
@@ -1477,7 +1467,6 @@
           <table>
             <thead>
               <tr>
-                <th class="cb-th"></th>
                 <th>
                   <div class="th-inner">Make / Mode / Model Code</div>
                 </th>
@@ -1706,48 +1695,9 @@
     }
 
     /* ── Checkbox logic ── */
-    function onRowCheck() {
-      const allBoxes = document.querySelectorAll('.row-cb[data-id]');
-      const checkedBoxes = document.querySelectorAll('.row-cb[data-id]:checked');
-      const btn = document.getElementById('btn-alloc');
-      const selectAll = document.getElementById('select-all');
+    function onRowCheck() {}
 
-      // Enable/disable Payment Allocation button
-      if (checkedBoxes.length > 0) {
-        btn.disabled = false;
-        btn.classList.add('active');
-      } else {
-        btn.disabled = true;
-        btn.classList.remove('active');
-      }
-
-      // Update select-all checkbox state
-      if (selectAll) {
-        if (checkedBoxes.length === 0) {
-          selectAll.checked = false;
-          selectAll.indeterminate = false;
-        } else if (checkedBoxes.length === allBoxes.length) {
-          selectAll.checked = true;
-          selectAll.indeterminate = false;
-        } else {
-          selectAll.checked = false;
-          selectAll.indeterminate = true;
-        }
-      }
-    }
-
-    function toggleSelectAll(masterCb) {
-      const allBoxes = document.querySelectorAll('.row-cb[data-id]');
-      allBoxes.forEach(cb => { cb.checked = masterCb.checked; });
-      const btn = document.getElementById('btn-alloc');
-      if (masterCb.checked && allBoxes.length > 0) {
-        btn.disabled = false;
-        btn.classList.add('active');
-      } else {
-        btn.disabled = true;
-        btn.classList.remove('active');
-      }
-    }
+    function toggleSelectAll(masterCb) {}
 
     /* ── Render ── */
     function render() {
@@ -1763,9 +1713,7 @@
       tbody.innerHTML = slice.length
         ? slice.map(r => `
         <tr>
-          <td class="cb-td">
-            <input type="checkbox" class="row-cb" data-id="${r.id}" onchange="onRowCheck()" />
-          </td>
+
           <td>
             <div class="make-cell">
               <div class="name-combined">${r.make} ${r.model}</div>
@@ -1812,15 +1760,7 @@
     </button>`;
       pager.innerHTML = btns;
 
-      // Reset select-all & button after re-render
-      const selectAllReset = document.getElementById('select-all');
-      if (selectAllReset) {
-        selectAllReset.checked = false;
-        selectAllReset.indeterminate = false;
-      }
-      const btn = document.getElementById('btn-alloc');
-      btn.disabled = true;
-      btn.classList.remove('active');
+
     }
 
     function goPage(p) {
