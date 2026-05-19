@@ -1338,60 +1338,66 @@
         <p>Track your vehicles and manage shipments — all in one place.</p>
       </div>
 
-      <!-- Right: KPI Cards + banner below -->
-      <div>
-        <div class="kpi-row">
+      <!-- Right: KPI Cards (9-grid) -->
+      <div class="kpi-row">
 
-          <!-- Card 1 -->
-          <div class="stat-card">
-            <div class="stat-icon blue">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4" />
-                <path d="M4 6v12c0 1.1.9 2 2 2h14v-4" />
-                <path d="M18 12a2 2 0 0 0 0 4h4v-4z" />
-              </svg>
-            </div>
-            <div class="stat-body">
-              <div class="stat-label">Total Payment</div>
-              <div class="stat-value"><span class="stat-currency">$</span><span id="stat-total-payment">653,000</span></div>
-            </div>
+        <!-- Card 1: Total Payment -->
+        <div class="stat-card">
+          <div class="stat-icon blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4" />
+              <path d="M4 6v12c0 1.1.9 2 2 2h14v-4" />
+              <path d="M18 12a2 2 0 0 0 0 4h4v-4z" />
+            </svg>
           </div>
+          <div class="stat-body">
+            <div class="stat-label">Total Payment</div>
+            <div class="stat-value"><span class="stat-currency">$</span><span id="stat-total-payment">653,000</span></div>
 
-          <!-- Card 2 -->
-          <div class="stat-card">
-            <div class="stat-icon indigo">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                <path d="M2 17l10 5 10-5" />
-                <path d="M2 12l10 5 10-5" />
-              </svg>
-            </div>
-            <div class="stat-body">
-              <div class="stat-label">Total Allocated</div>
-              <div class="stat-value"><span class="stat-currency">$</span><span id="stat-total-allocated">200,000</span></div>
-            </div>
           </div>
-
-          <!-- Card 3 -->
-          <div class="stat-card">
-            <div class="stat-icon emerald">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="16" />
-                <line x1="8" y1="12" x2="16" y2="12" />
-              </svg>
-            </div>
-            <div class="stat-body">
-              <div class="stat-label">Total Unallocated</div>
-              <div class="stat-value"><span class="stat-currency">$</span><span id="stat-total-unallocated">453,000</span></div>
-            </div>
-          </div>
-
         </div>
 
-        <!-- Payment banner: right-aligned, exactly 2-of-3 KPI cards width -->
-        <div style="display:flex;justify-content:flex-end;margin-top:14px;">
-          <div id="payment-context-banner" style="display:none;width:calc(66.666% - 5.33px);background:linear-gradient(135deg,#f0f7ff 0%,#e8f0fe 100%);border:1px solid rgba(0,113,227,0.18);border-radius:12px;padding:12px 16px;align-items:center;gap:12px;flex-wrap:wrap;">
+        <!-- Card 2: Total Allocated Amount -->
+        <div class="stat-card">
+          <div class="stat-icon indigo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-label">Total Allocated</div>
+            <div class="stat-value"><span class="stat-currency">$</span><span id="stat-total-allocated">200,000</span></div>
+
+          </div>
+        </div>
+
+        <!-- Card 3: Total Unallocated Amount -->
+        <div class="stat-card">
+          <div class="stat-icon emerald">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="16" />
+              <line x1="8" y1="12" x2="16" y2="12" />
+            </svg>
+          </div>
+          <div class="stat-body">
+            <div class="stat-label">Total Unallocated</div>
+            <div class="stat-value"><span class="stat-currency">$</span><span id="stat-total-unallocated">453,000</span></div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Payment context banner: below KPIs, aligned with all 3 KPI cards -->
+    <div style="margin-bottom:18px;">
+      <div id="payment-context-banner" style="display:none;width:100%;background:linear-gradient(135deg,#f0f7ff 0%,#e8f0fe 100%);border:1px solid rgba(0,113,227,0.18);border-radius:12px;padding:12px 16px;align-items:center;gap:12px;flex-wrap:wrap;">
         <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
           <div style="width:36px;height:36px;background:linear-gradient(135deg,#0071e3,#00a3ff);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
             <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11h20"/></svg>
@@ -1414,10 +1420,9 @@
             <div style="font-size:11px;color:#6e6e73;font-weight:500;">Ref ID</div>
             <div style="font-size:13px;font-weight:600;color:#1d1d1f;" id="banner-id">—</div>
           </div>
-          </div>
-        </div><!-- /flex wrapper -->
-      </div><!-- /right column wrapper -->
-    </div><!-- /header-row -->
+        </div>
+      </div>
+    </div>
 
 
 
