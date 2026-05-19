@@ -628,6 +628,40 @@
       font-weight: 500;
       letter-spacing: -0.005em;
       border: 1px solid transparent;
+      position: relative;
+    }
+
+    /* Indicator wrapper — wraps stage pill so the New tag sits next to it */
+    .stage-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* "New" tag — Gmail-style, gentle breathing pulse */
+    .stage-new-tag {
+      display: inline-flex;
+      align-items: center;
+      background: #0071e3;
+      color: #fff;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 2px 8px;
+      border-radius: 999px;
+      line-height: 1.45;
+      box-shadow: 0 1px 3px rgba(0, 113, 227, 0.28);
+      animation: stageNewPulse 2.4s ease-in-out infinite;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    /* Gentle on/off breathing — opacity cycles like an email "New" badge */
+    @keyframes stageNewPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.55; transform: scale(0.96); }
     }
 
     .stage .num {
@@ -7748,10 +7782,23 @@
       { n: 8, label: "Unit Received" },
     ];
 
+    /* Stage-specific hint shown ONLY when the stage is the first locked stage
+       (i.e. immediately after the current/in-progress stage). All other locked
+       stages further down keep the generic "Complete X first to unlock" hint. */
+    const LOCKED_STAGE_HINTS = {
+      2: 'Yard Images should be uploaded by <b>Purchase Date + 6 days</b>',
+      3: 'Export Certificate will be issued within <b>15 days</b> of Purchase Date',
+      4: 'Inspection Certificate should be uploaded within <b>20 days</b> of Purchase Date',
+      5: 'Shipment details should be available within <b>30 days</b> of Purchase Date',
+      6: 'Please add the consignee to issue <b>Bill of Lading</b> copy',
+      7: 'Complete <b>Bill of Lading</b> first to unlock',
+      8: 'Complete <b>Finance Status</b> first to unlock',
+    };
+
     // 10 rows — covers all 8 stages, plus 2 extras
     const rows = [
-      { stage: 1, ref: "A00100", chassis: "WDC2539052F422655", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "C", dest: "Mombasa Port" },
-      { stage: 2, ref: "A00106", chassis: "JTDBR32E830088121", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "JPY", purchase: "¥24,205", sale: null, saleType: "btn", bcn: null, dest: "Zimbabwe" },
+      { stage: 1, ref: "A00100", chassis: "WDC2539052F422655", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "C", dest: "Mombasa Port", recentlyUpdated: true },
+      { stage: 2, ref: "A00106", chassis: "JTDBR32E830088121", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "JPY", purchase: "¥24,205", sale: null, saleType: "btn", bcn: null, dest: "Zimbabwe", recentlyUpdated: true },
       { stage: 3, ref: "A00116", chassis: "MR053ZK60M1029841", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "JPY", sale: "¥4,150,000", saleType: "link", bcn: "BCN", state: "change-requested", dest: "Zimbabwe" },
       { stage: 4, ref: "A00150", chassis: "JN1TENT32U0023456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "B", dest: "Zimbabwe" },
       { stage: 5, ref: "A00159", chassis: "MMBJNKB40NH001234", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "JPY", purchase: "¥24,205", sale: null, saleType: "btn", bcn: null, dest: "Zimbabwe" },
@@ -7776,7 +7823,10 @@
     /* -------- Render rows -------- */
     function renderStage(n, idx) {
       const m = stageMeta[n - 1];
-      return `<span class="stage stage-${n}" onclick="openStageTimeline(${idx})" style="cursor:pointer;"><span class="num">${n}</span>${m.label}</span>`;
+      const r = rows[idx];
+      const isNew = r && r.recentlyUpdated;
+      const tag = isNew ? '<span class="stage-new-tag" aria-label="Stage recently updated">New</span>' : '';
+      return `<span class="stage-wrap"><span class="stage stage-${n}" onclick="openStageTimeline(${idx})" style="cursor:pointer;"><span class="num">${n}</span>${m.label}</span>${tag}</span>`;
     }
 
     function renderBcn(rowOrBcn, idx) {
@@ -8454,7 +8504,13 @@
 
         let subText;
         if (i > currentStage) {
-          subText = `Complete <b>${stageMeta[i - 2].label}</b> first to unlock`;
+          // First locked stage (immediately after current) — show its specific hint
+          if (i === currentStage + 1 && LOCKED_STAGE_HINTS[i]) {
+            subText = LOCKED_STAGE_HINTS[i];
+          } else {
+            // Subsequent locked stages — keep the generic chained message
+            subText = `Complete <b>${stageMeta[i - 2].label}</b> first to unlock`;
+          }
         } else if (i < currentStage && detail.doneSub) {
           subText = detail.doneSub;
         } else {
@@ -8940,6 +8996,13 @@
       if (!r) return;
       window._currentVehicle = r;
       window._currentVehicleIdx = idx;
+
+      // Mark stage update as seen — dot will disappear after this view
+      if (r.recentlyUpdated) {
+        r.recentlyUpdated = false;
+        // Re-render rows so the dot is removed immediately
+        if (typeof renderRows === 'function') renderRows();
+      }
 
       // Sync Stage 1 fields with the actual row data
       STAGE_DETAILS[1].fields = [
