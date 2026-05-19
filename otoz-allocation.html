@@ -1336,32 +1336,6 @@
       <div class="greeting">
         <h1>Welcome back, <span class="name">Fahad</span></h1>
         <p>Track your vehicles and manage shipments — all in one place.</p>
-        <!-- Payment context banner (shown when navigated from payment page) -->
-        <div id="payment-context-banner" style="display:none;margin-top:14px;background:linear-gradient(135deg,#f0f7ff 0%,#e8f0fe 100%);border:1px solid rgba(0,113,227,0.18);border-radius:12px;padding:12px 16px;align-items:center;gap:12px;flex-wrap:wrap;">
-          <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
-            <div style="width:36px;height:36px;background:linear-gradient(135deg,#0071e3,#00a3ff);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11h20"/></svg>
-            </div>
-            <div>
-              <div style="font-size:11px;font-weight:600;color:#6e6e73;text-transform:uppercase;letter-spacing:0.06em;">Allocating Payment</div>
-              <div style="font-size:14px;font-weight:600;color:#1d1d1f;" id="banner-txn">—</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:20px;flex-wrap:wrap;">
-            <div style="text-align:right;">
-              <div style="font-size:11px;color:#6e6e73;font-weight:500;">Amount</div>
-              <div style="font-size:15px;font-weight:700;color:#0071e3;" id="banner-amt">—</div>
-            </div>
-            <div style="text-align:right;">
-              <div style="font-size:11px;color:#6e6e73;font-weight:500;">Date</div>
-              <div style="font-size:13px;font-weight:600;color:#1d1d1f;" id="banner-date">—</div>
-            </div>
-            <div style="text-align:right;">
-              <div style="font-size:11px;color:#6e6e73;font-weight:500;">Ref ID</div>
-              <div style="font-size:13px;font-weight:600;color:#1d1d1f;" id="banner-id">—</div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <!-- Right: KPI Cards (9-grid) -->
@@ -1418,6 +1392,36 @@
           </div>
         </div>
 
+      </div>
+    </div>
+
+    <!-- Payment context banner: below KPIs, right-aligned (hidden by default, shown via JS when payment ID in URL) -->
+    <div style="display:grid;grid-template-columns:4fr 8fr;gap:24px;margin-bottom:18px;">
+      <div></div>
+      <div id="payment-context-banner" style="display:none;background:linear-gradient(135deg,#f0f7ff 0%,#e8f0fe 100%);border:1px solid rgba(0,113,227,0.18);border-radius:12px;padding:12px 16px;align-items:center;gap:12px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0;">
+          <div style="width:36px;height:36px;background:linear-gradient(135deg,#0071e3,#00a3ff);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11h20"/></svg>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:#6e6e73;text-transform:uppercase;letter-spacing:0.06em;">Allocating Payment</div>
+            <div style="font-size:14px;font-weight:600;color:#1d1d1f;" id="banner-txn">—</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:20px;flex-wrap:wrap;">
+          <div style="text-align:right;">
+            <div style="font-size:11px;color:#6e6e73;font-weight:500;">Amount</div>
+            <div style="font-size:15px;font-weight:700;color:#0071e3;" id="banner-amt">—</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:11px;color:#6e6e73;font-weight:500;">Date</div>
+            <div style="font-size:13px;font-weight:600;color:#1d1d1f;" id="banner-date">—</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:11px;color:#6e6e73;font-weight:500;">Ref ID</div>
+            <div style="font-size:13px;font-weight:600;color:#1d1d1f;" id="banner-id">—</div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1894,6 +1898,16 @@
       const statTotalAllocated   = (document.getElementById('stat-total-allocated')   || {}).textContent || '0';
       const statTotalUnallocated = (document.getElementById('stat-total-unallocated') || {}).textContent || '0';
 
+      // Read payment context from URL params (passed from wallet/payment page)
+      const urlP = new URLSearchParams(window.location.search);
+      const payCtx = {
+        paymentId: urlP.get('paymentId') || '',
+        txn:  urlP.get('txn')  || '',
+        amt:  urlP.get('amt')  || '',
+        curr: urlP.get('curr') || 'USD',
+        date: urlP.get('date') || ''
+      };
+
       const tableRows = selectedRows.map((r, idx) => `
       <tr>
         <td>
@@ -2169,7 +2183,30 @@
     grid-template-columns:repeat(4,1fr);
     gap:16px;
     margin-bottom:14px;
+    align-items:stretch;
   }
+  .payment-banner-inline{
+    grid-column:1/4;
+    background:linear-gradient(135deg,#f0f7ff 0%,#e8f0fe 100%);
+    border:1px solid rgba(0,113,227,0.18);
+    border-radius:var(--radius-lg);
+    padding:14px 18px;
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+    box-shadow:var(--shadow-sm);
+  }
+  .pbi-icon{
+    width:40px;height:40px;background:linear-gradient(135deg,#0071e3,#00a3ff);
+    border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .pbi-icon svg{width:18px;height:18px;}
+  .pbi-info{flex:1;min-width:0;}
+  .pbi-label{font-size:10.5px;font-weight:600;color:#6e6e73;text-transform:uppercase;letter-spacing:0.06em;}
+  .pbi-txn{font-size:14px;font-weight:700;color:#1d1d1f;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .pbi-meta{display:flex;gap:20px;flex-wrap:wrap;}
+  .pbi-item{text-align:right;}
+  .pbi-item-label{font-size:10.5px;color:#6e6e73;font-weight:500;}
+  .pbi-item-val{font-size:14px;font-weight:700;color:#0071e3;margin-top:1px;}
+  .pbi-item-val.neutral{color:#1d1d1f;font-size:13px;}
   .balance-bar{
     grid-column:4;
     background:linear-gradient(135deg,#173559 0%,#1d3f68 100%);
@@ -2547,6 +2584,29 @@
 
   <!-- Total Unallocated Bar (live updates as user enters amounts) -->
   <div class="balance-row">
+    <div class="payment-banner-inline" id="payment-banner-inline" style="display:none;">
+      <div class="pbi-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11h20"/></svg>
+      </div>
+      <div class="pbi-info">
+        <div class="pbi-label">Allocating Payment</div>
+        <div class="pbi-txn" id="pbi-txn">—</div>
+      </div>
+      <div class="pbi-meta">
+        <div class="pbi-item">
+          <div class="pbi-item-label">Amount</div>
+          <div class="pbi-item-val" id="pbi-amt">—</div>
+        </div>
+        <div class="pbi-item">
+          <div class="pbi-item-label">Date</div>
+          <div class="pbi-item-val neutral" id="pbi-date">—</div>
+        </div>
+        <div class="pbi-item">
+          <div class="pbi-item-label">Ref ID</div>
+          <div class="pbi-item-val neutral" id="pbi-id">—</div>
+        </div>
+      </div>
+    </div>
     <div class="balance-bar">
       <div class="balance-bar-left">
         <div class="balance-icon">
@@ -2657,6 +2717,22 @@
 </div>
 
 <script>
+  // Payment context injected from parent page
+  (function() {
+    const payCtx = ${JSON.stringify(payCtx)};
+    if (payCtx && payCtx.paymentId) {
+      const banner = document.getElementById('payment-banner-inline');
+      if (banner) banner.style.display = 'flex';
+      const signs = { USD: '$', JPY: '¥', EUR: '€', GBP: '£', AED: 'د.إ' };
+      const sign  = signs[payCtx.curr] || payCtx.curr + ' ';
+      const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      set('pbi-txn',  payCtx.txn  || '—');
+      set('pbi-amt',  payCtx.amt ? sign + payCtx.amt : '—');
+      set('pbi-date', payCtx.date || '—');
+      set('pbi-id',   payCtx.paymentId ? '#' + payCtx.paymentId : '—');
+    }
+  })();
+
   const ROWS = ${JSON.stringify(selectedRows)};
   let filtered = [...ROWS];
 
