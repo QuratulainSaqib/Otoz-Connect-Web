@@ -3677,7 +3677,7 @@
             <th><span class="th-inner">Bank Receipt</span></th>
             <th><span class="th-inner">Transaction ID</span></th>
             <th><span class="th-inner">Upload Date</span></th>
-            <th><span class="th-inner">Currency</span></th>
+            <th style="text-align:right"><span class="th-inner">Currency</span></th>
             <th style="text-align:right"><span class="th-inner">Amount</span></th>
             <th><span class="th-inner">Status</span></th>
             <th><span class="th-inner">Confirmation Receipt</span></th>
@@ -5683,16 +5683,16 @@
   }
 
   const walletRows = [
-    { id: 1,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '32,640', status: 'pending'   },
-    { id: 2,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '32,640', status: 'confirmed' },
-    { id: 3,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '32,640', status: 'rejected', note: 'Bank Receipt is fake' },
-    { id: 4,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '32,640', status: 'confirmed' },
-    { id: 5,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '32,640', status: 'confirmed' },
-    { id: 6,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '32,640', status: 'confirmed' },
-    { id: 7,  txn: 'KENMORE TRADING CO',   date: '11 / 2 / 2026',  curr: 'USD', amt: '18,200', status: 'pending'   },
-    { id: 8,  txn: 'AL SUWAIDI MOTORS',    date: '11 / 2 / 2026',  curr: 'USD', amt: '24,800', status: 'confirmed' },
-    { id: 9,  txn: 'PACIFIC AUTO IMPORTS', date: '12 / 2 / 2026',  curr: 'USD', amt: '41,150', status: 'rejected',  note: 'Receipt amount mismatch' },
-    { id: 10, txn: 'ZIM TRANSPORT LTD',    date: '12 / 2 / 2026',  curr: 'USD', amt: '28,975', status: 'confirmed' },
+    { id: 1,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '32,640',    status: 'pending'   },
+    { id: 2,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'JPY', amt: '4,820,000', status: 'confirmed' },
+    { id: 3,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '32,640',    status: 'rejected', note: 'Bank Receipt is fake' },
+    { id: 4,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'EUR', amt: '29,850',    status: 'confirmed' },
+    { id: 5,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'AED', amt: '119,820',   status: 'confirmed' },
+    { id: 6,  txn: 'ABOWATH ENTERPRIZES',  date: '10 / 2 / 2026',  curr: 'USD', amt: '32,640',    status: 'confirmed' },
+    { id: 7,  txn: 'KENMORE TRADING CO',   date: '11 / 2 / 2026',  curr: 'GBP', amt: '14,420',    status: 'pending'   },
+    { id: 8,  txn: 'AL SUWAIDI MOTORS',    date: '11 / 2 / 2026',  curr: 'AED', amt: '91,100',    status: 'confirmed' },
+    { id: 9,  txn: 'PACIFIC AUTO IMPORTS', date: '12 / 2 / 2026',  curr: 'JPY', amt: '6,070,000', status: 'rejected',  note: 'Receipt amount mismatch' },
+    { id: 10, txn: 'ZIM TRANSPORT LTD',    date: '12 / 2 / 2026',  curr: 'USD', amt: '28,975',    status: 'confirmed' },
   ];
 
   function statusPill(s) {
@@ -5728,7 +5728,7 @@
           <td>${bankReceiptImg(r.id)}</td>
           <td>${r.status === 'pending' ? '<span class="wal-empty">—</span>' : r.txn}</td>
           <td>${r.date}</td>
-          <td><span class="currency-pill">${r.curr}</span></td>
+          <td style="text-align:right"><span class="currency-pill">${r.curr}</span></td>
           <td style="text-align:right;font-variant-numeric:tabular-nums">${r.amt}</td>
           <td>${statusPill(r.status)}</td>
           <td>${conf}</td>
