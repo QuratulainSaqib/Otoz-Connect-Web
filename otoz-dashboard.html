@@ -5506,6 +5506,15 @@
       margin-bottom: 0;
     }
 
+    .sf-section-heading {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
     .sf-group-title {
       display: inline-flex;
       align-items: center;
@@ -8658,7 +8667,7 @@
       5: {
         sub: 'Vessel in transit',
         doneSub: 'Vessel booking confirmed and shipping schedule updated.',
-        groups: [
+        fieldDividers: [
           {
             title: 'Vessel',
             fields: [
@@ -8693,7 +8702,11 @@
         docs: [
           { name: 'Bill_of_Lading_Copy_A00116.pdf', kind: 'bl' }
         ],
-        docTitle: 'Copy Bill of Lading'
+        docTitle: 'Copy Bill of Lading',
+        amendedBL: {
+          updatedDate: '15 / 10 / 2026',
+          doc: { name: 'Amended_Bill_of_Lading_A00116.pdf', kind: 'bl' }
+        }
       },
       7: {
         sub: 'Final settlement & remaining payment overview',
@@ -8724,10 +8737,6 @@
           postalCode: '00263',
           email: 'john.mwangi@example.com'
         },
-        amendedBL: {
-          updatedDate: '28 / 09 / 2026',
-          doc: { name: 'Amended_Bill_of_Lading_A00116.pdf', kind: 'bl' }
-        }
       }
     };
 
@@ -8804,6 +8813,20 @@
                 bodyContent += `<div class="sf-cell"><div class="sf-key">${k}</div><div class="sf-val">${valHTML}</div></div>`;
               });
               bodyContent += '</div></div>';
+            });
+          }
+          // fieldDividers — flat field rows separated by dividers with section title (e.g. Stage 5 Shipment)
+          if (detail.fieldDividers && detail.fieldDividers.length) {
+            detail.fieldDividers.forEach(section => {
+              bodyContent += '<div class="sf-divider"></div>';
+              if (section.title) {
+                bodyContent += `<div class="sf-section-heading">${section.title}</div>`;
+              }
+              bodyContent += '<div class="stage-fields-grid">';
+              section.fields.forEach(([k, v]) => {
+                bodyContent += `<div class="sf-cell"><div class="sf-key">${k}</div><div class="sf-val">${v}</div></div>`;
+              });
+              bodyContent += '</div>';
             });
           }
           if (detail.accessoriesText) {
@@ -9042,6 +9065,34 @@
             if (detail.fieldsAfterDivider && detail.fieldsAfterDivider.length) {
               bodyContent += '</div>'; // close sf-date-doc-block
             }
+          }
+          // Amended Copy of Bill of Lading (Stage 6)
+          if (detail.amendedBL) {
+            const abl = detail.amendedBL;
+            bodyContent += '<div class="sf-divider"></div>';
+            bodyContent += '<div class="sf-date-doc-block">';
+            bodyContent += '<div class="stage-fields-grid sf-date-row">';
+            bodyContent += `<div class="sf-cell"><div class="sf-key">Updated Date</div><div class="sf-val">${abl.updatedDate}</div></div>`;
+            bodyContent += '</div>';
+            bodyContent += `<div class="sf-section-label sf-section-label--doc sf-section-label--tight"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Amended Copy of Bill of Lading</div>`;
+            bodyContent += `
+            <div class="doc-row">
+              <div class="doc-thumb doc-thumb--${abl.doc.kind || 'bl'}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+              <div class="doc-info">
+                <div class="doc-name">${abl.doc.name}</div>
+              </div>
+              <div class="doc-actions">
+                <button class="inv-act ghost" data-tt="Preview" aria-label="Preview">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+                <button class="inv-act primary" data-tt="Download" aria-label="Download">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                </button>
+              </div>
+            </div>`;
+            bodyContent += '</div>'; // close sf-date-doc-block
           }
         }
 
