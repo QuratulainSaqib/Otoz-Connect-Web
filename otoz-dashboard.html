@@ -1070,11 +1070,20 @@
       background: linear-gradient(135deg, #e8f4ff 0%, #cce4ff 100%);
       border: 1px solid rgba(0,113,227,0.18);
       border-radius: var(--radius-md);
-      padding: 11px 16px;
+      padding: 14px 18px;
       margin-top: 14px;
       margin-bottom: 16px;
     }
-    .su-final-label-wrap {
+    .su-curr-pill {
+      display: inline-block;
+      padding: 3px 10px;
+      background: rgba(0, 113, 227, 0.12);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #003d82;
+      letter-spacing: 0.02em;
+    }
       display: flex;
       flex-direction: column;
       gap: 3px;
@@ -1082,7 +1091,7 @@
     .su-final-label {
       font-size: 12px;
       font-weight: 700;
-      color: #003d82;
+      color: #003d82 !important;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
@@ -1097,12 +1106,9 @@
       color: #003d82;
       letter-spacing: -0.01em;
       font-variant-numeric: tabular-nums;
-    }
-    .su-final-curr {
-      font-size: 10px;
-      font-weight: 600;
-      color: #0059b3;
-      margin-right: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .add-btn {
@@ -8264,10 +8270,10 @@
             <div class="su-timeline">${timelineItems}</div>
             <div class="su-final-total">
               <div class="su-final-label-wrap">
-                <div class="su-final-label">Updated Final Sale Price</div>
+                <div class="su-final-label">Updated Total Sale Price</div>
                 <div class="su-final-sub">Includes all adjustments above</div>
               </div>
-              <div class="su-final-amount"><span class="su-final-curr">${r.curr}</span>${finalTotal.toLocaleString()}</div>
+              <div class="su-final-amount"><span class="su-curr-pill">${r.curr}</span> ${finalTotal.toLocaleString()}</div>
             </div>
           </div>
         `;
