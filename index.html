@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Otoz Connect — Sign in</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -10,11 +10,12 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   html, body {
-    height: 100%;
+    min-height: 100%;
     font-family: 'Sora', sans-serif;
     -webkit-font-smoothing: antialiased;
     background: #f0f2f5;
   }
+  body { overflow-x: hidden; }
 
   .layout {
     display: grid;
@@ -425,10 +426,78 @@
     margin-top: 6px;
   }
 
+  /* ============================================================
+     RESPONSIVE  —  TABLET & MOBILE
+     ============================================================ */
+
+  /* ---- TABLET & below: hide hero image, show only logo + form card ---- */
   @media (max-width: 900px) {
-    .layout { grid-template-columns: 1fr; }
+    .layout {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+
+    /* Hero image panel fully hidden on tablet & mobile */
     .left-panel { display: none; }
-    .right-panel { min-height: 100vh; }
+
+    .right-panel {
+      flex: 1 1 auto;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding: 40px 28px calc(40px + env(safe-area-inset-bottom));
+    }
+  }
+
+  /* ---- MOBILE ---- */
+  @media (max-width: 600px) {
+    .right-panel {
+      padding: 32px 16px calc(32px + env(safe-area-inset-bottom));
+      align-items: stretch;
+    }
+
+    .logo-wrap { margin-bottom: 24px; }
+    .logo-wrap img { height: 38px !important; }
+
+    .form-card {
+      max-width: 100%;
+      padding: 28px 22px;
+      border-radius: 18px;
+      box-shadow:
+        0 1px 3px rgba(0,0,0,0.04),
+        0 6px 22px rgba(0,0,0,0.06);
+    }
+
+    .form-title { font-size: 20px; }
+    .form-sub { font-size: 13px; margin-bottom: 22px; }
+
+    /* 16px input font prevents iOS Safari auto-zoom on focus */
+    .field-input { font-size: 16px; height: 48px; }
+
+    .submit-btn,
+    .secondary-btn { height: 50px; font-size: 15px; }
+
+    .row-between {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .toast {
+      left: 16px;
+      right: 16px;
+      transform: translateY(-20px);
+      width: auto;
+      max-width: none;
+    }
+    .toast.show { transform: translateY(0); }
+  }
+
+  /* ---- SMALL MOBILE ---- */
+  @media (max-width: 380px) {
+    .form-card { padding: 24px 18px; }
+    .right-panel { padding: 28px 12px calc(28px + env(safe-area-inset-bottom)); }
   }
 </style>
 </head>

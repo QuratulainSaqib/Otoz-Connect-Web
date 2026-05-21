@@ -1393,6 +1393,124 @@
       box-shadow: var(--shadow-sm);
       overflow-x: auto;
     }
+
+    /* ════════════════════════════════════════════
+       RESPONSIVE  —  tablet & mobile
+       ════════════════════════════════════════════ */
+
+    /* ── Tablet (≤ 900px) ── */
+    @media (max-width: 900px) {
+      .nav-inner {
+        grid-template-columns: auto 1fr auto;
+        gap: 12px;
+      }
+      .nav-center {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        justify-content: flex-start;
+      }
+      .nav-center::-webkit-scrollbar { display: none; }
+      .nav-link { padding: 7px 12px; white-space: nowrap; }
+
+      .header-row {
+        grid-template-columns: 1fr;
+        gap: 18px;
+        align-items: stretch;
+      }
+      .greeting h1 { font-size: 28px; }
+
+      .page { padding: 22px 16px 64px; }
+
+      /* Payment context banner: stack to single column */
+      #payment-context-banner { grid-column: 1 / -1; }
+    }
+
+    /* ── Small tablet / large phone (≤ 720px) ── */
+    @media (max-width: 720px) {
+      .kpi-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .kpi-row .stat-card:nth-child(3) {
+        grid-column: 1 / -1;
+      }
+    }
+
+    /* ── Phone (≤ 600px) ── */
+    @media (max-width: 600px) {
+      .navbar { padding: 0 14px; height: 58px; }
+      .nav-inner { gap: 8px; }
+
+      /* Nav links → icons only */
+      .nav-link { padding: 8px 10px; font-size: 0; gap: 0; }
+      .nav-link svg { width: 17px; height: 17px; }
+
+      /* Help & Logout → icons only */
+      .help-btn { padding: 7px 10px; font-size: 0; gap: 0; }
+      .help-btn svg { width: 15px; height: 15px; }
+      .logout-btn { padding: 7px 10px; font-size: 0; gap: 0; }
+      .logout-btn svg { width: 15px; height: 15px; }
+
+      .page { padding: 18px 12px 56px; }
+      .greeting h1 { font-size: 24px; }
+      .greeting p { font-size: 13px; }
+
+      /* KPI cards: single-column stack */
+      .kpi-row { grid-template-columns: 1fr; gap: 12px; }
+      .kpi-row .stat-card:nth-child(3) { grid-column: auto; }
+      .stat-card { padding: 14px 16px; }
+      .stat-value { font-size: 21px; }
+
+      /* Tabs: horizontal scroll */
+      .tabs-bar {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .tabs-bar::-webkit-scrollbar { display: none; }
+      .tab-btn { white-space: nowrap; flex: 0 0 auto; }
+
+      /* Toolbars: wrap to multiple rows, full-width search */
+      .toolbar,
+      .toolbar-completed {
+        flex-wrap: wrap;
+        overflow: visible;
+      }
+      .toolbar-left,
+      .toolbar-right {
+        flex-wrap: wrap;
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .toolbar-right { justify-content: space-between; }
+      .filter.with-search,
+      .filter.with-search input { width: 100%; max-width: 100% !important; }
+
+      /* Side panel → full screen */
+      .side-panel { width: 100vw; }
+      .panel-header { padding: 0 18px; }
+      .panel-body { padding: 16px 18px 24px; }
+
+      /* Panel amount cards stack into one column */
+      .amount-grid { grid-template-columns: 1fr !important; }
+      .amount-card--full { grid-column: auto !important; }
+
+      /* History cards: tighten spacing */
+      .h-card-head { padding: 11px 12px; flex-wrap: wrap; gap: 8px; }
+      .h-amount { font-size: 17px; }
+      .h-meta-row { padding: 10px 12px; }
+      .h-meta-val { font-size: 12.5px; max-width: 58%; }
+      .h-meta-label { gap: 7px; }
+      .h-meta-ico { width: 24px; height: 24px; }
+    }
+
+    /* ── Small phone (≤ 380px) ── */
+    @media (max-width: 380px) {
+      .greeting h1 { font-size: 22px; }
+      .h-meta-label { font-size: 11.5px; }
+      .h-meta-val { font-size: 12px; }
+      .h-badge { font-size: 10.5px; padding: 3px 8px 3px 7px; }
+    }
   </style>
 </head>
 
