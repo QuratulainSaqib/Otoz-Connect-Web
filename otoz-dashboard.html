@@ -935,6 +935,175 @@
       letter-spacing: 0.02em;
     }
 
+    /* ---- Multi-update timeline (sale price history) ---- */
+    .sale-updates-block {
+      margin-bottom: 16px;
+    }
+    .sale-updates-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .sale-updates-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+    .sale-updates-count {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--accent);
+      background: rgba(0,113,227,0.08);
+      border: 1px solid rgba(0,113,227,0.18);
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+    }
+    /* Timeline container */
+    .su-timeline {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding-left: 28px;
+    }
+    .su-timeline::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 8px;
+      bottom: 8px;
+      width: 1.5px;
+      background: var(--border-strong);
+      border-radius: 2px;
+    }
+    .su-item {
+      position: relative;
+      padding-bottom: 12px;
+    }
+    .su-item:last-child { padding-bottom: 0; }
+    /* Dot on the timeline line */
+    .su-item::before {
+      content: '';
+      position: absolute;
+      left: -26px;
+      top: 7px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1.5px var(--accent);
+    }
+    .su-content {
+      background: var(--surface-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+    }
+    .su-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+    .su-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+    .su-amount {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      flex-shrink: 0;
+    }
+    .su-date {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex-wrap: wrap;
+      margin: 3px 0 5px;
+    }
+    .su-date svg { width: 9px; height: 9px; }
+    .su-date-label {
+      color: var(--text-tertiary);
+      margin-right: 1px;
+    }
+    .su-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .su-label-micro {
+      font-size: 9.5px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .su-reason-label {
+      font-size: 9.5px;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 2px;
+    }
+    .su-reason {
+      font-size: 11px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+    /* Final total bar */
+    .su-final-total {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--accent);
+      border-radius: var(--radius-md);
+      padding: 11px 16px;
+      margin-top: 14px;
+      margin-bottom: 16px;
+    }
+    .su-final-label-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .su-final-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .su-final-sub {
+      font-size: 10.5px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+    }
+    .su-final-amount {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+    }
+    .su-final-curr {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.65);
+      margin-right: 4px;
+    }
+
     .add-btn {
       display: inline-flex;
       align-items: center;
@@ -7801,11 +7970,11 @@
       { stage: 2, ref: "A00106", chassis: "JTDBR32E830088121", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "JPY", purchase: "¥24,205", sale: null, saleType: "btn", bcn: null, dest: "Zimbabwe", recentlyUpdated: true },
       { stage: 3, ref: "A00116", chassis: "MR053ZK60M1029841", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "JPY", sale: "¥4,150,000", saleType: "link", bcn: "BCN", state: "change-requested", dest: "Zimbabwe" },
       { stage: 4, ref: "A00150", chassis: "JN1TENT32U0023456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "B", dest: "Zimbabwe" },
+      { stage: 4, ref: "A00210", chassis: "WBA8B9C50GK999812", make: "Honda", model: "Vezel", code: "DAA-RU3", year: 2023, date: "02/08/2026", curr: "USD", purchase: "$28,100", saleCurr: "USD", sale: "$31,200", saleType: "link", bcn: "B", dest: "Lagos", updatedSale: { title: "Repair Cost Recovery", reason: "Additional charges applied to recover repair expenses incurred during the failed inspection.", addition: 1700, newTotal: 32900, date: "23 / 05 / 2026" }, saleUpdates: [ { title: "Repair Cost Recovery", reason: "Additional charges applied to recover repair expenses incurred during the failed inspection.", addition: 1700, date: "15 / 04 / 2026" }, { title: "Consignee Update Fee", reason: "10% surcharge applied due to consignee details change requested after booking confirmation.", addition: 3120, date: "23 / 05 / 2026" }, { title: "Port Handling Revision", reason: "Revised port handling and documentation fees at Lagos destination port.", addition: 850, date: "10 / 06 / 2026" } ] },
       { stage: 5, ref: "A00159", chassis: "MMBJNKB40NH001234", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "JPY", purchase: "¥24,205", sale: null, saleType: "btn", bcn: null, dest: "Zimbabwe" },
       { stage: 6, ref: "A00170", chassis: "JHMGE8H56DC123456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "EUR", sale: "€25,300", saleType: "link", bcn: "BC", dest: "Mombasa Port" },
       { stage: 7, ref: "A00185", chassis: "JF1GG7LL5BG023456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "C", dest: "Dar es Salaam" },
       { stage: 8, ref: "A00202", chassis: "5YJSA1E26HF200012", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "JPY", sale: "¥4,150,000", saleType: "link", bcn: "BCN", dest: "Zimbabwe" },
-      { stage: 4, ref: "A00210", chassis: "WBA8B9C50GK999812", make: "Honda", model: "Vezel", code: "DAA-RU3", year: 2023, date: "02/08/2026", curr: "USD", purchase: "$28,100", saleCurr: "USD", sale: "$31,200", saleType: "link", bcn: "B", dest: "Lagos", updatedSale: { title: "Repair Cost Recovery", reason: "Additional charges applied to recover repair expenses incurred during the failed inspection.", addition: 1700, newTotal: 32900, date: "23 / 05 / 2026" } },
       { stage: 4, ref: "A00224", chassis: "ZAR93000007123451", make: "Nissan", model: "X-Trail", code: "DBA-T32", year: 2021, date: "02/08/2026", curr: "JPY", purchase: "¥3,150,000", sale: null, saleType: "btn", bcn: null, dest: "Durban" },
     ];
 
@@ -8045,9 +8214,52 @@
         `<div class="details-row"><div class="details-key">${k}</div><div class="details-val">${v}</div></div>`
       ).join('');
 
-      // If this row has an updated sale (addition), append the addition card + new total
+      // If this row has multiple sale updates, render compact timeline
       const extra = document.getElementById('sv-extra');
-      if (r.updatedSale) {
+      if (r.saleUpdates && r.saleUpdates.length > 0) {
+        const updates = r.saleUpdates;
+        const basePrice = parseFloat(r.sale.replace(/[^0-9.]/g, ''));
+        const totalAddition = updates.reduce((s, u) => s + u.addition, 0);
+        const finalTotal = basePrice + totalAddition;
+
+        const calendarSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>`;
+
+        // Sort updates by date ascending
+        const sorted = [...updates].sort((a, b) => {
+          const parse = d => new Date(d.date.replace(/\s*\/\s*/g, '-').split('-').reverse().join('-'));
+          return parse(a) - parse(b);
+        });
+
+        const timelineItems = sorted.map((u, i) => `
+          <div class="su-item">
+            <div class="su-content">
+              <div class="su-top-row">
+                <div class="su-title">${u.title}</div>
+                <div class="su-amount">+ ${r.curr} ${u.addition.toLocaleString()}</div>
+              </div>
+              <div class="su-date">${calendarSvg} <span class="su-date-label">Updated on</span> ${u.date}</div>
+              <div class="su-reason">${u.reason}</div>
+            </div>
+          </div>
+        `).join('');
+
+        extra.innerHTML = `
+          <div class="sale-updates-block">
+            <div class="sale-updates-header">
+              <span class="sale-updates-title">Price Adjustments</span>
+              <span class="sale-updates-count">${updates.length} updates</span>
+            </div>
+            <div class="su-timeline">${timelineItems}</div>
+            <div class="su-final-total">
+              <div class="su-final-label-wrap">
+                <div class="su-final-label">Updated Final Sale Price</div>
+                <div class="su-final-sub">Includes all adjustments above</div>
+              </div>
+              <div class="su-final-amount"><span class="su-final-curr">${r.curr}</span>${finalTotal.toLocaleString()}</div>
+            </div>
+          </div>
+        `;
+      } else if (r.updatedSale) {
         const us = r.updatedSale;
         const additionFormatted = us.addition.toLocaleString();
         const newTotalFormatted = us.newTotal.toLocaleString();
@@ -8660,7 +8872,7 @@
               </div>
               <button class="proceed-btn" id="proceed-btn" onclick="goToProceed()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                <span id="proceed-btn-label">Go to Proceed</span>
+                <span id="proceed-btn-label">Confirm</span>
               </button>
               <div class="proceed-success" id="proceed-success">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
