@@ -1051,6 +1051,51 @@
       margin-top: 2px
     }
 
+    .h-meta {
+      margin-top: 8px;
+      padding: 8px 10px;
+      background: var(--surface-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .h-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .h-meta-label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      letter-spacing: 0.01em;
+      flex-shrink: 0;
+    }
+
+    .h-meta-val {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .h-meta-val.h-txn {
+      color: var(--accent);
+    }
+
+    .h-meta-val.h-pay-amt {
+      color: var(--text-primary);
+    }
+
     .h-badge {
       font-size: 11px;
       font-weight: 600;
@@ -1660,10 +1705,10 @@
       allocated: i === 2 ? 20.0000 : 10.0000,
       remaining: 12650,
       history: [
-        { amount: 5000, date: 'Apr 28, 2026', time: '14:30' },
-        { amount: 7000, date: 'Mar 15, 2026', time: '10:15' },
-        { amount: 3000, date: 'Feb 03, 2026', time: '16:45' },
-        { amount: 5000, date: 'Jan 10, 2026', time: '09:00' },
+        { amount: 5000, date: 'Apr 28, 2026', time: '14:30', txn: 'ABOWATH ENTERPRIZES', payAmt: '32,640', curr: 'USD' },
+        { amount: 7000, date: 'Mar 15, 2026', time: '10:15', txn: 'KENMORE TRADING CO', payAmt: '14,420', curr: 'GBP' },
+        { amount: 3000, date: 'Feb 03, 2026', time: '16:45', txn: 'AL SUWAIDI MOTORS', payAmt: '91,100', curr: 'AED' },
+        { amount: 5000, date: 'Jan 10, 2026', time: '09:00', txn: 'ZIM TRANSPORT LTD', payAmt: '28,975', curr: 'USD' },
       ]
     }));
 
@@ -1797,10 +1842,10 @@
       paid: 32650,
       remaining: 0,
       history: [
-        { amount: 10000, date: 'Apr 28, 2026', time: '14:30' },
-        { amount: 10000, date: 'Mar 15, 2026', time: '10:15' },
-        { amount: 7650, date: 'Feb 03, 2026', time: '16:45' },
-        { amount: 5000, date: 'Jan 10, 2026', time: '09:00' },
+        { amount: 10000, date: 'Apr 28, 2026', time: '14:30', txn: 'ABOWATH ENTERPRIZES', payAmt: '32,640', curr: 'USD' },
+        { amount: 10000, date: 'Mar 15, 2026', time: '10:15', txn: 'AL SUWAIDI MOTORS', payAmt: '91,100', curr: 'AED' },
+        { amount: 7650, date: 'Feb 03, 2026', time: '16:45', txn: 'PACIFIC AUTO IMPORTS', payAmt: '6,070,000', curr: 'JPY' },
+        { amount: 5000, date: 'Jan 10, 2026', time: '09:00', txn: 'ZIM TRANSPORT LTD', payAmt: '28,975', curr: 'USD' },
       ]
     }));
 
@@ -2895,8 +2940,12 @@
       }
 
       const hist = document.getElementById('ph-history');
+      const CURR_SIGNS = { USD: '$', JPY: '¥', EUR: '€', GBP: '£', AED: 'د.إ ' };
       const sorted = [...row.history].sort((a, b) => new Date(b.date + ' ' + b.time) - new Date(a.date + ' ' + a.time));
-      hist.innerHTML = sorted.map((h, i) => `
+      hist.innerHTML = sorted.map((h, i) => {
+        const paySign = CURR_SIGNS[h.curr] || (h.curr ? h.curr + ' ' : '$');
+        const payAmtStr = h.payAmt != null ? `${paySign}${h.payAmt}` : '—';
+        return `
       <div class="history-item">
         <div class="h-dot-wrap">
           <div class="h-dot"></div>
@@ -2905,9 +2954,20 @@
         <div class="h-info">
           <div class="h-amount">+ $${h.amount.toLocaleString()}</div>
           <div class="h-date">${h.date} at ${h.time}</div>
+          <div class="h-meta">
+            <div class="h-meta-row">
+              <span class="h-meta-label">Transaction ID</span>
+              <span class="h-meta-val h-txn">${h.txn || '—'}</span>
+            </div>
+            <div class="h-meta-row">
+              <span class="h-meta-label">Amount</span>
+              <span class="h-meta-val h-pay-amt">${payAmtStr}</span>
+            </div>
+          </div>
         </div>
         <span class="h-badge">Allocated</span>
-      </div>`).join('');
+      </div>`;
+      }).join('');
 
       document.getElementById('panel-history').classList.add('open');
       document.getElementById('panel-overlay').classList.add('open');
