@@ -8023,8 +8023,19 @@
 
     function renderSale(r, idx) {
       if (r.saleType === "btn") return `<button class="add-btn" onclick="openSale(${idx})">${ico.plus} Add Sale</button>`;
+      if (r.saleUpdates && r.saleUpdates.length > 0) {
+        const basePrice = parseFloat(r.sale.replace(/[^0-9.]/g, ''));
+        const totalAddition = r.saleUpdates.reduce((s, u) => s + u.addition, 0);
+        const finalTotal = (basePrice + totalAddition).toLocaleString();
+        return `<button class="updated-sale-cell" onclick="openSaleView(${idx})">
+          <span class="price-link">${finalTotal}</span>
+          <span class="updated-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Updated
+          </span>
+        </button>`;
+      }
       if (r.updatedSale) {
-        // Format new total with the row's currency symbol
         const symMatch = r.sale.match(/^[$¥€£]/);
         const sym = symMatch ? symMatch[0] : '';
         const newTotalStr = sym + r.updatedSale.newTotal.toLocaleString();
