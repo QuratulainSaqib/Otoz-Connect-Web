@@ -5510,8 +5510,8 @@
       font-size: 11px;
       font-weight: 700;
       color: var(--text-tertiary);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      text-transform: none;
+      letter-spacing: 0;
       margin-bottom: 10px;
     }
 
@@ -5522,8 +5522,8 @@
       font-size: 11.5px;
       font-weight: 700;
       color: #047857;
-      text-transform: capitalize;
-      letter-spacing: 0.08em;
+      text-transform: none;
+      letter-spacing: 0;
       margin-bottom: 14px;
     }
 
@@ -8804,7 +8804,8 @@
           if (detail.groups && detail.groups.length) {
             detail.groups.forEach(g => {
               bodyContent += '<div class="sf-group">';
-              bodyContent += `<div class="sf-group-title"><span class="sf-group-dot"></span>${g.title}</div>`;
+              const groupLabel = g.title.charAt(0).toUpperCase() + g.title.slice(1).toLowerCase();
+              bodyContent += `<div class="sf-group-title"><span class="sf-group-dot"></span>${groupLabel}</div>`;
               bodyContent += '<div class="stage-fields-grid">';
               g.fields.forEach(([k, v]) => {
                 const valHTML = (typeof v === 'object' && v !== null && v.kind === 'status-pill')
@@ -8817,10 +8818,11 @@
           }
           // fieldDividers — flat field rows separated by dividers with section title (e.g. Stage 5 Shipment)
           if (detail.fieldDividers && detail.fieldDividers.length) {
-            detail.fieldDividers.forEach(section => {
-              bodyContent += '<div class="sf-divider"></div>';
+            detail.fieldDividers.forEach((section, idx) => {
+              if (idx > 0) bodyContent += '<div class="sf-divider"></div>';
               if (section.title) {
-                bodyContent += `<div class="sf-section-heading">${section.title}</div>`;
+                const sectionLabel = section.title.charAt(0).toUpperCase() + section.title.slice(1).toLowerCase();
+                bodyContent += `<div class="sf-section-heading">${sectionLabel}</div>`;
               }
               bodyContent += '<div class="stage-fields-grid">';
               section.fields.forEach(([k, v]) => {
