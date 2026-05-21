@@ -4336,6 +4336,22 @@
       color: var(--text-secondary);
     }
 
+    /* Date + Document grouped block — no divider between them */
+    .sf-date-doc-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .sf-date-row {
+      margin-bottom: 14px;
+    }
+
+    .sf-section-label--tight {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
 
 
     /* ========== Universal Document Viewer (consistent across stages) ========== */
@@ -7981,9 +7997,9 @@
       { stage: 4, ref: "A00210", chassis: "WBA8B9C50GK999812", make: "Honda", model: "Vezel", code: "DAA-RU3", year: 2023, date: "02/08/2026", curr: "USD", purchase: "$28,100", saleCurr: "USD", sale: "$31,200", saleType: "link", bcn: "B", dest: "Lagos", updatedSale: { title: "Repair Cost Recovery", reason: "Additional charges applied to recover repair expenses incurred during the failed inspection.", addition: 1700, newTotal: 32900, date: "23 / 05 / 2026" }, saleUpdates: [ { title: "Repair Cost Recovery", reason: "Additional charges applied to recover repair expenses incurred during the failed inspection.", addition: 1700, date: "15 / 04 / 2026" }, { title: "Consignee Update Fee", reason: "10% surcharge applied due to consignee details change requested after booking confirmation.", addition: 3120, date: "23 / 05 / 2026" }, { title: "Port Handling Revision", reason: "Revised port handling and documentation fees at Lagos destination port.", addition: 850, date: "10 / 06 / 2026" } ] },
       { stage: 5, ref: "A00159", chassis: "MMBJNKB40NH001234", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "JPY", purchase: "¥24,205", sale: null, saleType: "btn", bcn: null, dest: "Zimbabwe" },
       { stage: 6, ref: "A00170", chassis: "JHMGE8H56DC123456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "EUR", sale: "€25,300", saleType: "link", bcn: "BC", dest: "Mombasa Port" },
+      { stage: 6, ref: "A00224", chassis: "ZAR93000007123451", make: "Nissan", model: "X-Trail", code: "DBA-T32", year: 2021, date: "02/08/2026", curr: "JPY", purchase: "¥3,150,000", sale: null, saleType: "btn", bcn: null, dest: "Durban" },
       { stage: 7, ref: "A00185", chassis: "JF1GG7LL5BG023456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "C", dest: "Dar es Salaam" },
       { stage: 8, ref: "A00202", chassis: "5YJSA1E26HF200012", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "JPY", sale: "¥4,150,000", saleType: "link", bcn: "BCN", dest: "Zimbabwe" },
-      { stage: 4, ref: "A00224", chassis: "ZAR93000007123451", make: "Nissan", model: "X-Trail", code: "DBA-T32", year: 2021, date: "02/08/2026", curr: "JPY", purchase: "¥3,150,000", sale: null, saleType: "btn", bcn: null, dest: "Durban" },
     ];
 
     /* -------- SVG icons -------- */
@@ -8669,8 +8685,10 @@
         sub: 'Copy Bill of Lading uploaded · ready to view',
         doneSub: 'Official Bill of Lading (BL) document available for download.',
         fields: [
-          ['Upload Date', '22 / 09 / 2026'],
           ['Shipment Tracking', '0123243s44vdgfg55'],
+        ],
+        fieldsAfterDivider: [
+          ['Updated Date', '22 / 09 / 2026'],
         ],
         docs: [
           { name: 'Bill_of_Lading_Copy_A00116.pdf', kind: 'bl' }
@@ -8705,6 +8723,10 @@
           city: 'Harare',
           postalCode: '00263',
           email: 'john.mwangi@example.com'
+        },
+        amendedBL: {
+          updatedDate: '28 / 09 / 2026',
+          doc: { name: 'Amended_Bill_of_Lading_A00116.pdf', kind: 'bl' }
         }
       }
     };
@@ -8973,9 +8995,30 @@
               </div>
             </div>`;
           }
-          if (detail.docs && detail.docs.length) {
+          if (detail.fieldsAfterDivider && detail.fieldsAfterDivider.length) {
             bodyContent += '<div class="sf-divider"></div>';
-            bodyContent += `<div class="sf-section-label sf-section-label--doc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${detail.docTitle || 'Documents'}</div>`;
+            bodyContent += '<div class="sf-date-doc-block">';
+            bodyContent += '<div class="stage-fields-grid sf-date-row">';
+            detail.fieldsAfterDivider.forEach(([k, v]) => {
+              let valHTML;
+              if (typeof v === 'object' && v !== null && v.kind === 'status-pill') {
+                valHTML = `<span class="sf-status-pill sf-status-pill--${v.tone || 'success'}"><span class="sf-status-dot"></span>${v.value}</span>`;
+              } else if (typeof v === 'object' && v !== null && v.kind === 'highlight') {
+                valHTML = `<span class="sf-highlight sf-highlight--${v.tone || 'success'}">${v.value}</span>`;
+              } else {
+                valHTML = v;
+              }
+              bodyContent += `<div class="sf-cell"><div class="sf-key">${k}</div><div class="sf-val">${valHTML}</div></div>`;
+            });
+            bodyContent += '</div>';
+          }
+          if (detail.docs && detail.docs.length) {
+            if (!detail.fieldsAfterDivider || !detail.fieldsAfterDivider.length) {
+              bodyContent += '<div class="sf-divider"></div>';
+              bodyContent += `<div class="sf-section-label sf-section-label--doc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${detail.docTitle || 'Documents'}</div>`;
+            } else {
+              bodyContent += `<div class="sf-section-label sf-section-label--doc sf-section-label--tight"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${detail.docTitle || 'Documents'}</div>`;
+            }
             detail.docs.forEach(d => {
               bodyContent += `
               <div class="doc-row">
@@ -8996,6 +9039,9 @@
                 </div>
               </div>`;
             });
+            if (detail.fieldsAfterDivider && detail.fieldsAfterDivider.length) {
+              bodyContent += '</div>'; // close sf-date-doc-block
+            }
           }
         }
 
@@ -9159,6 +9205,35 @@
           <span id="bl-send-label">${method === 'dispatch' ? 'Confirm Dispatch' : 'Confirm Surrender'}</span>
         </button>
       </div>`;
+
+      // Amended Copy of Bill of Lading
+      if (detail.amendedBL) {
+        const abl = detail.amendedBL;
+        html += '<div class="sf-divider"></div>';
+        html += '<div class="sf-date-doc-block">';
+        html += '<div class="stage-fields-grid sf-date-row">';
+        html += `<div class="sf-cell"><div class="sf-key">Updated Date</div><div class="sf-val">${abl.updatedDate}</div></div>`;
+        html += '</div>';
+        html += `<div class="sf-section-label sf-section-label--doc sf-section-label--tight"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Amended Copy of Bill of Lading</div>`;
+        html += `
+        <div class="doc-row">
+          <div class="doc-thumb doc-thumb--${abl.doc.kind || 'bl'}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <div class="doc-info">
+            <div class="doc-name">${abl.doc.name}</div>
+          </div>
+          <div class="doc-actions">
+            <button class="inv-act ghost" data-tt="Preview" aria-label="Preview">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+            <button class="inv-act primary" data-tt="Download" aria-label="Download">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </button>
+          </div>
+        </div>`;
+        html += '</div>'; // close sf-date-doc-block
+      }
 
       return html;
     }
