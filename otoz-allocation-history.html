@@ -995,71 +995,112 @@
     }
 
     .history-item {
+      position: relative;
       display: flex;
-      align-items: flex-start;
+      align-items: stretch;
       gap: 14px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--divider);
+      padding: 0 0 16px 0;
+      border-bottom: none;
     }
 
     .history-item:last-child {
-      border-bottom: none
+      padding-bottom: 0;
     }
 
     .h-dot-wrap {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 3px
+      padding-top: 18px;
+      flex-shrink: 0;
     }
 
     .h-dot {
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       background: var(--green);
       flex-shrink: 0;
-      box-shadow: 0 0 0 3px rgba(28, 158, 94, 0.15);
+      box-shadow: 0 0 0 4px rgba(28, 158, 94, 0.12);
+      z-index: 1;
     }
 
     .h-line {
-      width: 1px;
+      width: 2px;
       flex: 1;
-      background: var(--border);
-      margin-top: 4px;
-      min-height: 20px
+      background: linear-gradient(to bottom, rgba(28, 158, 94, 0.25), var(--border) 40%);
+      margin-top: 6px;
+      min-height: 20px;
+      border-radius: 2px;
     }
 
     .history-item:last-child .h-line {
       display: none
     }
 
-    .h-info {
-      flex: 1
+    /* ── Card ── */
+    .h-card {
+      flex: 1;
+      min-width: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      transition: box-shadow .2s ease, transform .2s ease, border-color .2s ease;
+    }
+
+    .h-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .h-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: linear-gradient(135deg, rgba(28, 158, 94, 0.05) 0%, rgba(28, 158, 94, 0.01) 100%);
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .h-head-left {
+      min-width: 0;
     }
 
     .h-amount {
-      font-size: 15px;
+      font-family: var(--font-display);
+      font-size: 19px;
       font-weight: 700;
       color: var(--green);
-      letter-spacing: -0.01em
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
     }
 
     .h-date {
+      display: flex;
+      align-items: center;
+      gap: 5px;
       font-size: 12px;
       color: var(--text-tertiary);
-      margin-top: 2px
+      margin-top: 4px;
+      font-weight: 500;
     }
 
+    .h-date svg {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    /* ── Meta section ── */
     .h-meta {
-      margin-top: 8px;
-      padding: 8px 10px;
-      background: var(--surface-elev);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
       display: flex;
       flex-direction: column;
-      gap: 5px;
     }
 
     .h-meta-row {
@@ -1067,29 +1108,64 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      padding: 11px 14px;
+    }
+
+    .h-meta-row + .h-meta-row {
+      border-top: 1px solid var(--divider);
     }
 
     .h-meta-label {
-      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
       font-weight: 500;
-      color: var(--text-tertiary);
-      letter-spacing: 0.01em;
+      color: var(--text-secondary);
+      letter-spacing: 0;
       flex-shrink: 0;
     }
 
+    .h-meta-ico {
+      width: 26px;
+      height: 26px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .h-meta-ico svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .h-meta-ico.ico-txn {
+      background: rgba(0, 113, 227, 0.1);
+      color: var(--accent);
+    }
+
+    .h-meta-ico.ico-amt {
+      background: rgba(28, 158, 94, 0.1);
+      color: var(--green);
+    }
+
     .h-meta-val {
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
       color: var(--text-primary);
       text-align: right;
       font-variant-numeric: tabular-nums;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      letter-spacing: -0.01em;
     }
 
     .h-meta-val.h-txn {
       color: var(--accent);
+      font-weight: 600;
     }
 
     .h-meta-val.h-pay-amt {
@@ -1097,15 +1173,28 @@
     }
 
     .h-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       font-size: 11px;
       font-weight: 600;
-      padding: 3px 8px;
+      padding: 4px 10px 4px 8px;
       border-radius: var(--radius-pill);
       background: rgba(28, 158, 94, 0.1);
       color: var(--green);
-      border: 1px solid rgba(28, 158, 94, 0.15);
+      border: 1px solid rgba(28, 158, 94, 0.18);
       flex-shrink: 0;
       align-self: center;
+      letter-spacing: 0.01em;
+    }
+
+    .h-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
     }
 
     /* ── Header row: 12-col grid (3 greeting + 9 KPI cards) ── */
@@ -2951,21 +3040,38 @@
           <div class="h-dot"></div>
           ${i < sorted.length - 1 ? '<div class="h-line"></div>' : ''}
         </div>
-        <div class="h-info">
-          <div class="h-amount">+ $${h.amount.toLocaleString()}</div>
-          <div class="h-date">${h.date} at ${h.time}</div>
+        <div class="h-card">
+          <div class="h-card-head">
+            <div class="h-head-left">
+              <div class="h-amount">+ $${h.amount.toLocaleString()}</div>
+              <div class="h-date">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+                ${h.date} at ${h.time}
+              </div>
+            </div>
+            <span class="h-badge">Allocated</span>
+          </div>
           <div class="h-meta">
             <div class="h-meta-row">
-              <span class="h-meta-label">Transaction ID</span>
+              <span class="h-meta-label">
+                <span class="h-meta-ico ico-txn">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+                </span>
+                Transaction ID
+              </span>
               <span class="h-meta-val h-txn">${h.txn || '—'}</span>
             </div>
             <div class="h-meta-row">
-              <span class="h-meta-label">Amount</span>
+              <span class="h-meta-label">
+                <span class="h-meta-ico ico-amt">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 6H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                </span>
+                Amount
+              </span>
               <span class="h-meta-val h-pay-amt">${payAmtStr}</span>
             </div>
           </div>
         </div>
-        <span class="h-badge">Allocated</span>
       </div>`;
       }).join('');
 
