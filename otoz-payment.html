@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Otoz Connect — Agent Dashboard</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -713,6 +713,32 @@
     .nav-center { display: none; }
     .stat-cards { width: 100%; flex-direction: column; }
     .stat-card { flex: 1; min-width: 0; width: 100%; }
+
+    /* Toolbar: stack everything full-width instead of overflowing one row */
+    .toolbar { overflow-x: visible; }
+    .toolbar-left,
+    .toolbar-right { flex-wrap: wrap; gap: 10px; }
+    .toolbar-left > *,
+    .toolbar-right > * { flex: 1 1 100%; }
+    .filter,
+    .filter.compact {
+      flex: 1 1 100%;
+      max-width: none;
+      min-width: 0;
+    }
+    .btn-add-payment { width: 100%; justify-content: center; }
+    .toolbar-divider { display: none; }
+
+    /* 16px input font prevents iOS Safari auto-zoom on focus */
+    .filter select,
+    .filter input { font-size: 16px; }
+
+    /* Compact the Help/Logout buttons to icon-only */
+    .help-btn, .logout-btn { padding: 8px 11px; }
+    .help-btn { font-size: 0; gap: 0; }
+    .help-btn svg { width: 15px; height: 15px; }
+    .logout-btn { font-size: 0; gap: 0; }
+    .logout-btn svg { width: 15px; height: 15px; }
   }
 
   /* ---------- Slide-in Side Panel ---------- */
@@ -1138,6 +1164,8 @@
   @media (max-width: 520px) {
     .form-grid { grid-template-columns: 1fr; }
     .side-panel { width: 100%; }
+    .navbar { padding: 0 14px; }
+    .greeting h1 { font-size: 23px; }
   }
 
   /* ---------- Sticky First 6 Columns ---------- */

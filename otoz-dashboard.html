@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Otoz Connect — Agent Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1460,6 +1460,39 @@
         min-width: 0;
         width: 100%;
       }
+
+      /* Toolbar: wrap into a tidy grid instead of overflowing one row */
+      .toolbar { overflow-x: visible; }
+      .toolbar-left,
+      .toolbar-right {
+        flex-wrap: wrap;
+        gap: 10px;
+        width: 100%;
+      }
+      /* Dropdown filters: 2 per row to stay compact */
+      .filter {
+        flex: 1 1 calc(50% - 5px);
+        min-width: 0;
+        max-width: none;
+      }
+      /* Search & compact controls span the full width */
+      .filter.with-search,
+      .filter.compact {
+        flex: 1 1 100%;
+        max-width: none;
+        min-width: 0;
+      }
+
+      /* 16px input font prevents iOS Safari auto-zoom on focus */
+      .filter select,
+      .filter input { font-size: 16px; }
+
+      /* Compact the Help/Logout buttons to icon-only */
+      .help-btn, .logout-btn { padding: 8px 11px; }
+      .help-btn { font-size: 0; gap: 0; }
+      .help-btn svg { width: 15px; height: 15px; }
+      .logout-btn { font-size: 0; gap: 0; }
+      .logout-btn svg { width: 15px; height: 15px; }
     }
 
     /* ---------- Slide-in Side Panel ---------- */
@@ -2031,6 +2064,12 @@
       .side-panel {
         width: 100%;
       }
+
+      .navbar { padding: 0 14px; }
+      .greeting h1 { font-size: 23px; }
+
+      /* Filters go single-column on very small screens */
+      .filter { flex: 1 1 100%; }
     }
 
     /* ---------- Sticky First 6 Columns ---------- */
