@@ -756,6 +756,576 @@
       background: #30c46d;
     }
 
+    /* ---------- View Toggle (Table / Kanban) ---------- */
+    .view-switch-bar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .view-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 3px;
+      background: rgba(0, 0, 0, 0.04);
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+    }
+
+    .view-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      padding: 0 14px;
+      border: none;
+      background: transparent;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .view-toggle-btn svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+    }
+
+    .view-toggle-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .view-toggle-btn.active {
+      background: var(--surface);
+      color: var(--text-primary);
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+
+    /* ---------- Kanban Board ---------- */
+    .kanban-card-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .kanban-board {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 340px;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      height: calc(100vh - 220px);
+      min-height: 420px;
+      scroll-behavior: smooth;
+    }
+
+    .kanban-board::-webkit-scrollbar {
+      height: 10px;
+    }
+
+    .kanban-board::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 10px;
+    }
+
+    .kanban-board::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.18);
+      border-radius: 10px;
+    }
+
+    .kanban-board::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 0, 0, 0.28);
+    }
+
+    .kanban-col {
+      background: var(--surface-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      min-height: 0;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .kanban-col.drag-over {
+      background: rgba(0, 113, 227, 0.05);
+      border-color: rgba(0, 113, 227, 0.35);
+    }
+
+    .kanban-col-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 14px 12px;
+      border-bottom: 1px solid var(--border);
+      gap: 10px;
+    }
+
+    .kanban-col-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .kanban-col-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .kanban-col-name {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .kanban-col-num {
+      font-size: 11px;
+      color: var(--text-tertiary);
+      font-weight: 500;
+      margin-left: 4px;
+    }
+
+    .kanban-col-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 7px;
+      background: rgba(0, 0, 0, 0.06);
+      color: var(--text-secondary);
+      border-radius: var(--radius-pill);
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .kanban-col-body {
+      flex: 1;
+      min-height: 0;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+    }
+
+    .kanban-col-body::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .kanban-col-body::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.12);
+      border-radius: 6px;
+    }
+
+    .kanban-empty {
+      padding: 24px 12px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      font-style: italic;
+    }
+
+    .kanban-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 0;
+      cursor: grab;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      box-shadow: var(--shadow-sm);
+      user-select: none;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .kanban-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-top-color: var(--border-strong);
+      border-right-color: var(--border-strong);
+      border-bottom-color: var(--border-strong);
+    }
+
+    .kanban-card:active {
+      cursor: grabbing;
+    }
+
+    .kanban-card.dragging {
+      opacity: 0.45;
+      transform: rotate(2deg) scale(0.98);
+    }
+
+    /* Card head: stage pill + doc/info icons */
+    .kc-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 12px 14px;
+    }
+
+    .kc-stage-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 13px 5px 5px;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-display);
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      max-width: 100%;
+    }
+
+    .kc-stage-pill .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .kc-head-icons {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .kc-icon-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.18s ease;
+      color: var(--text-tertiary);
+    }
+
+    .kc-icon-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .kc-icon-btn.doc {
+      color: #1aa260;
+    }
+
+    .kc-icon-btn.info {
+      border: 1.5px solid var(--border-strong);
+    }
+
+    .kc-icon-btn:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    .kc-divider {
+      height: 1px;
+      background: var(--divider);
+      margin: 0;
+    }
+
+    /* Card body: car image + info */
+    .kc-body {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 14px;
+    }
+
+    .kc-img {
+      width: 84px;
+      height: 64px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      flex-shrink: 0;
+      background: #f0f0f3;
+      border: 1px solid var(--border);
+    }
+
+    .kc-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .kc-model {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    .kc-model .kc-year {
+      font-weight: 500;
+      color: var(--text-tertiary);
+      margin-left: 6px;
+    }
+
+    .kc-code {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    .kc-chassis {
+      font-family: "SF Mono", "Menlo", monospace;
+      font-size: 12px;
+      color: var(--text-tertiary);
+      margin-top: 3px;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .kc-dest {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 8px;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .kc-dest svg {
+      width: 15px;
+      height: 15px;
+      stroke: var(--text-secondary);
+      flex-shrink: 0;
+    }
+
+    /* Purchase row */
+    .kc-purchase {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 13px 14px;
+    }
+
+    .kc-purchase-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      min-width: 0;
+    }
+
+    .kc-purchase-label {
+      color: var(--text-tertiary);
+      font-weight: 500;
+    }
+
+    .kc-sep {
+      color: var(--border-strong);
+    }
+
+    .kc-date {
+      color: var(--text-primary);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .kc-price-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .kc-curr {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 7px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+    }
+
+    .kc-amt {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+    }
+
+    /* Footer: sale price + BCN badges, OR add buttons */
+    .kc-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 13px 14px;
+    }
+
+    .kc-sale {
+      min-width: 0;
+    }
+
+    .kc-sale-label {
+      display: block;
+      font-size: 13px;
+      color: var(--text-tertiary);
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+
+    .kc-bcn {
+      display: inline-flex;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .kc-badge {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 600;
+      background: #f0f0f3;
+      color: var(--text-tertiary);
+      cursor: default;
+      transition: all 0.18s ease;
+      position: relative;
+    }
+
+    .kc-badge.active {
+      background: #e8f1ff;
+      color: #0058c7;
+      cursor: pointer;
+    }
+
+    .kc-badge.muted {
+      background: #f0f0f3;
+      color: var(--text-tertiary);
+      cursor: pointer;
+    }
+
+    .kc-badge.danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+      cursor: pointer;
+    }
+
+    .kc-badge.danger::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--danger);
+      border: 1.5px solid var(--surface);
+    }
+
+    .kc-badge.active:hover,
+    .kc-badge.muted:hover,
+    .kc-badge.danger:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .kc-footer-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px 14px;
+    }
+
+    .kc-add-btn {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      height: 32px;
+      padding: 0 16px;
+      border: none;
+      border-radius: var(--radius-pill);
+      background: var(--danger);
+      color: #fff;
+      font-family: var(--font-display);
+      font-size: 12.5px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      box-shadow: 0 2px 7px rgba(255, 59, 48, 0.22);
+    }
+
+    .kc-add-btn svg {
+      width: 12px;
+      height: 12px;
+    }
+
+    .kc-add-btn:hover {
+      background: #ff5247;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 11px rgba(255, 59, 48, 0.3);
+    }
+
+    /* Hide containers when not active */
+    .view-table.hidden,
+    .view-kanban.hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 768px) {
+      .kanban-board {
+        grid-auto-columns: 85vw;
+      }
+      .view-toggle-btn {
+        padding: 0 10px;
+        font-size: 12px;
+      }
+    }
+
     /* ---------- Cell Specifics ---------- */
     .car-img {
       width: 64px;
@@ -1495,7 +2065,7 @@
       .logout-btn svg { width: 15px; height: 15px; }
     }
 
-    /* ---------- Slide-in Side Panel ---------- */
+    /* ---------- Centered Large Modal Popup ---------- */
     .panel-overlay {
       position: fixed;
       inset: 0;
@@ -1509,24 +2079,30 @@
     }
 
     .panel-overlay.open {
-      background: rgba(0, 0, 0, 0.35);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       opacity: 1;
       pointer-events: auto;
     }
 
+    /* Large centered modal — replaces old slide-in side panel */
     .side-panel {
       position: fixed;
-      top: 0;
-      right: 0;
-      height: 100vh;
-      width: var(--panel-width);
-      max-width: 100vw;
+      top: 50%;
+      left: 50%;
+      width: 92vw;
+      max-width: 1400px;
+      height: 92vh;
+      max-height: 92vh;
       background: var(--surface);
-      box-shadow: none;
-      transform: translateX(100%);
-      transition: transform 0.42s cubic-bezier(0.32, 0.72, 0.2, 1);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.12);
+      transform: translate(-50%, -50%) scale(0.96);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.32s cubic-bezier(0.32, 0.72, 0.2, 1),
+                  opacity 0.28s ease;
       z-index: 101;
       display: flex;
       flex-direction: column;
@@ -1535,31 +2111,34 @@
     }
 
     .side-panel.open {
-      transform: translateX(0);
-      box-shadow: -20px 0 60px rgba(0, 0, 0, 0.18);
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+      pointer-events: auto;
     }
 
     /* .wide is now an alias — every panel renders at the same width */
     .side-panel.wide {
-      width: var(--panel-width);
-      max-width: 100vw;
+      width: 92vw;
+      max-width: 1400px;
     }
 
     .panel-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 24px;
-      height: 64px;
+      padding: 0 32px;
+      height: 68px;
       border-bottom: 1px solid var(--border);
       background: var(--surface);
       flex-shrink: 0;
       box-sizing: border-box;
+      border-top-left-radius: var(--radius-lg);
+      border-top-right-radius: var(--radius-lg);
     }
 
     .panel-header h2 {
       font-family: var(--font-display);
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--text-primary);
@@ -1593,14 +2172,34 @@
     .panel-body {
       flex: 1 1 auto;
       overflow-y: auto;
-      padding: 20px 24px 24px;
+      padding: 28px 40px 32px;
       box-sizing: border-box;
+    }
+
+    /* Inner content wrapper — keeps content readable in the wide modal
+       by capping its max width and centering it within panel-body */
+    .panel-body > .panel-content,
+    .panel-body {
+      /* default: allow content to use full width but cap nicely */
     }
 
     /* Constrain ALL direct children to popup width — keeps everything aligned */
     .panel-body>* {
       max-width: 100%;
       box-sizing: border-box;
+    }
+
+    /* In the wide centered modal, allow form-grid to use more columns where it makes sense */
+    @media (min-width: 1100px) {
+      .side-panel .form-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      .side-panel .form-grid.single {
+        grid-template-columns: 1fr;
+      }
+      .side-panel .form-grid.two-col {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     /* Apple-style Vehicle hero card */
@@ -2023,14 +2622,19 @@
     /* Panel footer / submit button */
     .panel-footer {
       flex-shrink: 0;
-      padding: 16px 24px;
+      padding: 18px 32px;
       border-top: 1px solid var(--border);
       background: var(--surface);
       box-sizing: border-box;
+      border-bottom-left-radius: var(--radius-lg);
+      border-bottom-right-radius: var(--radius-lg);
     }
 
     .submit-btn {
       width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      display: block;
       height: 48px;
       background: #1d3557;
       color: #fff;
@@ -2062,7 +2666,10 @@
       }
 
       .side-panel {
-        width: 100%;
+        width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
       }
 
       .navbar { padding: 0 14px; }
@@ -2070,6 +2677,14 @@
 
       /* Filters go single-column on very small screens */
       .filter { flex: 1 1 100%; }
+    }
+
+    @media (max-width: 900px) and (min-width: 521px) {
+      .side-panel {
+        width: 96vw;
+        height: 94vh;
+        max-height: 94vh;
+      }
     }
 
     /* ---------- Sticky First 6 Columns ---------- */
@@ -6395,7 +7010,41 @@
               <div class="stat-value">350</div>
             </div>
           </div>
-        
+          <div class="stat-card delivered">
+            <div class="stat-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M9 11l3 3L22 4" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+              </svg>
+            </div>
+            <div>
+              <div class="stat-label">Total Delivered</div>
+              <div class="stat-value">128</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- View Toggle (above filters) -->
+      <div class="view-switch-bar">
+        <div class="view-toggle" role="tablist" aria-label="View mode">
+          <button class="view-toggle-btn active" id="view-btn-table" onclick="switchView('table')" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="16" rx="2"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+              <line x1="3" y1="16" x2="21" y2="16"/>
+            </svg>
+            Table
+          </button>
+          <button class="view-toggle-btn" id="view-btn-kanban" onclick="switchView('kanban')" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="5" height="16" rx="1"/>
+              <rect x="10" y="4" width="5" height="10" rx="1"/>
+              <rect x="17" y="4" width="4" height="13" rx="1"/>
+            </svg>
+            Kanban
+          </button>
         </div>
       </div>
 
@@ -6507,7 +7156,8 @@
         </div>
       </div>
 
-      <!-- Table -->
+      <!-- Table View -->
+      <div class="view-table" id="view-table">
       <div class="table-card">
         <div class="table-wrap">
           <table class="data-table vehicle-table">
@@ -6560,6 +7210,18 @@
           <div class="pager" id="pager"></div>
         </div>
       </div>
+      </div>
+      <!-- /Table View -->
+
+      <!-- Kanban View -->
+      <div class="view-kanban hidden" id="view-kanban">
+        <div class="kanban-card-wrap">
+          <div class="kanban-board" id="kanban-board">
+            <!-- rendered by JS -->
+          </div>
+        </div>
+      </div>
+      <!-- /Kanban View -->
     </div>
 
     <div id="page-wallet" style="display:none;">
@@ -8159,7 +8821,251 @@
     `).join("");
     }
 
-    /* -------- Destination Port — searchable dropdown -------- */
+    /* -------- View Toggle (Table / Kanban) -------- */
+    let currentView = 'table';
+
+    function switchView(view) {
+      currentView = view;
+      const tableEl = document.getElementById('view-table');
+      const kanbanEl = document.getElementById('view-kanban');
+      const btnTable = document.getElementById('view-btn-table');
+      const btnKanban = document.getElementById('view-btn-kanban');
+
+      if (view === 'kanban') {
+        tableEl.classList.add('hidden');
+        kanbanEl.classList.remove('hidden');
+        btnTable.classList.remove('active');
+        btnKanban.classList.add('active');
+        renderKanban();
+      } else {
+        kanbanEl.classList.add('hidden');
+        tableEl.classList.remove('hidden');
+        btnKanban.classList.remove('active');
+        btnTable.classList.add('active');
+      }
+    }
+
+    /* -------- Kanban Rendering -------- */
+    function renderKanban() {
+      const board = document.getElementById('kanban-board');
+      if (!board) return;
+
+      // Group rows by stage
+      const grouped = {};
+      stageMeta.forEach(s => { grouped[s.n] = []; });
+      rows.forEach((r, i) => {
+        if (grouped[r.stage]) grouped[r.stage].push({ row: r, idx: i });
+      });
+
+      board.innerHTML = stageMeta.map(s => {
+        const items = grouped[s.n];
+        const dotColor = getStageDotColor(s.n);
+        const cardsHtml = items.length
+          ? items.map(({ row, idx }) => renderKanbanCard(row, idx)).join('')
+          : `<div class="kanban-empty">No vehicles in this stage</div>`;
+        return `
+          <div class="kanban-col" data-stage="${s.n}"
+               ondragover="kanbanDragOver(event, ${s.n})"
+               ondragleave="kanbanDragLeave(event, ${s.n})"
+               ondrop="kanbanDrop(event, ${s.n})">
+            <div class="kanban-col-header">
+              <div class="kanban-col-title">
+                <span class="kanban-col-dot" style="background:${dotColor}"></span>
+                <span class="kanban-col-name">${s.label}<span class="kanban-col-num"> · S${s.n}</span></span>
+              </div>
+              <span class="kanban-col-count">${items.length}</span>
+            </div>
+            <div class="kanban-col-body">
+              ${cardsHtml}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderKanbanCard(r, idx) {
+      const dotColor = getStageDotColor(r.stage);
+      const stageBg = getStageBgColor(r.stage);
+      const stageFg = getStageFgColor(r.stage);
+      const img = carThumb(idx);
+      const stageName = (stageMeta.find(s => s.n === r.stage) || {}).label || ('Stage ' + r.stage);
+      const purchaseCurr = r.curr || '';
+      const purchaseAmt = (r.purchase || '').replace(/[$¥€£]/g, '');
+
+      // Sale / consignee footer — mirrors table logic
+      let footerHtml;
+      if (r.saleType === 'btn' || !r.sale) {
+        // No sale yet → Add Sale / Add Consignee buttons (like reference image 2)
+        footerHtml = `
+          <div class="kc-footer kc-footer-actions" onclick="event.stopPropagation();">
+            <button class="kc-add-btn" onclick="event.stopPropagation(); openSale(${idx})">${ico.plus} Add Sale</button>
+            <button class="kc-add-btn" onclick="event.stopPropagation(); openConsignee(${idx})">${ico.plus} Add Consignee</button>
+          </div>`;
+      } else {
+        const saleCurr = r.saleCurr || r.curr || '';
+        const saleAmt = computeSaleAmount(r);
+        footerHtml = `
+          <div class="kc-footer">
+            <div class="kc-sale">
+              <span class="kc-sale-label">Sale Price</span>
+              <div class="kc-price-line">
+                <span class="kc-curr">${saleCurr}</span>
+                <span class="kc-amt">${saleAmt}</span>
+              </div>
+            </div>
+            <div class="kc-bcn" onclick="event.stopPropagation();">${renderKanbanBcn(r, idx)}</div>
+          </div>`;
+      }
+
+      return `
+        <div class="kanban-card" draggable="true"
+             data-idx="${idx}" data-stage="${r.stage}"
+             style="border-left-color:${dotColor};"
+             ondragstart="kanbanDragStart(event, ${idx})"
+             ondragend="kanbanDragEnd(event)"
+             onclick="openStageTimeline(${idx})">
+
+          <div class="kc-head">
+            <span class="kc-stage-pill" style="background:${stageBg}; color:${stageFg}; box-shadow: inset 0 0 0 1px ${dotColor}33;">
+              <span class="num" style="background:${dotColor}; box-shadow:0 1px 4px ${dotColor}66;">${r.stage}</span>
+              ${stageName}
+            </span>
+            <div class="kc-head-icons" onclick="event.stopPropagation();">
+              <button class="kc-icon-btn doc" title="Invoices" onclick="event.stopPropagation(); openInvoices(${idx})">${ico.doc}</button>
+              <button class="kc-icon-btn info" title="Car Info" onclick="event.stopPropagation();">${ico.info}</button>
+            </div>
+          </div>
+
+          <div class="kc-divider"></div>
+
+          <div class="kc-body">
+            <img class="kc-img" src="${img}" alt="${r.make} ${r.model}">
+            <div class="kc-info">
+              <div class="kc-model">${r.make} ${r.model}<span class="kc-year">${r.year}</span></div>
+              <div class="kc-code">${r.code}</div>
+              <div class="kc-chassis">${r.chassis}</div>
+              <div class="kc-dest">${ico.pin}<span>${r.dest}</span></div>
+            </div>
+          </div>
+
+          <div class="kc-divider"></div>
+
+          <div class="kc-purchase">
+            <div class="kc-purchase-left">
+              <span class="kc-purchase-label">Purchase</span>
+              <span class="kc-sep">|</span>
+              <span class="kc-date">${r.date}</span>
+            </div>
+            <div class="kc-price-line">
+              <span class="kc-curr">${purchaseCurr}</span>
+              <span class="kc-amt">${purchaseAmt}</span>
+            </div>
+          </div>
+
+          <div class="kc-divider"></div>
+
+          ${footerHtml}
+        </div>
+      `;
+    }
+
+    // Compute final sale amount (handles updates like the table does)
+    function computeSaleAmount(r) {
+      if (!r.sale) return '';
+      if (r.saleUpdates && r.saleUpdates.length > 0) {
+        const basePrice = parseFloat(r.sale.replace(/[^0-9.]/g, ''));
+        const totalAddition = r.saleUpdates.reduce((s, u) => s + u.addition, 0);
+        return (basePrice + totalAddition).toLocaleString();
+      }
+      if (r.updatedSale) {
+        return r.updatedSale.newTotal.toLocaleString();
+      }
+      return r.sale.replace(/[$¥€£]/g, '');
+    }
+
+    // BCN badges for kanban (B / C / N) — mirrors table renderBcn
+    function renderKanbanBcn(r, idx) {
+      const b = r.bcn;
+      if (!b) return '';
+      if (r.state === 'change-requested') {
+        return `
+          <span class="kc-badge muted" onclick="event.stopPropagation(); openRequestChange(${idx})" title="View change request">B</span>
+          <span class="kc-badge danger" onclick="event.stopPropagation(); openRequestChange(${idx})" title="Pending change request">C</span>
+          <span class="kc-badge muted" onclick="event.stopPropagation(); openRequestChange(${idx})" title="View change request">N</span>`;
+      }
+      const has = (l) => b.includes(l) ? 'active' : '';
+      const click = (l) => b.includes(l) ? `onclick="event.stopPropagation(); openViewConsignee(${idx})"` : 'onclick="event.stopPropagation();"';
+      return `
+        <span class="kc-badge ${has('B')}" ${click('B')}>B</span>
+        <span class="kc-badge ${has('C')}" ${click('C')}>C</span>
+        <span class="kc-badge ${has('N')}" ${click('N')}>N</span>`;
+    }
+
+    /* -------- Stage Color Helpers (read from CSS) -------- */
+    function getStageDotColor(n) {
+      const colors = {
+        1: '#0071e3', 2: '#6f54e0', 3: '#ff9500', 4: '#ec4899',
+        5: '#ff5e3a', 6: '#f5b400', 7: '#34aadc', 8: '#30c46d',
+      };
+      return colors[n] || '#888';
+    }
+    function getStageBgColor(n) {
+      const colors = {
+        1: '#e8f1ff', 2: '#efeaff', 3: '#fff3e0', 4: '#ffe9f1',
+        5: '#ffe6e0', 6: '#fff8d6', 7: '#e0f0ff', 8: '#e3f7ec',
+      };
+      return colors[n] || '#f0f0f3';
+    }
+    function getStageFgColor(n) {
+      const colors = {
+        1: '#0058c7', 2: '#5b3fd1', 3: '#b35900', 4: '#c2185b',
+        5: '#c33d1e', 6: '#8a6500', 7: '#0a5cad', 8: '#0a7a3b',
+      };
+      return colors[n] || '#444';
+    }
+
+    /* -------- Kanban Drag & Drop -------- */
+    let dragIdx = null;
+
+    function kanbanDragStart(ev, idx) {
+      dragIdx = idx;
+      ev.dataTransfer.effectAllowed = 'move';
+      ev.dataTransfer.setData('text/plain', String(idx));
+      ev.currentTarget.classList.add('dragging');
+    }
+
+    function kanbanDragEnd(ev) {
+      ev.currentTarget.classList.remove('dragging');
+      document.querySelectorAll('.kanban-col.drag-over').forEach(c => c.classList.remove('drag-over'));
+      dragIdx = null;
+    }
+
+    function kanbanDragOver(ev, stageN) {
+      ev.preventDefault();
+      ev.dataTransfer.dropEffect = 'move';
+      ev.currentTarget.classList.add('drag-over');
+    }
+
+    function kanbanDragLeave(ev, stageN) {
+      // Only remove highlight if leaving the column itself, not a child
+      if (ev.currentTarget.contains(ev.relatedTarget)) return;
+      ev.currentTarget.classList.remove('drag-over');
+    }
+
+    function kanbanDrop(ev, stageN) {
+      ev.preventDefault();
+      ev.currentTarget.classList.remove('drag-over');
+      const idx = dragIdx ?? parseInt(ev.dataTransfer.getData('text/plain'), 10);
+      if (Number.isNaN(idx) || idx == null) return;
+      if (rows[idx].stage === stageN) return; // no change
+
+      rows[idx].stage = stageN;
+      // Re-render both views to keep them in sync
+      renderKanban();
+      if (typeof renderRows === 'function') renderRows();
+    }
+
+
     function getDestPortOptions() {
       // Unique destination values from rows
       return [...new Set(rows.map(r => r.dest))].sort();
