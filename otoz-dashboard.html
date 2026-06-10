@@ -4690,6 +4690,37 @@
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(23,53,89,0.32);
     }
 
+    .yard-whatsapp-btn {
+      margin-top: 10px;
+      margin-left: 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      background: #25D366;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 2px 6px rgba(37,211,102,0.25);
+      letter-spacing: -0.01em;
+    }
+
+    .yard-whatsapp-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 4px 12px rgba(37,211,102,0.32);
+    }
+
+    .yard-whatsapp-btn svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
     .yard-zip-btn svg {
       width: 14px;
       height: 14px;
@@ -8893,6 +8924,10 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download All as ZIP
             </button>`;
+            bodyContent += `<button class="yard-whatsapp-btn" onclick="alert('Sharing on WhatsApp…')">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.001 2C6.478 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5.003L2 22l5.118-1.341A9.946 9.946 0 0 0 12.001 22C17.524 22 22 17.523 22 12S17.524 2 12.001 2zm0 18.176a8.155 8.155 0 0 1-4.156-1.137l-.298-.177-3.037.797.81-2.96-.194-.305A8.157 8.157 0 0 1 3.824 12c0-4.515 3.662-8.176 8.177-8.176 4.514 0 8.176 3.661 8.176 8.176 0 4.515-3.662 8.176-8.176 8.176z"/></svg>
+              Share on WhatsApp
+            </button>`;
           }
           // Inspection-fail extras: photos of damage, reason, and quotation CTA
           if (detail.failPhotos && detail.failPhotos.length) {
@@ -9394,6 +9429,7 @@
       STAGE_DETAILS[1].fields = [
         ['Make', r.make],
         ['Model', r.model],
+        ['Model Code', r.code],
         ['Chassis No.', r.chassis],
         ['Registration Year', String(r.year)],
         ['PURCH. CURR.', r.curr],
