@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Otoz Connect — Agent Dashboard</title>
+  <title>Otoz Connect — Completed Vehicles</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -6350,7 +6350,7 @@
       </div>
 
       <div class="nav-center">
-        <a class="nav-link active" id="nav-dashboard" href="./otoz-dashboard.html">
+        <a class="nav-link" id="nav-dashboard" href="./otoz-dashboard.html">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
             <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -6360,7 +6360,7 @@
           </svg>
           Dashboard
         </a>
-        <a class="nav-link" href="./otoz-completed.html">
+        <a class="nav-link active" href="./otoz-completed.html">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
@@ -6415,23 +6415,21 @@
       <!-- Header -->
       <div class="header-row">
         <div class="greeting">
-          <h1>Welcome back, <span class="name">Fahad</span></h1>
-          <p>Track your vehicles and manage shipments — all in one place.</p>
+          <h1>Completed Vehicles</h1>
+          <p>Vehicles that have reached Unit Received — final sale price and consignee on file.</p>
         </div>
         <div class="stat-cards">
-          <div class="stat-card">
+          <div class="stat-card delivered">
             <div class="stat-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round">
-                <path
-                  d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V15a1 1 0 0 0 1 1h2" />
-                <circle cx="6.5" cy="16.5" r="2.5" />
-                <circle cx="16.5" cy="16.5" r="2.5" />
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
               </svg>
             </div>
             <div>
-              <div class="stat-label">Total Cars</div>
-              <div class="stat-value">350</div>
+              <div class="stat-label">Completed Vehicles</div>
+              <div class="stat-value" id="completed-count">10</div>
             </div>
           </div>
         
@@ -6441,23 +6439,6 @@
       <!-- Toolbar -->
       <div class="toolbar">
         <div class="toolbar-left">
-          <div class="filter">
-            <select>
-              <option>All Stages</option>
-              <option>1 — Purchase Info</option>
-              <option>2 — Yard Images</option>
-              <option>3 — Export Certificate</option>
-              <option>4 — Inspection</option>
-              <option>5 — Shipment</option>
-              <option>6 — Bill of Lading</option>
-              <option>7 — Finance Status</option>
-              <option>8 — Unit Received</option>
-            </select>
-            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
-              stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-          </div>
           <div class="filter">
             <select>
               <option>All Makes</option>
@@ -6595,7 +6576,7 @@
 
         <!-- Pagination -->
         <div class="pagination-bar">
-          <div class="page-info">Showing <b>1–10</b> of <b>350</b> vehicles</div>
+          <div class="page-info">Showing <b>1–10</b> of <b id="page-info-total">10</b> vehicles</div>
           <div class="pager" id="pager"></div>
         </div>
       </div>
@@ -8063,18 +8044,21 @@
       8: 'Complete <b>Finance Status</b> first to unlock',
     };
 
-    // 10 rows — covers all 8 stages, plus 2 extras
+    // Completed vehicles — Stage 8 (Unit Received) only.
+    // Sale Price column always reflects the latest/updated price (every row has
+    // a price adjustment on file), and Consignee / Notify shows the real mix of
+    // B·C·N states — no "change requested" rows on this page.
     const rows = [
-      { stage: 1, ref: "A00100", chassis: "WDC2539052F422655", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "C", dest: "Mombasa Port", recentlyUpdated: true },
-      { stage: 2, ref: "A00106", chassis: "JTDBR32E830088121", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "JPY", purchase: "¥24,205", sale: null, saleType: "btn", bcn: null, dest: "Zimbabwe", recentlyUpdated: true },
-      { stage: 3, ref: "A00116", chassis: "MR053ZK60M1029841", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "JPY", sale: "¥4,150,000", saleType: "link", bcn: "BCN", state: "change-requested", dest: "Zimbabwe" },
-      { stage: 4, ref: "A00150", chassis: "JN1TENT32U0023456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "B", dest: "Zimbabwe" },
-      { stage: 4, ref: "A00210", chassis: "WBA8B9C50GK999812", make: "Honda", model: "Vezel", code: "DAA-RU3", year: 2023, date: "02/08/2026", curr: "USD", purchase: "$28,100", saleCurr: "USD", sale: "$31,200", saleType: "link", bcn: "B", dest: "Lagos", updatedSale: { title: "Repair Cost Recovery", reason: "Additional charges applied to recover repair expenses incurred during the failed inspection.", addition: 1700, newTotal: 32900, date: "23 / 05 / 2026" }, saleUpdates: [ { title: "Repair Cost Recovery", reason: "Additional charges applied to recover repair expenses incurred during the failed inspection.", addition: 1700, date: "15 / 04 / 2026" }, { title: "Consignee Update Fee", reason: "10% surcharge applied due to consignee details change requested after booking confirmation.", addition: 3120, date: "23 / 05 / 2026" }, { title: "Port Handling Revision", reason: "Revised port handling and documentation fees at Lagos destination port.", addition: 850, date: "10 / 06 / 2026" } ] },
-      { stage: 5, ref: "A00159", chassis: "MMBJNKB40NH001234", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "JPY", purchase: "¥24,205", sale: null, saleType: "btn", bcn: null, dest: "Zimbabwe" },
-      { stage: 6, ref: "A00170", chassis: "JHMGE8H56DC123456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "EUR", sale: "€25,300", saleType: "link", bcn: "BC", dest: "Mombasa Port" },
-      { stage: 6, ref: "A00224", chassis: "ZAR93000007123451", make: "Nissan", model: "X-Trail", code: "DBA-T32", year: 2021, date: "02/08/2026", curr: "JPY", purchase: "¥3,150,000", sale: null, saleType: "btn", bcn: null, dest: "Durban" },
-      { stage: 7, ref: "A00185", chassis: "JF1GG7LL5BG023456", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "USD", sale: "$27,500", saleType: "link", bcn: "C", dest: "Dar es Salaam" },
-      { stage: 8, ref: "A00202", chassis: "5YJSA1E26HF200012", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "JPY", sale: "¥4,150,000", saleType: "link", bcn: "BCN", dest: "Zimbabwe" },
+      { stage: 8, ref: "A00202", chassis: "5YJSA1E26HF200012", make: "Toyota", model: "Raize", code: "5BA-A200A", year: 2022, date: "02/08/2026", curr: "USD", purchase: "$24,205", saleCurr: "JPY", sale: "¥4,150,000", saleType: "link", bcn: "BCN", dest: "Zimbabwe", updatedSale: { title: "Port Handling Revision", reason: "Revised port handling and documentation fees applied at the destination port after arrival.", addition: 150000, newTotal: 4300000, date: "08 / 06 / 2026" } },
+      { stage: 8, ref: "A00210", chassis: "WBA8B9C50GK999812", make: "Honda", model: "Vezel", code: "DAA-RU3", year: 2023, date: "02/08/2026", curr: "USD", purchase: "$28,100", saleCurr: "USD", sale: "$31,200", saleType: "link", bcn: "BC", dest: "Lagos", saleUpdates: [ { title: "Repair Cost Recovery", reason: "Additional charges applied to recover repair expenses incurred during the failed inspection.", addition: 1700, date: "15 / 04 / 2026" }, { title: "Consignee Update Fee", reason: "10% surcharge applied due to consignee details change requested after booking confirmation.", addition: 3120, date: "23 / 05 / 2026" }, { title: "Port Handling Revision", reason: "Revised port handling and documentation fees at Lagos destination port.", addition: 850, date: "10 / 06 / 2026" } ] },
+      { stage: 8, ref: "A00224", chassis: "ZAR93000007123451", make: "Nissan", model: "X-Trail", code: "DBA-T32", year: 2021, date: "02/08/2026", curr: "JPY", purchase: "¥3,150,000", saleCurr: "JPY", sale: "¥4,400,000", saleType: "link", bcn: "B", dest: "Durban", updatedSale: { title: "Consignee Update Fee", reason: "Surcharge applied due to consignee details change requested after booking confirmation.", addition: 200000, newTotal: 4600000, date: "14 / 06 / 2026" } },
+      { stage: 8, ref: "A00301", chassis: "JTMRFREV5JD123456", make: "Toyota", model: "Corolla", code: "ZRE212", year: 2022, date: "03/09/2026", curr: "USD", purchase: "$19,800", saleCurr: "USD", sale: "$22,950", saleType: "link", bcn: "BCN", dest: "Mombasa Port", updatedSale: { title: "Inspection Repair Adjustment", reason: "Additional charges applied to recover minor repair expenses identified during final inspection.", addition: 450, newTotal: 23400, date: "02 / 06 / 2026" } },
+      { stage: 8, ref: "A00308", chassis: "MR0FB8CD500123987", make: "Toyota", model: "Vitz", code: "NCP131", year: 2021, date: "11/09/2026", curr: "JPY", purchase: "¥1,250,000", saleCurr: "JPY", sale: "¥1,580,000", saleType: "link", bcn: "C", dest: "Zimbabwe", updatedSale: { title: "Port Handling Revision", reason: "Revised port handling and documentation fees applied at the destination port.", addition: 70000, newTotal: 1650000, date: "19 / 06 / 2026" } },
+      { stage: 8, ref: "A00315", chassis: "JHMFD16506S045123", make: "Honda", model: "Fit", code: "GK3", year: 2020, date: "18/09/2026", curr: "USD", purchase: "$11,400", saleCurr: "USD", sale: "$13,600", saleType: "link", bcn: "BCN", dest: "Lagos", updatedSale: { title: "Port Handling Revision", reason: "Revised port handling and documentation fees applied at Lagos destination port after arrival inspection.", addition: 650, newTotal: 14250, date: "05 / 06 / 2026" } },
+      { stage: 8, ref: "A00322", chassis: "JN1AZ34D06T123654", make: "Nissan", model: "Note", code: "E12", year: 2021, date: "25/09/2026", curr: "USD", purchase: "$10,200", saleCurr: "USD", sale: "$12,450", saleType: "link", bcn: "BN", dest: "Durban", updatedSale: { title: "Consignee Update Fee", reason: "10% surcharge applied due to consignee details change requested after booking confirmation.", addition: 350, newTotal: 12800, date: "27 / 05 / 2026" } },
+      { stage: 8, ref: "A00330", chassis: "JMZDE3W76H0145789", make: "Mazda", model: "Demio", code: "DJ3FS", year: 2020, date: "02/10/2026", curr: "USD", purchase: "$9,800", saleCurr: "USD", sale: "$11,900", saleType: "link", bcn: "BC", dest: "Dar es Salaam", saleUpdates: [ { title: "Repair Cost Recovery", reason: "Charges applied to recover minor bodywork repairs identified during pre-shipment inspection.", addition: 420, date: "20 / 05 / 2026" }, { title: "Consignee Update Fee", reason: "Surcharge applied due to consignee details change requested after booking confirmation.", addition: 595, date: "08 / 06 / 2026" } ] },
+      { stage: 8, ref: "A00337", chassis: "MR053LD60M1098765", make: "Toyota", model: "Hilux", code: "GUN125", year: 2022, date: "09/10/2026", curr: "USD", purchase: "$28,500", saleCurr: "USD", sale: "$33,200", saleType: "link", bcn: "BCN", dest: "Mombasa Port", updatedSale: { title: "Repair Cost Recovery", reason: "Additional charges applied to recover repair expenses incurred during pre-export inspection.", addition: 800, newTotal: 34000, date: "11 / 06 / 2026" } },
+      { stage: 8, ref: "A00344", chassis: "JHLRE4H50JC234567", make: "Honda", model: "CR-V", code: "RE4", year: 2021, date: "16/10/2026", curr: "USD", purchase: "$21,300", saleCurr: "USD", sale: "$24,800", saleType: "link", bcn: "CN", dest: "Dar es Salaam", updatedSale: { title: "Inspection Repair Adjustment", reason: "Additional charges applied to recover repair expenses incurred during pre-export inspection.", addition: 900, newTotal: 25700, date: "12 / 06 / 2026" } },
     ];
 
     /* -------- SVG icons -------- */
@@ -8250,7 +8234,7 @@
     }
 
     /* -------- Pagination -------- */
-    const totalPages = 35;
+    const totalPages = 1;
     let currentPage = 1;
 
     function renderPager() {
