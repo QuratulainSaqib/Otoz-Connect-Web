@@ -6510,8 +6510,8 @@
               </svg>
             </div>
             <div>
-              <div class="stat-label">Total Cars</div>
-              <div class="stat-value">350</div>
+              <div class="stat-label">Cars in Transit</div>
+              <div class="stat-value">247</div>
             </div>
           </div>
           <div class="stat-card delivered">
@@ -6523,8 +6523,8 @@
               </svg>
             </div>
             <div>
-              <div class="stat-label">Completed Vehicles</div>
-              <div class="stat-value" id="kpi-completed-count">10</div>
+              <div class="stat-label">Cars Delivered</div>
+              <div class="stat-value" id="kpi-completed-count">523</div>
             </div>
           </div>
         </div>
@@ -6540,7 +6540,7 @@
             <circle cx="16.5" cy="16.5" r="2.5"/>
           </svg>
           In Shipping
-          <span class="tab-count" id="count-shipping">350</span>
+          <span class="tab-count" id="count-shipping">247</span>
         </button>
         <button class="tab-btn" id="tab-completed" onclick="switchDashTab('completed')">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
@@ -6549,7 +6549,7 @@
             <polyline points="22 4 12 14.01 9 11.01" />
           </svg>
           Completed
-          <span class="tab-count" id="count-completed-tab">10</span>
+          <span class="tab-count" id="count-completed-tab">523</span>
         </button>
       </div>
 
@@ -6713,7 +6713,7 @@
 
         <!-- Pagination -->
         <div class="pagination-bar">
-          <div class="page-info">Showing <b>1–10</b> of <b>350</b> vehicles</div>
+          <div class="page-info">Showing <b>1–10</b> of <b>247</b> vehicles</div>
           <div class="pager" id="pager"></div>
         </div>
       </div>
@@ -10398,8 +10398,7 @@
       </tr>
     `).join('');
       document.getElementById('completed-info-total').textContent = completedRows.length;
-      document.getElementById('count-completed-tab').textContent = completedRows.length;
-      document.getElementById('kpi-completed-count').textContent = completedRows.length;
+      // Tab count and KPI driven by hardcoded values (523 / 247)
     }
 
   </script>
