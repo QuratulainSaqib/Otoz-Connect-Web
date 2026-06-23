@@ -470,26 +470,19 @@
     color: var(--text-primary); background: transparent; outline: none;
   }
 
-  /* ---------- Panel Footer ---------- */
   .panel-footer {
-    padding: 16px 24px; border-top: 1px solid var(--border);
-    background: var(--surface-elev); display: flex; gap: 10px; justify-content: flex-end;
+    flex-shrink: 0; padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    background: var(--surface); box-sizing: border-box;
   }
-  .btn-cancel {
-    height: 38px; padding: 0 18px; border-radius: var(--radius-md);
-    border: 1px solid var(--border); background: #fff;
-    color: var(--text-secondary); font-size: 13px; font-weight: 500;
-    cursor: pointer; transition: all 0.18s ease; font-family: var(--font-body);
+  .submit-btn {
+    width: 100%; height: 48px; background: #1d3557; color: #fff;
+    border: none; border-radius: var(--radius-md);
+    font-family: var(--font-display); font-size: 15px; font-weight: 600;
+    letter-spacing: -0.01em; cursor: pointer; transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(29,53,87,0.25);
   }
-  .btn-cancel:hover { border-color: var(--border-strong); color: var(--text-primary); }
-  .btn-submit {
-    height: 38px; padding: 0 22px; border-radius: var(--radius-md);
-    border: none; background: #173559; color: #fff;
-    font-size: 13px; font-weight: 600; cursor: pointer;
-    transition: all 0.18s ease; font-family: var(--font-body);
-    box-shadow: 0 1px 2px rgba(23,53,89,0.18), 0 4px 12px rgba(23,53,89,0.18);
-  }
-  .btn-submit:hover { background: #1d3557; transform: translateY(-1px); }
+  .submit-btn:hover { background: #2a4a73; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(29,53,87,0.32); }
 </style>
 </head>
 <body>
@@ -739,16 +732,9 @@
             <label>Currency <span class="req">*</span></label>
             <div class="field-select-wrap">
               <select id="inv-currency">
-                <option value="USD" selected>USD — US Dollar</option>
-                <option value="GBP">GBP — British Pound</option>
-                <option value="EUR">EUR — Euro</option>
-                <option value="JPY">JPY — Japanese Yen</option>
-                <option value="AED">AED — UAE Dirham</option>
-                <option value="SAR">SAR — Saudi Riyal</option>
-                <option value="PKR">PKR — Pakistani Rupee</option>
-                <option value="ZWL">ZWL — Zimbabwe Dollar</option>
-                <option value="KES">KES — Kenyan Shilling</option>
-                <option value="NGN">NGN — Nigerian Naira</option>
+                <option value="USD" selected>USD</option>
+                <option value="EUR">EUR</option>
+                <option value="AED">AED</option>
               </select>
               <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
@@ -766,8 +752,10 @@
   </div>
 
   <div class="panel-footer">
-    <button class="btn-cancel" onclick="closeInvPanel()">Cancel</button>
-    <button class="btn-submit" onclick="submitInvoice()">Create Invoice</button>
+    <button class="submit-btn" onclick="submitInvoice()" style="display:inline-flex;align-items:center;justify-content:center;gap:8px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Create Invoice
+    </button>
   </div>
 </aside>
 
