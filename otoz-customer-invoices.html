@@ -231,15 +231,37 @@
   .sr-num { color: var(--text-secondary); font-size: 13px; }
 
   .invoice-type-badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    padding: 4px 10px; border-radius: var(--radius-pill);
-    font-size: 11px; font-weight: 600; letter-spacing: 0.03em;
-    border: 1px solid transparent;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 5px 12px 5px 10px; border-radius: var(--radius-pill);
+    font-family: var(--font-display); font-size: 11.5px; font-weight: 600;
+    letter-spacing: 0.02em; border: 1px solid transparent;
+    white-space: nowrap; line-height: 1; transition: all 0.18s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
   }
-  .badge-standard { background: #e8f1ff; color: #0058c7; border-color: rgba(0,88,199,0.12); }
-  .badge-proforma { background: #efeaff; color: #5b3fd1; border-color: rgba(91,63,209,0.12); }
-  .badge-commercial { background: #e3f7ec; color: #0a7a3b; border-color: rgba(10,122,59,0.14); }
-  .badge-credit { background: #fff3e0; color: #b35900; border-color: rgba(179,89,0,0.14); }
+  .invoice-type-badge::before {
+    content: ""; width: 7px; height: 7px; border-radius: 50%;
+    flex-shrink: 0; background: currentColor;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.6) inset;
+  }
+  .badge-commercial {
+    color: #0058c7;
+    background: linear-gradient(180deg, #f0f5ff 0%, #dbeafe 100%);
+    border-color: rgba(0, 88, 199, 0.28);
+  }
+  .badge-commercial::before {
+    background: #0071e3;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.18);
+  }
+  .badge-deposit {
+    color: #047857;
+    background: linear-gradient(180deg, #f0fdf4 0%, #dcfce7 100%);
+    border-color: rgba(16, 185, 129, 0.35);
+  }
+  .badge-deposit::before {
+    background: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+  }
+  .invoice-type-badge:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
 
   .customer-name { font-weight: 600; color: var(--text-primary); }
   .country-city {
@@ -247,10 +269,15 @@
     color: var(--text-secondary); font-size: 12px;
   }
   .country-city svg { width: 12px; height: 12px; color: var(--text-tertiary); flex-shrink: 0; }
-  .chassis-num { font-size: 12px; font-family: monospace; color: var(--text-primary); letter-spacing: 0.03em; }
+  .currency-pill {
+    display: inline-block; padding: 2px 8px;
+    background: rgba(0,0,0,0.04); border-radius: 6px;
+    font-size: 11px; font-weight: 600;
+    color: var(--text-secondary); letter-spacing: 0.02em;
+  }
   .chassis-empty { color: var(--text-tertiary); font-size: 13px; }
   .phone-num { color: var(--text-secondary); font-size: 12px; font-family: monospace; letter-spacing: 0.02em; }
-  .address-cell { max-width: 200px; white-space: normal; line-height: 1.4; color: var(--text-secondary); font-size: 12px; }
+  .address-cell { width: 320px; max-width: 320px; white-space: normal; line-height: 1.5; color: var(--text-secondary); font-size: 12px; }
   .amount-cell { font-weight: 700; font-family: var(--font-display); text-align: right; }
   .date-cell { color: var(--text-secondary); font-size: 12px; white-space: nowrap; }
 
@@ -325,12 +352,144 @@
   .empty-state svg { width: 40px; height: 40px; opacity: 0.3; margin-bottom: 12px; }
   .empty-state p { font-size: 14px; }
 
-  @media (max-width: 768px) {
-    .toolbar { flex-wrap: wrap; }
-    .toolbar-left, .toolbar-right { flex: 1 1 100%; }
-    .stat-cards { justify-content: stretch; }
-    .stat-card { min-width: unset; flex: 1 1 100%; }
+  /* ---------- Panel Overlay ---------- */
+  .panel-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0);
+    backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);
+    opacity: 0; pointer-events: none;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease, opacity 0.3s ease;
+    z-index: 100;
   }
+  .panel-overlay.open {
+    background: rgba(0,0,0,0.35); backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px); opacity: 1; pointer-events: auto;
+  }
+
+  /* ---------- Side Panel ---------- */
+  .side-panel {
+    position: fixed; top: 0; right: 0; height: 100vh;
+    width: 640px; max-width: 100vw; background: var(--surface);
+    transform: translateX(100%);
+    transition: transform 0.42s cubic-bezier(0.32,0.72,0.2,1);
+    z-index: 101; display: flex; flex-direction: column;
+    overflow: hidden; box-sizing: border-box;
+  }
+  .side-panel.open { transform: translateX(0); box-shadow: -20px 0 60px rgba(0,0,0,0.18); }
+  .panel-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 24px; height: 64px; border-bottom: 1px solid var(--border);
+    background: var(--surface); flex-shrink: 0;
+  }
+  .panel-header h2 {
+    font-family: var(--font-display); font-size: 18px; font-weight: 700;
+    letter-spacing: -0.02em; color: var(--text-primary);
+  }
+  .panel-close {
+    width: 32px; height: 32px; border-radius: 50%; border: none;
+    background: rgba(0,0,0,0.04); color: var(--text-secondary);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.18s ease;
+  }
+  .panel-close:hover { background: rgba(0,0,0,0.08); color: var(--text-primary); transform: rotate(90deg); }
+  .panel-close svg { width: 16px; height: 16px; }
+  .panel-body { flex: 1 1 auto; overflow-y: auto; padding: 20px 24px 24px; box-sizing: border-box; }
+
+  /* ---------- Form Cards ---------- */
+  .form-card {
+    background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg);
+    margin-bottom: 16px; overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .form-card:hover { border-color: var(--border-strong); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .form-card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px;
+    background: linear-gradient(180deg,#fafbfd 0%,#f5f6f9 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .form-card-title {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-display); font-size: 14px; font-weight: 700;
+    color: var(--text-primary); letter-spacing: -0.01em;
+  }
+  .icon-square {
+    width: 26px; height: 26px; border-radius: 7px;
+    background: linear-gradient(135deg,#0071e3 0%,#00a3ff 100%);
+    color: #fff; display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 6px rgba(0,113,227,0.3);
+  }
+  .icon-square.green { background: linear-gradient(135deg,#30c46d 0%,#4adf86 100%); box-shadow: 0 2px 6px rgba(48,196,109,0.3); }
+  .icon-square svg { width: 14px; height: 14px; }
+  .form-card-body { padding: 18px; }
+
+  /* ---------- Form Fields ---------- */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+  .form-grid.single { grid-template-columns: 1fr; }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field.full { grid-column: 1 / -1; }
+  .field label { font-size: 12px; font-weight: 500; color: var(--text-secondary); }
+  .field label .req { color: var(--danger); margin-left: 2px; }
+  .field input, .field select, .field textarea {
+    width: 100%; height: 40px; padding: 0 14px;
+    background: #fff; border: 1px solid var(--border);
+    border-radius: var(--radius-md); font-family: var(--font-body);
+    font-size: 13px; color: var(--text-primary); transition: all 0.18s ease;
+  }
+  .field select { padding-right: 36px; appearance: none; -webkit-appearance: none; cursor: pointer; }
+  .field input:focus, .field select:focus {
+    outline: none; border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.15);
+  }
+  .field-select-wrap { position: relative; }
+  .field-select-wrap .chev {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--text-tertiary); width: 14px; height: 14px; pointer-events: none;
+  }
+
+  /* ---------- Phone Input ---------- */
+  .phone-input {
+    display: flex; align-items: stretch; background: #fff;
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    overflow: hidden; transition: all 0.18s ease;
+  }
+  .phone-input:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,113,227,0.15); }
+  .phone-input .phone-prefix {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 0 12px;
+    background: linear-gradient(180deg,#fafbfd,#f1f3f7);
+    border-right: 1px solid var(--border);
+    font-size: 13px; font-weight: 600; color: var(--text-primary);
+    flex-shrink: 0; user-select: none;
+  }
+  .phone-input .phone-flag { font-size: 16px; line-height: 1; }
+  .phone-input .phone-code { font-family: "SF Mono","Menlo",monospace; font-size: 12px; }
+  .phone-input input {
+    flex: 1; border: none; height: 38px; padding: 0 12px;
+    font-family: var(--font-body); font-size: 13px;
+    color: var(--text-primary); background: transparent; outline: none;
+  }
+
+  /* ---------- Panel Footer ---------- */
+  .panel-footer {
+    padding: 16px 24px; border-top: 1px solid var(--border);
+    background: var(--surface-elev); display: flex; gap: 10px; justify-content: flex-end;
+  }
+  .btn-cancel {
+    height: 38px; padding: 0 18px; border-radius: var(--radius-md);
+    border: 1px solid var(--border); background: #fff;
+    color: var(--text-secondary); font-size: 13px; font-weight: 500;
+    cursor: pointer; transition: all 0.18s ease; font-family: var(--font-body);
+  }
+  .btn-cancel:hover { border-color: var(--border-strong); color: var(--text-primary); }
+  .btn-submit {
+    height: 38px; padding: 0 22px; border-radius: var(--radius-md);
+    border: none; background: #173559; color: #fff;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: all 0.18s ease; font-family: var(--font-body);
+    box-shadow: 0 1px 2px rgba(23,53,89,0.18), 0 4px 12px rgba(23,53,89,0.18);
+  }
+  .btn-submit:hover { background: #1d3557; transform: translateY(-1px); }
 </style>
 </head>
 <body>
@@ -409,7 +568,7 @@
         </select>
         <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
-      <button class="btn-create" onclick="alert('Create Invoice coming soon')">
+      <button class="btn-create" onclick="openCreateInvoice()">
         + Create Invoice
       </button>
     </div>
@@ -435,11 +594,12 @@
             <th>Customer Name</th>
             <th>Country / City</th>
             <th>Phone</th>
-            <th>Address</th>
+            <th style="width:320px; min-width:320px;">Address</th>
             <th>Invoice Type</th>
             <th>Chassis No.</th>
             <th>Date</th>
-            <th style="text-align:right">Total Amount</th>
+            <th>Currency</th>
+            <th style="text-align:right">Amount</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -455,6 +615,218 @@
   </div>
 
 </main>
+
+<!-- ============ Overlay ============ -->
+<div class="panel-overlay" id="inv-overlay" onclick="closeInvPanel()"></div>
+
+<!-- ============ Create Invoice Panel ============ -->
+<aside class="side-panel" id="panel-create-invoice" aria-hidden="true">
+  <div class="panel-header">
+    <h2>Create Invoice</h2>
+    <button class="panel-close" onclick="closeInvPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <div class="panel-body">
+
+    <!-- Card 1: Customer Details -->
+    <div class="form-card">
+      <div class="form-card-header">
+        <div class="form-card-title">
+          <span class="icon-square">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </span>
+          Customer Details
+        </div>
+      </div>
+      <div class="form-card-body">
+        <div class="form-grid">
+
+          <div class="field full">
+            <label>Customer Name <span class="req">*</span></label>
+            <input type="text" id="inv-customer-name" placeholder="Enter customer name" />
+          </div>
+
+          <div class="field full">
+            <label>Address <span class="req">*</span></label>
+            <input type="text" id="inv-address" placeholder="Enter full address" />
+          </div>
+
+          <div class="field full">
+            <label>Country <span class="req">*</span></label>
+            <div class="field-select-wrap">
+              <select id="inv-country" onchange="invUpdatePhone()">
+                <option value="">Select Country</option>
+                <option>Pakistan</option>
+                <option>Zimbabwe</option>
+                <option>Kenya</option>
+                <option>Tanzania</option>
+                <option>Uganda</option>
+                <option>South Africa</option>
+                <option>Nigeria</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>UAE</option>
+                <option>Saudi Arabia</option>
+                <option>India</option>
+                <option>Japan</option>
+                <option>Australia</option>
+                <option>Canada</option>
+                <option>Singapore</option>
+                <option>Malaysia</option>
+              </select>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>City <span class="req">*</span></label>
+            <input type="text" id="inv-city" placeholder="Enter city" />
+          </div>
+
+          <div class="field">
+            <label>Postal Code</label>
+            <input type="text" id="inv-postal" placeholder="Enter postal code" />
+          </div>
+
+          <div class="field">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" id="inv-email" placeholder="Enter email address" />
+          </div>
+
+          <div class="field">
+            <label>Phone Number <span class="req">*</span></label>
+            <div class="phone-input">
+              <span class="phone-prefix">
+                <span class="phone-flag" id="inv-phone-flag">🌐</span>
+                <span class="phone-code" id="inv-phone-code">+</span>
+              </span>
+              <input type="tel" id="inv-phone-input" placeholder="Phone number" />
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2: Amount Details -->
+    <div class="form-card">
+      <div class="form-card-header">
+        <div class="form-card-title">
+          <span class="icon-square green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </span>
+          Amount Details
+        </div>
+      </div>
+      <div class="form-card-body">
+        <div class="form-grid">
+
+          <div class="field full">
+            <label>Invoice Type <span class="req">*</span></label>
+            <div class="field-select-wrap">
+              <select id="inv-type">
+                <option value="">Select Invoice Type</option>
+                <option value="Deposit">Deposit Invoice</option>
+                <option value="Commercial">Commercial Invoice</option>
+              </select>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Currency <span class="req">*</span></label>
+            <div class="field-select-wrap">
+              <select id="inv-currency">
+                <option value="USD" selected>USD — US Dollar</option>
+                <option value="GBP">GBP — British Pound</option>
+                <option value="EUR">EUR — Euro</option>
+                <option value="JPY">JPY — Japanese Yen</option>
+                <option value="AED">AED — UAE Dirham</option>
+                <option value="SAR">SAR — Saudi Riyal</option>
+                <option value="PKR">PKR — Pakistani Rupee</option>
+                <option value="ZWL">ZWL — Zimbabwe Dollar</option>
+                <option value="KES">KES — Kenyan Shilling</option>
+                <option value="NGN">NGN — Nigerian Naira</option>
+              </select>
+              <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Amount <span class="req">*</span></label>
+            <input type="number" id="inv-amount" placeholder="0.00" min="0" step="0.01" />
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel-footer">
+    <button class="btn-cancel" onclick="closeInvPanel()">Cancel</button>
+    <button class="btn-submit" onclick="submitInvoice()">Create Invoice</button>
+  </div>
+</aside>
+
+<script>
+  const COUNTRY_DATA = {
+    "Pakistan":      { code: "+92",  flag: "🇵🇰", format: "300 1234567" },
+    "Zimbabwe":      { code: "+263", flag: "🇿🇼", format: "77 304 6898" },
+    "Kenya":         { code: "+254", flag: "🇰🇪", format: "712 345678" },
+    "Tanzania":      { code: "+255", flag: "🇹🇿", format: "754 123456" },
+    "Uganda":        { code: "+256", flag: "🇺🇬", format: "712 345678" },
+    "South Africa":  { code: "+27",  flag: "🇿🇦", format: "82 123 4567" },
+    "Nigeria":       { code: "+234", flag: "🇳🇬", format: "802 1234567" },
+    "United States": { code: "+1",   flag: "🇺🇸", format: "201 555 0123" },
+    "United Kingdom":{ code: "+44",  flag: "🇬🇧", format: "7400 123456" },
+    "UAE":           { code: "+971", flag: "🇦🇪", format: "50 123 4567" },
+    "Saudi Arabia":  { code: "+966", flag: "🇸🇦", format: "50 123 4567" },
+    "India":         { code: "+91",  flag: "🇮🇳", format: "98765 43210" },
+    "Japan":         { code: "+81",  flag: "🇯🇵", format: "90 1234 5678" },
+    "Australia":     { code: "+61",  flag: "🇦🇺", format: "412 345 678" },
+    "Canada":        { code: "+1",   flag: "🇨🇦", format: "416 555 0123" },
+    "Singapore":     { code: "+65",  flag: "🇸🇬", format: "8123 4567" },
+    "Malaysia":      { code: "+60",  flag: "🇲🇾", format: "12 345 6789" },
+  };
+
+  function openCreateInvoice() {
+    document.getElementById('panel-create-invoice').classList.add('open');
+    document.getElementById('inv-overlay').classList.add('open');
+    document.getElementById('panel-create-invoice').setAttribute('aria-hidden','false');
+  }
+
+  function closeInvPanel() {
+    document.getElementById('panel-create-invoice').classList.remove('open');
+    document.getElementById('inv-overlay').classList.remove('open');
+    document.getElementById('panel-create-invoice').setAttribute('aria-hidden','true');
+  }
+
+  function invUpdatePhone() {
+    const country = document.getElementById('inv-country').value;
+    const data = COUNTRY_DATA[country];
+    const flagEl = document.getElementById('inv-phone-flag');
+    const codeEl = document.getElementById('inv-phone-code');
+    const inputEl = document.getElementById('inv-phone-input');
+    if (data) {
+      flagEl.textContent = data.flag;
+      codeEl.textContent = data.code;
+      inputEl.placeholder = data.format;
+      inputEl.value = '';
+    } else {
+      flagEl.textContent = '🌐';
+      codeEl.textContent = '+';
+      inputEl.placeholder = 'Phone number';
+    }
+  }
+
+  function submitInvoice() {
+    alert('Invoice created successfully!');
+    closeInvPanel();
+  }
+</script>
 
 <script>
   const invoices = [
@@ -498,7 +870,7 @@
     { type: "Deposit",    chassis: null, name: "Tariq Hussain",                     country: "Pakistan",   city: "Karachi",      phone: "+923001234567",   address: "Clifton, Block 8, Street 12",                                     amount: 21000,  date: "15/06/2025" },
   ];
 
-  const typeBadgeClass = { "Commercial": "badge-commercial", "Deposit": "badge-standard" };
+  const typeBadgeClass = { "Commercial": "badge-commercial", "Deposit": "badge-deposit" };
 
   let currentPage = 1;
   let filtered = [...invoices];
@@ -556,9 +928,10 @@
           <td><span class="country-city"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${r.country}, ${r.city}</span></td>
           <td><span class="phone-num">${r.phone}</span></td>
           <td><span class="address-cell">${r.address}</span></td>
-          <td><span class="invoice-type-badge ${typeBadgeClass[r.type] || 'badge-standard'}">${r.type} Invoice</span></td>
+          <td><span class="invoice-type-badge ${typeBadgeClass[r.type] || 'badge-deposit'}">${r.type} Invoice</span></td>
           <td class="chassis-cell">${r.chassis ? `<span class="chassis-num">${r.chassis}</span>` : `<span class="chassis-empty">—</span>`}</td>
           <td class="date-cell">${r.date}</td>
+          <td><span class="currency-pill">USD</span></td>
           <td class="amount-cell">${fmt(r.amount)}</td>
           <td>
             <div class="action-btns">
