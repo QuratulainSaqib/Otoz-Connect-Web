@@ -8390,6 +8390,15 @@
           </span>
         </button>`;
       }
+      if (r.stage === 8 && r.sale) {
+        return `<button class="updated-sale-cell" onclick="openSaleView(${idx})">
+          <span class="price-link">${r.sale.replace(/[$¥€£]/g, '')}</span>
+          <span class="updated-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            Updated
+          </span>
+        </button>`;
+      }
       return `<a class="price-link" href="#" onclick="event.preventDefault(); openSaleView(${idx});">${r.sale.replace(/[$¥€£]/g, '')}</a>`;
     }
 
@@ -8805,9 +8814,15 @@
       document.getElementById('vw-buyer-body').className = 'details-section-body center';
       document.getElementById('vw-buyer-body').textContent = 'Same as Consignee';
 
+      // Stage 8 = Unit Received (delivered) — request change not allowed
+      const footer = document.getElementById('panel-view').querySelector('.panel-footer');
+      if (r.stage === 8) {
+        footer.style.display = 'none';
+      } else {
+        footer.style.display = '';
+      }
       document.getElementById('overlay').classList.add('open');
       document.getElementById('panel-view').classList.add('open');
-      document.getElementById('panel-view').querySelector('.panel-footer').style.display = '';
       document.body.style.overflow = 'hidden';
     }
 
