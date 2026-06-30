@@ -719,13 +719,18 @@
           <div class="field full">
             <label>Invoice Type <span class="req">*</span></label>
             <div class="field-select-wrap">
-              <select id="inv-type">
+              <select id="inv-type" onchange="invToggleChassisField()">
                 <option value="">Select Invoice Type</option>
                 <option value="Deposit">Deposit Invoice</option>
                 <option value="Commercial">Commercial Invoice</option>
               </select>
               <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
             </div>
+          </div>
+
+          <div class="field full" id="inv-chassis-field" style="display:none;">
+            <label>Chassis No. <span class="req">*</span></label>
+            <input type="text" id="inv-chassis" placeholder="Enter chassis number" />
           </div>
 
           <div class="field">
@@ -784,6 +789,19 @@
     document.getElementById('panel-create-invoice').classList.add('open');
     document.getElementById('inv-overlay').classList.add('open');
     document.getElementById('panel-create-invoice').setAttribute('aria-hidden','false');
+    invToggleChassisField();
+  }
+
+  function invToggleChassisField() {
+    const type = document.getElementById('inv-type').value;
+    const chassisField = document.getElementById('inv-chassis-field');
+    if (type === 'Commercial') {
+      chassisField.style.display = '';
+    } else {
+      chassisField.style.display = 'none';
+      const chassisInput = document.getElementById('inv-chassis');
+      if (chassisInput) chassisInput.value = '';
+    }
   }
 
   function closeInvPanel() {
